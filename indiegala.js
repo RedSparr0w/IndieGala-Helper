@@ -76,7 +76,7 @@ function getOwnedGames(){
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<((new Date().getTime()/1000)-86400)){
 		$.ajax({
-			url:"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+$("#APIKey").val()+"&format=json&steamid="+$("#SteamID").val()+"&include_appinfo=0&include_played_free_games=0",
+			url:"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+localStorage.getItem("APIKey")+"&format=json&steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
 			statusCode: {
 				403: function() {
 				  alert( "Invalid API Key,\nPlease Try Again!" );

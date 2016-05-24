@@ -1,0 +1,108 @@
+#indiegala-helper {
+    padding: 10px;
+    height: auto;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    color: #606468;
+    background-color: #2c2f39;
+	text-align:center;
+}
+#indiegala-helper a,
+#indiegala-helper a:visited {
+    text-decoration: none;
+    color: #fff;
+}
+#indiegala-helper input,
+#indiegala-helper label {
+    height: 49px;
+    box-shadow: 0 1px 1px #292a32;
+}
+#indiegala-helper input:not([type='submit']) {
+    font-weight: 600;
+    box-sizing: border-box;
+    width: 235px;
+    height: 49px;
+    padding-right: 4px;
+    padding-left: 18px;
+    color: #fff;
+    border-style: none;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    outline-style: none;
+    background-color: #3b4148;
+}
+#indiegala-helper label {
+    display: inline-block;
+    width: 46px;
+    text-align: center;
+    vertical-align: top;
+    color: #606468;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    background-color: #363b41;
+}
+#indiegala-helper i[class^='fa'] {
+    line-height: 1.5;
+    color: #606468;
+}
+#indiegala-helper .input-wrapper {
+    margin-bottom: 13px;
+}
+#indiegala-helper ::-webkit-input-placeholder {
+    color: #767a7f;
+}
+#indiegala-helper ::-moz-placeholder {
+    color: #767a7f;
+}
+#indiegala-helper :-moz-placeholder {
+    color: #767a7f;
+}
+#indiegala-helper :-ms-input-placeholder {
+    color: #767a7f;
+}
+#indiegala-helper span {
+    color: #85868b;
+}
+#indiegala-helper h2 {
+    color: #fff;
+	cursor:pointer !important;
+}
+#indiegala-helper h2:after{
+   font-family: FontAwesome;
+   content: "\f13a";
+}
+#indiegala-helper h2.open:after{
+   font-family: FontAwesome;
+   content: "\f139";
+}
+#indiegala-helper input[type='submit'] {
+    font-weight: 600;
+    width: 280px;
+    margin-top: 14px;
+    text-transform: uppercase;
+    color: #fff;
+    border-style: none;
+    border-radius: 3px;
+    text-shadow: #be3e6e 0 1px;
+}
+#indiegala-helper p {
+    text-align: center;
+}
+#indiegala-helper .input-wrapper{
+	display:none;
+}
+.owned {
+    -webkit-filter: grayscale(100%);
+	transition: 1s;
+}
+.owned:hover{
+    -webkit-filter: grayscale(0%);
+}
+.owned .bundle-item-cont:hover{
+	opacity: 0.8;
+}
+.owned .bundle-item-header:after{
+	content:"(owned)";
+	float:right;
+	font-size:80%;
+}

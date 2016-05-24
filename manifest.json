@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "IndieGala Helper",
+	"version": "0.2",
+	"content_scripts": [
+		{
+			"matches": [
+				"https://www.indiegala.com/*"
+			],
+			"js": ["jquery-2.2.3.min.js","indiegala.js"],
+			"css": ["indiegala.css"]
+		}
+	],
+	"background": {
+		"scripts": ["index.js"]
+	},
+	"browser_action": {
+		"default_icon": "icon.png"
+	}
+}	

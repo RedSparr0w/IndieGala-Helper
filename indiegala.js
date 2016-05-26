@@ -15,7 +15,8 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '		</p>'+
 '	</div>'+
 '	<div class="input-wrapper">'+
-'		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details">'+
+'		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
+'		<input type="submit" id="refreshOwned" class="palette-background-2" onclick="localStorage.removeItem(\'updatedOwnedApps\');localStorage.removeItem(\'ownedApps\');location.reload();"value="Refresh Owned Games">'+
 '	</div>'+
 '</div>';
 function showOwnedGames(){
@@ -68,13 +69,14 @@ $('.carousel-game-item').each(function(i){
 			$("[src$='"+gameID+".jpg']").parents(".bundle-item-padding").find('.palette-background-1').append(' ($'+discount.toFixed(2)+")");
 		}
 	});
-	try{showOwnedGames();}catch(e){console.log(e);}
 });
 function getOwnedGames(){
 	if(!steamid || !apikey){
 		$('#indiegala-helper h2').click();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<((new Date().getTime()/1000)-86400)){
+		localStorage.removeItem('updatedOwnedApps');
+		localStorage.removeItem('ownedApps');
 		$.ajax({
 			url:"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+localStorage.getItem("APIKey")+"&format=json&steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
 			statusCode: {

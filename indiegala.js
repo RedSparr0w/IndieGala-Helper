@@ -42,12 +42,7 @@ function showOwnedGames(){
 	});
 }
 $('.bundle_page').before(myvar);
-apikey=false;
 steamid=false;
-if(localStorage.getItem("APIKey") != null && localStorage.getItem("APIKey").length >=32){
-	$("#APIKey").val(localStorage.getItem("APIKey"));
-	apikey=true;
-}
 if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;

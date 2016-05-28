@@ -1,13 +1,27 @@
-
+function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {
+	if (!("Notification" in window)) {
+		return;
+	}
+	else if (Notification.permission === "granted") {
+		new Notification(title,{body:body,icon:icon});
+	}
+	else if (Notification.permission !== 'denied') {
+		Notification.requestPermission(function (permission) {
+			if (permission === "granted") {
+				new Notification(title,{body:body,icon:icon});
+			}
+		});
+	}
+}
 var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
 '<div id="indiegala-helper">'+
 '	<h2>IndieGala Helper </h2><br>'+
-'	<div class="input-wrapper">'+
+'	<!--<div class="input-wrapper">'+
 '		<label for="APIKey"><i class="fa fa-key fa-2x"></i></label><input type="text" id="APIKey" placeholder="API Key">'+
 '		<p>'+
 '			<a href="http://steamcommunity.com/dev/apikey" target="_BLANK">Get API Key</a> <span>→</span>'+
 '		</p>'+
-'	</div>'+
+'	</div>-->'+
 '	<div class="input-wrapper">'+
 '		<label for="SteamID"><i class="fa fa-steam fa-2x"></i></label><input type="text" id="SteamID" placeholder="Steam ID 64">'+
 '		<p>'+
@@ -16,7 +30,7 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '	</div>'+
 '	<div class="input-wrapper">'+
 '		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
-'		<input type="submit" id="refreshOwned" class="palette-background-2" onclick="localStorage.removeItem(\'updatedOwnedApps\');localStorage.removeItem(\'ownedApps\');location.reload();"value="Refresh Owned Games">'+
+'		<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">'+
 '	</div>'+
 '</div>';
 function showOwnedGames(){
@@ -42,12 +56,23 @@ $('#indiegala-helper h2').click(function(e){
 	$('#indiegala-helper h2').toggleClass("open");
 	$('#indiegala-helper .input-wrapper').slideToggle(250);
 });
+steamid=false;
+if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
+	$("#SteamID").val(localStorage.getItem("SteamID"));
+	steamid=true;
+}
 $('#saveDetails').click(function(e){
 	e.preventDefault();
 	localStorage.setItem("APIKey", $("#APIKey").val());
 	localStorage.setItem("SteamID", $("#SteamID").val());
-	alert("Details Saved!");
-	try{getOwnedGames();showOwnedGames();}catch(e){console.log(e);}
+	try{getOwnedGames();}catch(e){console.log(e);}
+	notifyMe("Details Saved!");
+});
+$('#refreshOwned').click(function(e){
+	$(".owned").removeClass("owned");
+	localStorage.removeItem('updatedOwnedApps');
+	localStorage.removeItem('ownedApps');
+	getOwnedGames();
 });
 var bundleApps = [];
 $('.carousel-game-item').each(function(i){
@@ -71,31 +96,25 @@ $('.carousel-game-item').each(function(i){
 	});
 });
 function getOwnedGames(){
-	if(!steamid || !apikey){
+	if(!steamid){
 		$('#indiegala-helper h2').click();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<((new Date().getTime()/1000)-86400)){
 		localStorage.removeItem('updatedOwnedApps');
 		localStorage.removeItem('ownedApps');
 		$.ajax({
-			url:"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+localStorage.getItem("APIKey")+"&format=json&steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
-			statusCode: {
-				403: function() {
-				  alert( "Invalid API Key,\nPlease Try Again!" );
-				},
-				500: function() {
-				  alert( "Invalid Steam ID,\nPlease Try Again!" );
-				}
-			},
-			success: function(response){
+			dataType:"json",
+			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
+			success: function(res){
 				var ownedApps={};
-				var myApps = response.response.games;
+				var myApps = res.response.games;
 				$.each(myApps,function(i,v){
 					ownedApps[v.appid]="owned";
 				})
 
 				localStorage.setItem("ownedApps", JSON.stringify(ownedApps));
 				localStorage.setItem("updatedOwnedApps", (new Date().getTime()/1000));
+				notifyMe("Owned Games List Updated!");
 				try{showOwnedGames();}catch(e){console.log(e);}
 			}
 		});

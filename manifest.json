@@ -1,12 +1,10 @@
 {
 	"manifest_version": 2,
-	"name": "IndieGala Helper",
-	"version": "0.2.5",
+	"name": "Steam Bundle Helper",
+	"version": "0.3.1",
 	"content_scripts": [
 		{
-			"matches": [
-				"https://www.indiegala.com/*"
-			],
+			"matches": ["https://www.indiegala.com/*"],
 			"js": ["jquery-2.2.3.min.js","indiegala.js"],
 			"css": ["indiegala.css"]
 		}
@@ -16,5 +14,8 @@
 	},
 	"browser_action": {
 		"default_icon": "icon.png"
-	}
-}	
+	},
+	"permissions": [
+		"https://api.enhancedsteam.com/"
+	]
+}

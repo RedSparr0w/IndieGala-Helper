@@ -99,7 +99,7 @@ function getOwnedGames(){
 	if(!steamid){
 		$('#indiegala-helper h2').click();
 		return;
-	}else if (Number(localStorage.getItem("updatedOwnedApps"))<((new Date().getTime()/1000)-86400)){
+	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		localStorage.removeItem('updatedOwnedApps');
 		localStorage.removeItem('ownedApps');
 		$.ajax({
@@ -113,7 +113,7 @@ function getOwnedGames(){
 				})
 
 				localStorage.setItem("ownedApps", JSON.stringify(ownedApps));
-				localStorage.setItem("updatedOwnedApps", (new Date().getTime()/1000));
+				localStorage.setItem("updatedOwnedApps", new Date().getTime());
 				notifyMe("Owned Games List Updated!");
 				try{showOwnedGames();}catch(e){console.log(e);}
 			}

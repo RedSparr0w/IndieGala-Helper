@@ -109,3 +109,10 @@
 .ticket-cont .main {
 	color: #CC001D;
 }
+.ticket-cont a.viewOnSteam {
+	font-family:Arial, sans-serif !important;
+	text-shadow:none !important;
+}
+.ticket-cont a.viewOnSteam:hover {
+	color: #CC001D;
+}

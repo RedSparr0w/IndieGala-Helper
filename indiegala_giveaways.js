@@ -13,7 +13,9 @@ $('.ticket-cont img[src*=apps]').each(function(i){
 	var str = $('.ticket-cont img[src*=apps]').eq(i).attr("src");
 	var start = str.indexOf("apps/");
 	var end = str.indexOf(".jpg");
-	bundleApps.push(str.substring(start+5,end));
+	var gameID = str.substring(start+5,end);
+	bundleApps.push(gameID);
+	$(this).parents(".ticket-cont").find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
 });
 
 getOwnedGames(showOwnedGames);

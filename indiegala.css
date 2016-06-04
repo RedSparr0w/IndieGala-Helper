@@ -93,10 +93,12 @@
 }
 .owned {
     -webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
 	transition: 1s;
 }
 .owned:hover{
     -webkit-filter: grayscale(0%);
+	filter: grayscale(0%);
 }
 .owned .bundle-item-cont:hover{
 	opacity: 0.8;

@@ -6,6 +6,7 @@ function showOwnedGames(){
 		}
 	});
 }
+
 var bundleApps = [];
 
 $('.carousel-game-item').each(function(i){

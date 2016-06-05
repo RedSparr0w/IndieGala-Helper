@@ -44,17 +44,27 @@ $('#indiegala-helper h2').click(function(e){
 
 $('#saveDetails').click(function(e){
 	e.preventDefault();
-	localStorage.setItem("APIKey", $("#APIKey").val());
-	localStorage.setItem("SteamID", $("#SteamID").val());
-	try{getOwnedGames();}catch(e){console.log(e);}
-	notifyMe("Details Saved!");
+	try{
+		localStorage.setItem("SteamID", $("#SteamID").val());
+		if (typeof localStorage.getItem("SteamID") != "undefined" && localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
+			steamid=true;
+			notifyMe("Details Saved!");
+		}
+		getOwnedGames();
+	}catch(e){
+		notifyMe("Error:\n"+e);
+	}
 });
 
 $('#refreshOwned').click(function(e){
-	$(".owned").removeClass("owned");
-	localStorage.removeItem('updatedOwnedApps');
-	localStorage.removeItem('ownedApps');
-	getOwnedGames();
+	try{
+		$(".owned").removeClass("owned");
+		localStorage.removeItem('updatedOwnedApps');
+		localStorage.removeItem('ownedApps');
+		getOwnedGames();
+	}catch(e){
+		location.reload();
+	}
 });
 
 steamid=false;
@@ -88,10 +98,21 @@ function getOwnedGames(callback){
 				localStorage.setItem("ownedApps", JSON.stringify(ownedApps));
 				localStorage.setItem("updatedOwnedApps", new Date().getTime());
 				notifyMe("Owned Games List Updated!");
-				try{callback();}catch(e){console.log(e);}
+				if (!callback){
+					showOwnedGames();
+				}else{
+					callback();
+				}
+			},
+			error: function(){
+				notifyMe("Something Went Wrong,\nPlease Try Refresh Owned Games!");
 			}
 		});
 	}else{
-		try{callback();}catch(e){console.log(e);}
+		if (!callback){
+			showOwnedGames();
+		}else{
+			callback();
+		}
 	}
 }

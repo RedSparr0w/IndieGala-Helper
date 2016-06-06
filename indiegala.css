@@ -83,7 +83,6 @@
     color: #fff;
     border-style: none;
     border-radius: 3px;
-    text-shadow: #be3e6e 0 1px;
 }
 #indiegala-helper p {
     text-align: center;
@@ -108,6 +107,10 @@
 	float:right;
 	font-size:80%;
 }
+/*GIVE AWAYS*/
+.price-type-cont.palette-background-7{
+	background:#D67400 !important;
+}
 .ticket-cont .main {
 	color: #CC001D;
 }
@@ -117,4 +120,20 @@
 }
 .ticket-cont a.viewOnSteam:hover {
 	color: #CC001D;
+}
+/*TRADES */
+.trade-cont .not-guaranteed-trade{
+	background:#D67400 !important;
+}
+.trade-cont.owned .trade-type:after{
+	content:" | (OWNED)";
+}
+/*Profile */
+#checkAllGiveaways{
+    font-weight: 600;
+    width: 200px;
+    text-transform: uppercase;
+    color: #fff;
+    border-style: none;
+    border-radius: 3px;
 }

@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "0.6.3",
+	"version": "0.8.0",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
@@ -25,6 +25,16 @@
 		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
 			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_giveaways.js"],
+			"css": ["indiegala.css"]
+		},
+		{
+			"matches": ["https://www.indiegala.com/profile*"],
+			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_profile.js"],
+			"css": ["indiegala.css"]
+		},
+		{
+			"matches": ["https://www.indiegala.com/trades*"],
+			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_trades.js"],
 			"css": ["indiegala.css"]
 		}
 	],

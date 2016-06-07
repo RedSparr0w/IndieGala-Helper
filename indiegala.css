@@ -140,3 +140,10 @@
     border-style: none;
     border-radius: 3px;
 }
+
+.trade-cont.left {
+	width:33.3% !important;
+	padding-left:9px;
+	padding-right:9px;
+	margin-right:0px !important;
+}

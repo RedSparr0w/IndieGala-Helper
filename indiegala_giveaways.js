@@ -6,7 +6,7 @@ function showOwnedGames(){
 		}
 	});
 	if (localStorage.getItem("hideOwnedApps")==="true"){
-		$('.owned').fadeOut(400,function(){$(this).parent().remove();});
+		$('.owned').parent().fadeOut();
 	}
 }
 

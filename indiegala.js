@@ -138,4 +138,5 @@ $('#refreshOwned').click(function(e){
 
 $("#hideOwnedApps").click(function(){
 	$(this).is(":checked") ? localStorage.setItem("hideOwnedApps",true) : localStorage.setItem("hideOwnedApps",false);
+	$(this).is(":checked") ? $('.owned').parent().fadeOut() : $('.owned').parent().fadeIn();
 });

@@ -2,9 +2,12 @@ function showOwnedGames(){
 	var apps = JSON.parse(localStorage.getItem("ownedApps"));
 	$.each(bundleApps,function(i,v){
 		if(typeof apps[v] != "undefined"){
-			$("[src*='"+v+"/header.jpg']").parents(".trade-cont").addClass("owned");
+			$("[src*='"+v+"/header.jpg']").parents(".trade_box").addClass("owned");
 		}
 	});
+	if (localStorage.getItem("hideOwnedApps")==="true"){
+		$('.owned').parent().fadeOut();
+	}
 }
 
 var bundleApps = [];

@@ -32,55 +32,21 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '	<div class="input-wrapper">'+
 '		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
 '		<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">'+
+'		<br/><span><input id="hideOwnedApps" type="checkbox" /> Hide Owned Apps? | (Giveaways & Trades)</span>'+
 '	</div>'+
 '</div>';
 
 $('.header-placeholder').after(myvar);
 
-$('#indiegala-helper h2').click(function(e){
-	$('#indiegala-helper h2').toggleClass("open");
-	$('#indiegala-helper .input-wrapper').slideToggle(250);
-});
-
-$('#saveDetails').click(function(e){
-	e.preventDefault();
-	try{
-		localStorage.setItem("SteamID", $("#SteamID").val());
-		if (typeof localStorage.getItem("SteamID") != "undefined" && localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
-			steamid=true;
-			notifyMe("Details Saved!");
-		}
-		getOwnedGames();
-	}catch(e){
-		notifyMe("Error:\n"+e);
-	}
-});
-
-$('#refreshOwned').click(function(e){
-	try{
-		$(".owned").removeClass("owned");
-		localStorage.removeItem('updatedOwnedApps');
-		localStorage.removeItem('ownedApps');
-		getOwnedGames();
-	}catch(e){
-		location.reload();
-	}
-});
-
-steamid=false;
-
-if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
-	$("#SteamID").val(localStorage.getItem("SteamID"));
-	steamid=true;
-}else{
+/* FUNCTIONS */
+function openIndeGalaHelper(){
 	$('#indiegala-helper h2').addClass("open");
 	$('#indiegala-helper .input-wrapper').slideDown(250);
 }
 
 function getOwnedGames(callback){
 	if(!steamid){
-		$('#indiegala-helper h2').addClass("open");
-		$('#indiegala-helper .input-wrapper').slideDown(250);
+		openIndeGalaHelper();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		localStorage.removeItem('updatedOwnedApps');
@@ -116,3 +82,60 @@ function getOwnedGames(callback){
 		}
 	}
 }
+
+/* Check and set values */
+if(localStorage.getItem("hideOwnedApps") != null){
+	if(localStorage.getItem("hideOwnedApps")==="true"){
+		$("#hideOwnedApps").attr("checked",true);
+	}
+}else{
+	openIndeGalaHelper();
+	$("#hideOwnedApps").focus();
+	notifyMe("You can now choose to hide owned apps!\n- giveaways and trades pages only");
+	localStorage.setItem("hideOwnedApps",false);
+}
+
+steamid=false;
+
+if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
+	$("#SteamID").val(localStorage.getItem("SteamID"));
+	steamid=true;
+}else{
+	openIndeGalaHelper();
+	$("#SteamID").focus();
+}
+
+/* Assign Function To Events */
+$('#indiegala-helper h2').click(function(e){
+	$('#indiegala-helper h2').toggleClass("open");
+	$('#indiegala-helper .input-wrapper').slideToggle(250);
+});
+
+$('#saveDetails').click(function(e){
+	e.preventDefault();
+	try{
+		localStorage.setItem("SteamID", $("#SteamID").val());
+		if (typeof localStorage.getItem("SteamID") != "undefined" && localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
+			steamid=true;
+			notifyMe("Details Saved!");
+		}
+		getOwnedGames();
+	}catch(e){
+		notifyMe("Error:\n"+e);
+	}
+});
+
+$('#refreshOwned').click(function(e){
+	try{
+		$(".owned").removeClass("owned");
+		localStorage.removeItem('updatedOwnedApps');
+		localStorage.removeItem('ownedApps');
+		getOwnedGames();
+	}catch(e){
+		location.reload();
+	}
+});
+
+$("#hideOwnedApps").click(function(){
+	$(this).is(":checked") ? localStorage.setItem("hideOwnedApps",true) : localStorage.setItem("hideOwnedApps",false);
+});

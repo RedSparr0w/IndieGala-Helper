@@ -12,12 +12,12 @@
     text-decoration: none;
     color: #fff;
 }
-#indiegala-helper input,
+#indiegala-helper input:not([type='checkbox']),
 #indiegala-helper label {
     height: 49px;
     box-shadow: 0 1px 1px #292a32;
 }
-#indiegala-helper input:not([type='submit']) {
+#indiegala-helper input:not([type='submit'],[type='checkbox']) {
     font-weight: 600;
     box-sizing: border-box;
     width: 235px;
@@ -107,12 +107,15 @@
 	float:right;
 	font-size:80%;
 }
-/*GIVE AWAYS*/
+/* GIVE AWAYS */
 .price-type-cont.palette-background-7{
 	background:#D67400 !important;
 }
 .ticket-cont .main {
 	color: #CC001D;
+}
+.ticket-cont .main.unknown {
+	color: #000;
 }
 .ticket-cont a.viewOnSteam {
 	font-family:Arial, sans-serif !important;
@@ -121,14 +124,14 @@
 .ticket-cont a.viewOnSteam:hover {
 	color: #CC001D;
 }
-/*TRADES */
+/* TRADES */
 .trade-cont .not-guaranteed-trade{
 	background:#D67400 !important;
 }
 .trade-cont.owned .trade-type:after{
 	content:" | (OWNED)";
 }
-/*Profile */
+/* PROFILE */
 #checkAllGiveaways{
     font-weight: 600;
     width: 200px;

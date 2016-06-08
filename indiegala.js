@@ -70,8 +70,8 @@ function getOwnedGames(callback){
 					callback();
 				}
 			},
-			error: function(){
-				notifyMe("Something Went Wrong,\nPlease Try Refresh Owned Games!");
+			error: function(e){
+				notifyMe("Something Went Wrong,\nPlease Try Refresh Owned Games!\nError: "+JSON.stringify(e));
 			}
 		});
 	}else{

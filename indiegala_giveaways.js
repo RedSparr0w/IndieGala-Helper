@@ -66,6 +66,9 @@ $(document).on('click','.page-link-cont,.sort-item a',function(e){
 			var url = '/giveaways/1/'+order+'/'+orderValue;
 			$(this).attr("href",url);
 		});
+		$('img').on('error', function(){
+			$(this).attr('src','/img/trades/img_not_available.png');
+		});
 	});
 });
 

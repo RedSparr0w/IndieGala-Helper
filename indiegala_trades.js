@@ -1,6 +1,6 @@
 function showOwnedGames(){
 	//Add button to hide specific apps
-	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
+	$('.trade_img').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	
 	//Figure out which apps are in trades
 	var tradeApps = [];
@@ -51,6 +51,9 @@ $(document).on('click','.page-link-cont',function(e){
 			location.replace(e.target.href);
 		}
 		getOwnedGames(showOwnedGames);
+		$('img').on('error', function(){
+			$(this).attr('src','/img/trades/img_not_available.png');
+		});
 	});
 	$('.page-nav .row .col-xs-12').load(e.target.href+' .page-link-cont',function(response, status, xhr){
 		if ( status == "error" || xhr.status!==200) {

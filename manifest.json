@@ -10,6 +10,12 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
+			"js": ["jquery-2.2.4.min.js"],
+			"css": ["indiegala.css"],
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["https://www.indiegala.com/*"],
 			"exclude_matches": [
 				"https://www.indiegala.com/",
 				"https://www.indiegala.com/giveaways*",
@@ -19,23 +25,19 @@
 				"https://www.indiegala.com/store*",
 				"https://www.indiegala.com/gift*"
 			],
-			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_bundles.js"],
-			"css": ["indiegala.css"]
+			"js": ["indiegala.js","indiegala_bundles.js"]
 		},
 		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
-			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_giveaways.js"],
-			"css": ["indiegala.css"]
+			"js": ["indiegala.js","indiegala_giveaways.js"]
 		},
 		{
 			"matches": ["https://www.indiegala.com/profile*"],
-			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_profile.js"],
-			"css": ["indiegala.css"]
+			"js": ["indiegala.js","indiegala_profile.js"]
 		},
 		{
 			"matches": ["https://www.indiegala.com/trades*"],
-			"js": ["jquery-2.2.4.min.js","indiegala.js","indiegala_trades.js"],
-			"css": ["indiegala.css"]
+			"js": ["indiegala.js","indiegala_trades.js"]
 		}
 	],
 	"background": {

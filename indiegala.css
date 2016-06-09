@@ -108,21 +108,63 @@
 	font-size:80%;
 }
 /* GIVE AWAYS */
+.tickets-col {
+	display:none;
+}
 .price-type-cont.palette-background-7{
 	background:#D67400 !important;
 }
-.ticket-cont .main {
+.tickets-col .main {
 	color: #CC001D;
 }
-.ticket-cont .main.unknown {
+.tickets-col .main.unknown {
 	color: #000;
 }
-.ticket-cont a.viewOnSteam {
+.tickets-col a.viewOnSteam {
 	font-family:Arial, sans-serif !important;
 	text-shadow:none !important;
 }
-.ticket-cont a.viewOnSteam:hover {
+.tickets-col a.viewOnSteam:hover {
 	color: #CC001D;
+}
+#indiegala-helper-coins {
+    position: fixed;
+    top: 80px;
+    right: 0px;
+    padding: 10px;
+    background-color: #A70000;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #000;
+    color:white;
+}
+#indiegala-helper-pageloading {
+	text-align: center;
+	width: 100%;
+	margin-top: 80px;
+	margin-bottom: 80px;
+	color: white;
+}
+.ticket-left{
+	overflow: hidden;
+	position: relative;
+}
+.ticket-left:hover > .mark-as-owned{
+	left:-93px;
+}
+.mark-as-owned {
+    position: absolute;
+    top: 0px;
+    left: -100%;
+	color:white;
+    background-color: #A70000;
+    padding: 5px;
+    border-radius: 3px;
+    transition: 0.5s;
+	cursor:pointer !important;
+}
+.mark-as-owned:hover {
+    left: 0px !important;
 }
 /* TRADES */
 .trade-cont .not-guaranteed-trade{

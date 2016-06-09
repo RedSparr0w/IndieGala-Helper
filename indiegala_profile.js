@@ -1,6 +1,6 @@
 $('.giveaway-completed').parent().find('.giveaways-list-cont').prepend('<input id="checkAllGiveaways" type="submit" class="btn palette-background-1 right" style="color:white;" value="Check All Giveaways" />');
 
-function handle_check_if_won_response($this, response){
+function handle_check_if_won_response($this, response, i){
 	if ( response['is_winner'] == 'true' ){
 		$this.parent().parent().html( '<div class="serial-won"><input value="'+response['serial']+'" readonly="" type="text"></div>' );
 	}else if ( response['is_winner'] == 'false' ){
@@ -9,7 +9,7 @@ function handle_check_if_won_response($this, response){
 		$this.html("You did't win :(");
 		setTimeout( function(){ 
 			$this.parents('li').fadeOut(400, function(){ $(this).remove(); });
-		}, 3000);
+		}, 2000+(i*50));
 	}else{
 		// error
 		$( '.fa', $this ).remove();
@@ -32,7 +32,7 @@ $('#checkAllGiveaways').click(function(e){
 				response['serial'] 			= $this.attr('rel');
 			}
 
-			handle_check_if_won_response( $this, response );
+			handle_check_if_won_response( $this, response, i);
 
 			$.ajax({
 				type: "POST",

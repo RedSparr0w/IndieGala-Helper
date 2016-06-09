@@ -32,7 +32,6 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '	<div class="input-wrapper">'+
 '		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
 '		<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">'+
-'		<br/><span><input id="hideOwnedApps" type="checkbox" /> Hide Owned Apps? | (Giveaways & Trades)</span>'+
 '	</div>'+
 '</div>';
 
@@ -49,8 +48,6 @@ function getOwnedGames(callback){
 		openIndeGalaHelper();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
-		localStorage.removeItem('updatedOwnedApps');
-		localStorage.removeItem('ownedApps');
 		$.ajax({
 			dataType:"json",
 			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
@@ -71,7 +68,7 @@ function getOwnedGames(callback){
 				}
 			},
 			error: function(e){
-				notifyMe("Something Went Wrong,\nPlease Try Refresh Owned Games!\nError: "+JSON.stringify(e));
+				notifyMe("Something went wrong while trying to get Owned Games,\nPlease Try Refresh Owned Games!");
 			}
 		});
 	}else{
@@ -83,16 +80,15 @@ function getOwnedGames(callback){
 	}
 }
 
+function markAsOwned(e){
+	var appImg = $(e).parent().find('img').attr("alt");
+	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	hiddenApps.push(appImg);
+	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
+}
 /* Check and set values */
-if(localStorage.getItem("hideOwnedApps") != null){
-	if(localStorage.getItem("hideOwnedApps")==="true"){
-		$("#hideOwnedApps").attr("checked",true);
-	}
-}else{
-	openIndeGalaHelper();
-	$("#hideOwnedApps").focus();
-	notifyMe("You can now choose to hide owned apps!\n- giveaways and trades pages only");
-	localStorage.setItem("hideOwnedApps",false);
+if(localStorage.getItem("hiddenApps") == null){
+	localStorage.setItem("hiddenApps",JSON.stringify([]));
 }
 
 steamid=false;
@@ -134,9 +130,4 @@ $('#refreshOwned').click(function(e){
 	}catch(e){
 		location.reload();
 	}
-});
-
-$("#hideOwnedApps").click(function(){
-	$(this).is(":checked") ? localStorage.setItem("hideOwnedApps",true) : localStorage.setItem("hideOwnedApps",false);
-	$(this).is(":checked") ? $('.owned').parent().fadeOut() : $('.owned').parent().fadeIn();
 });

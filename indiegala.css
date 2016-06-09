@@ -184,6 +184,7 @@
 }
 
 .trade-cont.left {
+	display:none;
 	width:33.3% !important;
 	padding-left:9px;
 	padding-right:9px;

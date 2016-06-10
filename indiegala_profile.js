@@ -17,6 +17,8 @@ function handle_check_if_won_response($this, response, i){
 	}
 }
 
+$(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
+
 $('#checkAllGiveaways').click(function(e){
 	e.preventDefault();
 	$('.btn-check-if-won').each(function(i){
@@ -50,5 +52,4 @@ $('#checkAllGiveaways').click(function(e){
 				},
 			});
 	});
-	$(this).fadeOut(300);
 });

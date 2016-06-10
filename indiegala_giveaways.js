@@ -38,6 +38,7 @@ function showOwnedGames(){
 	//show unowned / non hidden apps
 	$('.tickets-col.owned').fadeOut();
 	$('.tickets-col').not('.owned').fadeIn();
+	$('.animated-coupon').attr("onclick","ajaxNewEntrySemaphore=true;");
 }
 
 getOwnedGames(showOwnedGames);

@@ -39,6 +39,35 @@ function showOwnedGames(){
 	$('.tickets-col.owned').fadeOut();
 	$('.tickets-col').not('.owned').fadeIn();
 	$('.animated-coupon').attr("onclick","ajaxNewEntrySemaphore=true;");
+	
+	var typingTimer;
+	var doneTypingInterval = 500;
+	
+	/*NEED TO INJECT TO PAGE*/
+	$('#input-search').keyup(function(){
+		clearTimeout(typingTimer);
+		if ($(this).val().length > 0){
+			typingTimer = setTimeout(document.search_giveaways, doneTypingInterval);
+		}else{
+			typingTimer = setTimeout(document.clear_search_giveaways, doneTypingInterval);
+		}
+	});
+	// Cancel search results
+	$('#btn-cancel-search').click(function(){ 
+		if ($('#input-search').val()){ document.clear_search_giveaways(); }
+		if ($(".search-trades-result-cont").is(":visible")){ $(".search-trades-result-cont").toggle("drop"); }
+		return false;
+	});
+}
+
+function getCoins(){
+	$.ajax({
+		dataType:"json",
+		url:"https://www.indiegala.com/giveaways/get_user_level_and_coins",
+		success: function(res){
+			$(".coins-amount strong").html(res.coins_tot);
+		}
+	});
 }
 
 getOwnedGames(showOwnedGames);

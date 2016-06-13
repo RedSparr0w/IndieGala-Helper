@@ -13,36 +13,52 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 		});
 	}
 }
-
 var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
-'<div id="indiegala-helper">'+
-'	<h2>IndieGala Helper </h2><br>'+
-'	<!--<div class="input-wrapper">'+
-'		<label for="APIKey"><i class="fa fa-key fa-2x"></i></label><input type="text" id="APIKey" placeholder="API Key">'+
-'		<p>'+
-'			<a href="http://steamcommunity.com/dev/apikey" target="_BLANK">Get API Key</a> <span>→</span>'+
-'		</p>'+
-'	</div>-->'+
-'	<div class="input-wrapper">'+
-'		<label for="SteamID"><i class="fa fa-steam fa-2x"></i></label><input type="text" id="SteamID" placeholder="Steam ID 64">'+
-'		<p>'+
-'			<a href="https://steamid.io/lookup" target="_BLANK">Get Steam ID</a> <span>→</span>'+
-'		</p>'+
-'	</div>'+
-'	<div class="input-wrapper">'+
-'		<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
-'		<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">'+
+'<div id="indiegala-helper-header">'+
+'	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
+'</div>'+
+'<div id="indiegala-helper" class="modal fade" role="dialog">'+
+'	<div class="modal-dialog modal-sm">'+
+'		<div class="modal-content">'+
+'			<div class="modal-header">'+
+'				<button type="button" class="close" data-dismiss="modal">×</button>'+
+'				<ul class="nav nav-tabs">'+
+'					<li class="active"><a data-toggle="tab" href="#IGH_setup">Setup</a></li>'+
+'					<li><a data-toggle="tab" href="#IGH_Options">Options</a></li>'+
+'					<li><a data-toggle="tab" href="#IGH_HiddenGames">Hidden Games</a></li>'+
+'				</ul>'+
+'			</div>'+
+'			<div class="modal-body tab-content">'+
+'				<div id="IGH_setup" class="tab-pane fade in active">'+
+'					<div class="input-wrapper">'+
+'						<label for="SteamID"><i class="fa fa-steam fa-3x"></i></label>'+
+'						<input type="text" id="SteamID" placeholder="Steam ID 64">'+
+'						<p>'+
+'							<a href="https://steamid.io/lookup" target="_BLANK">Get Steam ID</a> <span>?</span>'+
+'						</p>'+
+'					</div>'+
+'					<div class="input-wrapper">'+
+'						<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>'+
+'						<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">'+
+'					</div>'+
+'				</div>'+
+'				<div id="IGH_Options" class="tab-pane fade">'+
+'					<h2>Options Tab</h2>'+
+'				</div>'+
+'				<div id="IGH_HiddenGames" class="tab-pane fade">'+
+'					<h2>Hidden Games Tab</h2>'+
+'				</div>'+
+'			</div>'+
+'			<div class="modal-footer">'+
+'				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'+
+'			</div>'+
+'		</div>'+
 '	</div>'+
 '</div>';
 
 $('.header-placeholder').after(myvar);
 
 /* FUNCTIONS */
-function openIndeGalaHelper(){
-	$('#indiegala-helper h2').addClass("open");
-	$('#indiegala-helper .input-wrapper').slideDown(250);
-}
-
 function getOwnedGames(callback){
 	if(!steamid){
 		openIndeGalaHelper();
@@ -97,16 +113,10 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
 }else{
-	openIndeGalaHelper();
 	$("#SteamID").focus();
 }
 
 /* Assign Function To Events */
-$('#indiegala-helper h2').click(function(e){
-	$('#indiegala-helper h2').toggleClass("open");
-	$('#indiegala-helper .input-wrapper').slideToggle(250);
-});
-
 $('#saveDetails').click(function(e){
 	e.preventDefault();
 	try{
@@ -130,4 +140,16 @@ $('#refreshOwned').click(function(e){
 	}catch(e){
 		location.reload();
 	}
+});
+
+$(document).ready(function(){
+	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	$('#IGH_HiddenGames').html("");
+	hiddenApps.forEach(function(v,i){
+		$('#IGH_HiddenGames').append('<div><h4 data-val="'+i+'">'+v+' <i class="fa fa-times IGH_UnHide" style="color:red;"></i></h4></div>');
+	});
+});
+
+$(document).on("click",".IGH_UnHide",function(){
+	$(this).parent().parent().remove();
 });

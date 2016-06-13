@@ -1,4 +1,7 @@
 $('.giveaway-completed').parent().find('.giveaways-list-cont').prepend('<input id="checkAllGiveaways" type="submit" class="btn palette-background-1 right" style="color:white;" value="Check All Giveaways" />');
+$('.giveaway-description').val("GLHF!");
+$(".giveaway-in-progress [rel=in_progress]").attr("onclick","justToggleGivInProgressLib=false;");
+$(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
 
 function handle_check_if_won_response($this, response, i){
 	if ( response['is_winner'] == 'true' ){
@@ -17,7 +20,6 @@ function handle_check_if_won_response($this, response, i){
 	}
 }
 
-$(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
 
 $('#checkAllGiveaways').click(function(e){
 	e.preventDefault();

@@ -1,4 +1,5 @@
 #indiegala-helper{
+	color:white;
 	padding-top:80px
 }
 #indiegala-helper .modal-content{
@@ -28,9 +29,8 @@
 #indiegala-helper label {
     height: 49px;
     box-shadow: 0 1px 1px #292a32;
-	text-align:center;
 }
-#indiegala-helper input:not([type='submit'],[type='checkbox']) {
+#indiegala-helper input:not([type='submit']) {
     font-weight: 600;
     box-sizing: border-box;
     width: 235px;

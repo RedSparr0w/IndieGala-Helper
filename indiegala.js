@@ -3,12 +3,12 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 		return;
 	}
 	else if (Notification.permission === "granted") {
-		new Notification(title,{body:body,icon:icon});
+		return new Notification(title,{body:body,icon:icon});
 	}
 	else if (Notification.permission !== 'denied') {
 		Notification.requestPermission(function (permission) {
 			if (permission === "granted") {
-				new Notification(title,{body:body,icon:icon});
+				return new Notification(title,{body:body,icon:icon});
 			}
 		});
 	}
@@ -34,7 +34,7 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '						<label for="SteamID"><i class="fa fa-steam fa-3x"></i></label>'+
 '						<input type="text" id="SteamID" placeholder="Steam ID 64">'+
 '						<p>'+
-'							<a href="https://steamid.io/lookup" target="_BLANK">Get Steam ID</a> <span>?</span>'+
+'							<a href="https://steamid.io/lookup" target="_BLANK">Get Steam ID →</a>'+
 '						</p>'+
 '					</div>'+
 '					<div class="input-wrapper">'+
@@ -89,7 +89,11 @@ function getOwnedGames(callback){
 		});
 	}else{
 		if (!callback){
-			showOwnedGames();
+			try{
+				showOwnedGames();
+			}catch(e){
+				return;
+			}
 		}else{
 			callback();
 		}
@@ -113,7 +117,11 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
 }else{
-	$("#SteamID").focus();
+	$(document).ready(function(){
+		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
+			$('#indiegala-helper-header h2').click();
+		}
+	});
 }
 
 /* Assign Function To Events */

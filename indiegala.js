@@ -105,6 +105,7 @@ function markAsOwned(e){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	hiddenApps.push(appImg);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
+	$('#IGH_HiddenGames').append('<div><h4>'+appImg+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+hiddenApps.length+'"></i></h4></div>');
 }
 /* Check and set values */
 if(localStorage.getItem("hiddenApps") == null){
@@ -154,10 +155,14 @@ $(document).ready(function(){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	$('#IGH_HiddenGames').html("");
 	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div><h4 data-val="'+i+'">'+v+' <i class="fa fa-times IGH_UnHide" style="color:red;"></i></h4></div>');
+		$('#IGH_HiddenGames').append('<div><h4>'+v+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+i+'"></i></h4></div>');
 	});
 });
 
 $(document).on("click",".IGH_UnHide",function(){
 	$(this).parent().parent().remove();
+	var app = $(this).attr("data-val");
+	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	hiddenApps.splice(app, 1);
+	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
 });

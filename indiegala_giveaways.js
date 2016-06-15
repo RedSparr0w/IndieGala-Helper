@@ -3,7 +3,7 @@ $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="I
 function showOwnedGames(){
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
-	
+	$('.on-steam-library-text').remove();
 	//Figure out which apps are in the bundle
 	var bundleApps = [];
 	$('.tickets-col img.giv-game-img').each(function(i){ 
@@ -38,12 +38,12 @@ function showOwnedGames(){
 	//show unowned / non hidden apps
 	$('.tickets-col.owned').fadeOut();
 	$('.tickets-col').not('.owned').fadeIn();
+	$('.on-steam-library').parent().hide();
 	$('.animated-coupon').attr("onclick","ajaxNewEntrySemaphore=true;");
 	
 	var typingTimer;
 	var doneTypingInterval = 500;
 	
-	/*NEED TO INJECT TO PAGE*/
 	$('#input-search').keyup(function(){
 		clearTimeout(typingTimer);
 		if ($(this).val().length > 0){
@@ -52,7 +52,7 @@ function showOwnedGames(){
 			typingTimer = setTimeout(document.clear_search_giveaways, doneTypingInterval);
 		}
 	});
-	// Cancel search results
+	
 	$('#btn-cancel-search').click(function(){ 
 		if ($('#input-search').val()){ document.clear_search_giveaways(); }
 		if ($(".search-trades-result-cont").is(":visible")){ $(".search-trades-result-cont").toggle("drop"); }
@@ -100,6 +100,7 @@ $(document).on('click','.page-link-cont,.sort-item a',function(e){
 			$(this).attr('src','/img/trades/img_not_available.png');
 		});
 	});
+	getCoins();
 });
 
 $(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});

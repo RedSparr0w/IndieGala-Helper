@@ -43,7 +43,7 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '					</div>'+
 '				</div>'+
 '				<div id="IGH_Options" class="tab-pane fade">'+
-'					<h2>Options Tab</h2>'+
+'					<h2>Coming Soon</h2>'+
 '				</div>'+
 '				<div id="IGH_HiddenGames" class="tab-pane fade">'+
 '					<h2>Hidden Games Tab</h2>'+
@@ -61,7 +61,6 @@ $('.header-placeholder').after(myvar);
 /* FUNCTIONS */
 function getOwnedGames(callback){
 	if(!steamid){
-		openIndeGalaHelper();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		$.ajax({
@@ -105,15 +104,18 @@ function markAsOwned(e){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	hiddenApps.push(appImg);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
-	$('#IGH_HiddenGames').append('<div><h4>'+appImg+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+hiddenApps.length+'"></i></h4></div>');
+	$('#IGH_HiddenGames').html("");
+	hiddenApps.forEach(function(v,i){
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
+	});
 }
+
 /* Check and set values */
 if(localStorage.getItem("hiddenApps") == null){
 	localStorage.setItem("hiddenApps",JSON.stringify([]));
 }
 
 steamid=false;
-
 if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
@@ -155,7 +157,7 @@ $(document).ready(function(){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	$('#IGH_HiddenGames').html("");
 	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div><h4>'+v+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+i+'"></i></h4></div>');
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
 	});
 });
 

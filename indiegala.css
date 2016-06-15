@@ -118,6 +118,14 @@
 	float:right;
 	font-size:80%;
 }
+#IGH_HiddenGames .input-group-addon.name{
+	width:90%;
+}
+#IGH_HiddenGames .input-group-addon.remove{
+	background-color:#CC001D;
+	color:white;
+	cursor:pointer !important;
+}
 /* GIVE AWAYS */
 .tickets-col {
 	display:none;

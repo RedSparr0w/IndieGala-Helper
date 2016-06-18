@@ -18,7 +18,7 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
 '</div>'+
 '<div id="indiegala-helper" class="modal fade" role="dialog">'+
-'	<div class="modal-dialog modal-sm">'+
+'	<div class="modal-dialog">'+
 '		<div class="modal-content">'+
 '			<div class="modal-header">'+
 '				<button type="button" class="close" data-dismiss="modal">×</button>'+
@@ -66,7 +66,7 @@ function getOwnedGames(callback){
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		$.ajax({
 			dataType:"json",
-			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=0",
+			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=1",
 			success: function(res){
 				var ownedApps={};
 				var myApps = res.response.games;
@@ -105,8 +105,12 @@ function markAsOwned(e){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	hiddenApps.push(appImg);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
-	$('#IGH_HiddenGames').append('<div><h4>'+appImg+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+hiddenApps.length+'"></i></h4></div>');
+	$('#IGH_HiddenGames').html("");
+	hiddenApps.forEach(function(v,i){
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
+	});
 }
+
 /* Check and set values */
 if(localStorage.getItem("hiddenApps") == null){
 	localStorage.setItem("hiddenApps",JSON.stringify([]));
@@ -118,7 +122,7 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
 }else{
-	$(document).ready(function(){
+	$(window).load(function(){
 		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
 			$('#indiegala-helper-header h2').click();
 		}
@@ -155,7 +159,7 @@ $(document).ready(function(){
 	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	$('#IGH_HiddenGames').html("");
 	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div><h4>'+v+' <i class="fa fa-times IGH_UnHide" style="color:red;" data-val="'+i+'"></i></h4></div>');
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
 	});
 });
 

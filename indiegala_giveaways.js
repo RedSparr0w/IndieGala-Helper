@@ -1,11 +1,6 @@
 $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('.coins-amount strong').eq(0).html()+'</strong><span> IC</span></div>');
 
 function showOwnedGames(){
-	//Add button to hide specific apps
-	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
-	
-	//Figure out which apps are in the bundle
-	var bundleApps = [];
 	$('.tickets-col img.giv-game-img').each(function(i){ 
 		var str = $(this).attr("src");
 		var start;
@@ -13,64 +8,29 @@ function showOwnedGames(){
 		var end = str.indexOf(".jpg");
 		var gameID = str.substring(start+5,end);
 		if(isNaN(Number(gameID))){
-			$(this).parents(".tickets-col").find(".main").addClass("unknown").html("UNKNOWN?");
 			return;
 		}
-		bundleApps.push(gameID);
 		$(this).parents(".tickets-col").find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
 	});
 	
-	//get owned apps from local storage
 	var apps = JSON.parse(localStorage.getItem("ownedApps"));
-	
-	//check if bundle app is in local storage and mark as owned
-	$.each(bundleApps,function(i,v){
-		if(typeof apps[v] != "undefined"){
-			$("[src*='"+v+".jpg']").parents(".tickets-col").addClass("owned").find(".main").html("(owned)");
-		}
-	});
-	
-	//hide all user defined apps
+	$.each(apps,function(i,app){
+		$('img[src*="'+app+'"]').parents(".tickets-col").addClass("owned").find(".main").html("(hidden)");
+	})
 	var apps = JSON.parse(localStorage.getItem("hiddenApps"));
 	$.each(apps,function(i,app){
 		$('img[alt="'+app+'"]').parents(".tickets-col").addClass("owned").find(".main").html("(hidden)");
 	})
 	//show unowned / non hidden apps
-	$('.tickets-col.owned').fadeOut();
-	$('.tickets-col').not('.owned').fadeIn();
+	$('.owned').fadeOut();
+	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').fadeIn();
 	$('.animated-coupon').attr("onclick","ajaxNewEntrySemaphore=true;");
-	
-	var typingTimer;
-	var doneTypingInterval = 500;
-	
-	/*NEED TO INJECT TO PAGE*/
-	$('#input-search').keyup(function(){
-		clearTimeout(typingTimer);
-		if ($(this).val().length > 0){
-			typingTimer = setTimeout(document.search_giveaways, doneTypingInterval);
-		}else{
-			typingTimer = setTimeout(document.clear_search_giveaways, doneTypingInterval);
-		}
-	});
-	// Cancel search results
-	$('#btn-cancel-search').click(function(){ 
-		if ($('#input-search').val()){ document.clear_search_giveaways(); }
-		if ($(".search-trades-result-cont").is(":visible")){ $(".search-trades-result-cont").toggle("drop"); }
-		return false;
-	});
+	//Add button to hide specific apps
+	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
+	//hide all user defined apps
 }
 
-function getCoins(){
-	$.ajax({
-		dataType:"json",
-		url:"https://www.indiegala.com/giveaways/get_user_level_and_coins",
-		success: function(res){
-			$(".coins-amount strong").html(res.coins_tot);
-		}
-	});
-}
-
-getOwnedGames(showOwnedGames);
+showOwnedGames();
 
 $(document).on('click','.page-link-cont,.sort-item a',function(e){
 	e.preventDefault();
@@ -88,7 +48,7 @@ $(document).on('click','.page-link-cont,.sort-item a',function(e){
 		if ( status == "error" || xhr.status!==200) {
 			location.replace(e.target.href);
 		}
-		getOwnedGames(showOwnedGames);
+		showOwnedGames();
 		$('.animated-coupon').attr("onclick","handleCoupon(event)");
 		$('.sort-item a').each(function(){
 			var order = $(this).attr( 'rel' );

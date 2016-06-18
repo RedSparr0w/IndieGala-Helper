@@ -118,6 +118,14 @@
 	float:right;
 	font-size:80%;
 }
+#IGH_HiddenGames .input-group-addon.name{
+	width:90%;
+}
+#IGH_HiddenGames .input-group-addon.remove{
+	background-color:#CC001D;
+	color:white;
+	cursor:pointer !important;
+}
 /* GIVE AWAYS */
 .tickets-col {
 	display:none;
@@ -184,15 +192,6 @@
 .trade-cont.owned .trade-type:after{
 	content:" | (OWNED)";
 }
-/* PROFILE */
-#checkAllGiveaways{
-    font-weight: 600;
-    width: 200px;
-    text-transform: uppercase;
-    color: #fff;
-    border-style: none;
-    border-radius: 3px;
-}
 .trade_box{
 	overflow:hidden;
 }
@@ -205,4 +204,13 @@
 	padding-left:9px;
 	padding-right:9px;
 	margin-right:0px !important;
+}
+/* PROFILE */
+#checkAllGiveaways{
+    font-weight: 600;
+    width: 200px;
+    text-transform: uppercase;
+    color: #fff;
+    border-style: none;
+    border-radius: 3px;
 }

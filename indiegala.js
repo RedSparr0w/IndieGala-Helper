@@ -61,7 +61,6 @@ $('.header-placeholder').after(myvar);
 /* FUNCTIONS */
 function getOwnedGames(callback){
 	if(!steamid){
-		openIndeGalaHelper();
 		return;
 	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		$.ajax({

@@ -1,32 +1,29 @@
+$('.trade-cont').parent().after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
+$('.page-nav').parent().clone().insertAfter('.search-cont');
 function showOwnedGames(){
 	//Add button to hide specific apps
 	$('.trade_img').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
-	
 	//Figure out which apps are in trades
-	var tradeApps = [];
-	$('.trade-cont img[src*=apps]').each(function(i){ 
-		var str = $('.trade-cont img[src*=apps]').eq(i).attr("src");
-		var start = str.indexOf("apps/");
-		var end = str.indexOf("/header.jpg");
+	$('.trade-cont img[src*=apps]').not('.checked').addClass('checked').each(function(i){ 
+		var str = $(this).attr("src");
+		var start,end;
+		str.indexOf("apps/")>0 ? start = str.indexOf("apps/"):start = str.indexOf("dium/");
+		str.indexOf("/header.jpg")>0 ? end = str.indexOf("/header.jpg"):end = str.indexOf(".jpg");
 		var gameID = str.substring(start+5,end);
-		tradeApps.push(gameID);
-		$(this).parents(".trade-cont").find(".read-more").html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
-	});
-	
-	//get owned apps from local storage
-	var apps = JSON.parse(localStorage.getItem("ownedApps"));
-	
-	//check if trade app is in local storage and mark as owned
-	$.each(tradeApps,function(i,v){
-		if(typeof apps[v] != "undefined"){
-			$("[src*='"+v+"/header.jpg']").parents(".trade-cont").addClass("owned").find(".main").html("(owned)");
+		if(isNaN(Number(gameID))){
+			return;
 		}
+		if(typeof ownedApps[gameID] != "undefined"){
+			$(this).parents(".trade-cont").addClass("owned").find(".main").html("(owned)");
+		}
+		$(this).parents(".trade-cont").find(".read-more").html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
+	}).on('error', function(){
+		$(this).attr('src','/img/trades/img_not_available.png');
 	});
 	
 	//hide all user defined apps
-	var apps = JSON.parse(localStorage.getItem("hiddenApps"));
-	$.each(apps,function(i,app){
-		$('img[alt="'+app+'"]').parents(".trade-cont").addClass("owned").find(".main").html("(hidden)");
+	$.each(hiddenApps,function(i,app){
+		$('img[alt^="'+app+'"]').parents(".trade-cont").addClass("owned").find(".main").html("(hidden)");
 	})
 	//show unowned / non hidden apps
 	$('.trade-cont.owned').fadeOut();
@@ -34,6 +31,7 @@ function showOwnedGames(){
 }
 
 getOwnedGames(showOwnedGames);
+
 $(document).on('click','.page-link-cont',function(e){
 	e.preventDefault();
 	//Scroll to top of section

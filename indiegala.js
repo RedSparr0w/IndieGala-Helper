@@ -1,3 +1,6 @@
+ownedApps={},
+hiddenApps=[];
+	
 function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {
 	if (!("Notification" in window)) {
 		return;
@@ -57,12 +60,9 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '</div>';
 
 $('.header-placeholder').after(myvar);
-
 /* FUNCTIONS */
 function getOwnedGames(callback){
-	if(!steamid){
-		return;
-	}else if (Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
+	if (steamid == true && Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
 		$.ajax({
 			dataType:"json",
 			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=1",
@@ -76,32 +76,29 @@ function getOwnedGames(callback){
 				localStorage.setItem("ownedApps", JSON.stringify(ownedApps));
 				localStorage.setItem("updatedOwnedApps", new Date().getTime());
 				notifyMe("Owned Games List Updated!");
-				if (!callback){
-					showOwnedGames();
-				}else{
-					callback();
-				}
 			},
 			error: function(e){
-				notifyMe("Something went wrong while trying to get Owned Games,\nPlease Try Refresh Owned Games!");
+				//Don't check for atleast another 30 minutes - Steam may be down
+				var checkNext = Number(localStorage.getItem("updatedOwnedApps"))+(1800*1000);
+				localStorage.setItem("updatedOwnedApps", checkNext);
 			}
 		});
-	}else{
-		if (!callback){
-			try{
-				showOwnedGames();
-			}catch(e){
-				return;
-			}
-		}else{
-			callback();
+	}
+	ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
+	if (!callback){
+		try{
+			showOwnedGames();
+		}catch(e){
+			return;
 		}
+	}else{
+		callback();
 	}
 }
 
 function markAsOwned(e){
 	var appImg = $(e).parent().find('img').attr("alt");
-	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 	hiddenApps.push(appImg);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
 	$('#IGH_HiddenGames').html("");
@@ -114,10 +111,13 @@ function markAsOwned(e){
 if(localStorage.getItem("hiddenApps") == null){
 	localStorage.setItem("hiddenApps",JSON.stringify([]));
 }
+if(localStorage.getItem("ownedApps") == null){
+	localStorage.setItem("ownedApps",JSON.stringify({}));
+}
 
 steamid=false;
 
-if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
+if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=3){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
 }else{
@@ -128,6 +128,8 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 	});
 }
 
+ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
+hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
 /* Assign Function To Events */
 $('#saveDetails').click(function(e){
 	e.preventDefault();
@@ -147,7 +149,6 @@ $('#refreshOwned').click(function(e){
 	try{
 		$(".owned").removeClass("owned");
 		localStorage.removeItem('updatedOwnedApps');
-		localStorage.removeItem('ownedApps');
 		getOwnedGames();
 	}catch(e){
 		location.reload();
@@ -169,3 +170,5 @@ $(document).on("click",".IGH_UnHide",function(){
 	hiddenApps.splice(app, 1);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
 });
+
+getOwnedGames();

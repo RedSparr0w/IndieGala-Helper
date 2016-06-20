@@ -126,7 +126,18 @@
 	color:white;
 	cursor:pointer !important;
 }
+#indiegala-helper-pageloading {
+	text-align: center;
+	width: 100%;
+	margin-top: 80px;
+	margin-bottom: 80px;
+	color: white;
+	display:none;
+}
 /* GIVE AWAYS */
+.giveaways-main-page .page-nav{
+	margin-top: 15px;
+}
 .tickets-col {
 	display:none;
 }
@@ -156,13 +167,6 @@
     border-bottom-left-radius: 5px;
     border: 1px solid #000;
     color:white;
-}
-#indiegala-helper-pageloading {
-	text-align: center;
-	width: 100%;
-	margin-top: 80px;
-	margin-bottom: 80px;
-	color: white;
 }
 .ticket-left{
 	overflow: hidden;

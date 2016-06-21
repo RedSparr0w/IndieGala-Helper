@@ -49,6 +49,12 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '							<span class="input-group-addon name">Show Steam Activate Window on key select</span>'+
 '						</label>'+
 '					</div>'+
+'					<div class="input-group">'+
+'						<label for="hideEnteredGiveaways">'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways"><span></span></span>'+
+'							<span class="input-group-addon name">Hide Entered Giveaways</span>'+
+'						</label>'+
+'					</div>'+
 '				</div>'+
 '				<div id="IGH_HiddenGames" class="tab-pane fade">'+
 '					<h2>Hidden Games Tab</h2>'+

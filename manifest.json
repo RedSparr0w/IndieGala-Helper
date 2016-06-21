@@ -22,8 +22,7 @@
 				"https://www.indiegala.com/trades*",
 				"https://www.indiegala.com/forums*",
 				"https://www.indiegala.com/profile*",
-				"https://www.indiegala.com/store*",
-				"https://www.indiegala.com/gift*"
+				"https://www.indiegala.com/store*"
 			],
 			"js": ["indiegala.js","indiegala_bundles.js"]
 		},

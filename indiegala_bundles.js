@@ -1,13 +1,12 @@
 function showOwnedGames(){
-	var apps = JSON.parse(localStorage.getItem("ownedApps"));
 	$.each(bundleApps,function(i,v){
-		if(typeof apps[v] != "undefined"){
+		if(typeof ownedApps[v] != "undefined"){
 			$("[src$='"+v+".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
 		}
 	});
 }
 
-var bundleApps = [];
+bundleApps = [];
 
 $('.carousel-game-item').each(function(i){
 	var cardsValue = 0;

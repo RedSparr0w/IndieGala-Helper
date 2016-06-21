@@ -1,3 +1,4 @@
+/* Modal and Options */
 #indiegala-helper{
 	color:white;
 	padding-top:80px
@@ -25,12 +26,31 @@
     text-decoration: none;
     color: #fff;
 }
-#indiegala-helper input:not([type='checkbox']),
-#indiegala-helper label {
+#indiegala-helper .nav>li>a:focus,
+#indiegala-helper .nav-tabs>li.active>a{
+    background-color: #A70000;
+	color:#fff;
+}
+#indiegala-helper .nav>li>a:hover {
+    background-color: #CC001D;
+	color:#fff;
+}
+#indiegala-helper .input-wrapper {
+    margin-bottom: 13px;
+}
+#indiegala-helper-header h2 {
+    color: #fff;
+	cursor:pointer !important;
+}
+#indiegala-helper p {
+    text-align: center;
+}
+#IGH_setup input,
+#IGH_setup label {
     height: 49px;
     box-shadow: 0 1px 1px #292a32;
 }
-#indiegala-helper input:not([type='submit']) {
+#IGH_setup input:not([type='submit']) {
     font-weight: 600;
     box-sizing: border-box;
     width: 235px;
@@ -44,7 +64,7 @@
     outline-style: none;
     background-color: #3b4148;
 }
-#indiegala-helper label {
+#IGH_setup label {
     display: inline-block;
     width: 46px;
     text-align: center;
@@ -54,42 +74,26 @@
     border-bottom-left-radius: 3px;
     background-color: #363b41;
 }
-#indiegala-helper i[class^='fa'] {
+#IGH_setup i[class^='fa'] {
     line-height: 1.2;
     color: #606468;
 }
-#indiegala-helper .nav>li>a:focus,
-#indiegala-helper .nav-tabs>li.active>a{
-    background-color: #A70000;
-	color:#fff;
-}
-#indiegala-helper .nav>li>a:hover {
-    background-color: #CC001D;
-	color:#fff;
-}
-#indiegala-helper .input-wrapper {
-    margin-bottom: 13px;
-}
-#indiegala-helper ::-webkit-input-placeholder {
+#IGH_setup ::-webkit-input-placeholder {
     color: #767a7f;
 }
-#indiegala-helper ::-moz-placeholder {
+#IGH_setup ::-moz-placeholder {
     color: #767a7f;
 }
-#indiegala-helper :-moz-placeholder {
+#IGH_setup :-moz-placeholder {
     color: #767a7f;
 }
-#indiegala-helper :-ms-input-placeholder {
+#IGH_setup :-ms-input-placeholder {
     color: #767a7f;
 }
-#indiegala-helper span {
+#IGH_setup span {
     color: #85868b;
 }
-#indiegala-helper-header h2 {
-    color: #fff;
-	cursor:pointer !important;
-}
-#indiegala-helper input[type='submit'] {
+#IGH_setup input[type='submit'] {
     font-weight: 600;
     width: 280px;
     margin-top: 14px;
@@ -97,9 +101,6 @@
     color: #fff;
     border-style: none;
     border-radius: 3px;
-}
-#indiegala-helper p {
-    text-align: center;
 }
 .owned {
     -webkit-filter: grayscale(100%);
@@ -133,6 +134,33 @@
 	margin-bottom: 80px;
 	color: white;
 	display:none;
+}
+#IGH_Options .input-group{
+	width:100%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+#IGH_Options .input-group-addon.name{
+	width:90%;
+}
+#IGH_Options label{
+	cursor:pointer !important;
+}
+#IGH_Options input[type=checkbox]{
+	display:none;
+}
+#IGH_Options input[type=checkbox] + span:before{
+	font-family: FontAwesome;
+	content: "\f096";
+	font-size:20px;
+}
+#IGH_Options input[type=checkbox]:checked + span:before{
+	color:green;
+	content: "\f046";
 }
 /* GIVE AWAYS */
 .giveaways-main-page .page-nav{

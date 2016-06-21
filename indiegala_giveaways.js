@@ -24,13 +24,33 @@ function showOwnedGames(){
 	})
 	//show unowned / non hidden apps
 	$('.owned').fadeOut();
-	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn();
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//hide all user defined apps
+	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn().not(".checked").addClass("checked").length === 0 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(250);
 }
-
+function nextPage(){
+		$('#indiegala-helper-pageloading').slideDown(250);
+		loadingPage=true;
+		var url = $('.prev-next').eq(2).attr('href');
+		var settings = {
+			processData:false,
+			success: function(data) {
+				var main = $('.giveaways-main-page', data)
+				$('.tickets-row').append($('.tickets-col', main));
+				$('.page-nav').parent().html($('.page-nav', main))
+				showOwnedGames();
+			},
+			error: function() {
+				nextPage();
+			},
+			complete: function() {
+				loadingPage=false;
+			}
+		}
+		$.ajax(url,settings);
+}
 getOwnedGames(showOwnedGames);
 
 loadingPage=false;
@@ -40,25 +60,7 @@ $(window).scroll(function() {
 		wH = $(window).height(),
 		wS = $(this).scrollTop();
 	if (wS > (hT+hH-wH) && loadingPage==false){
-		$('#indiegala-helper-pageloading').slideDown(250);
-		loadingPage=true;
-		var url = $('.prev-next').eq(2).attr('href');
-		var settings = {
-			processData:false,
-			success: function(data) {
-				$('#indiegala-helper-pageloading').slideUp(250);
-				var main = $('.giveaways-main-page', data)
-				$('.tickets-row').append($('.tickets-col', main));
-				$('.page-nav').parent().html($('.page-nav', main))
-				showOwnedGames();
-				$('#indiegala-helper-pageloading').slideUp(250);
-			},
-			complete: function() {
-				$('#indiegala-helper-pageloading').slideUp(250);
-				loadingPage=false;
-			}
-		}
-		$.ajax(url,settings);
+		nextPage();
 	}
 });
 $(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});

@@ -23,12 +23,15 @@ function showOwnedGames(){
 		$('img[alt="'+app+'"]').parents(".tickets-col").addClass("owned").find(".main").html("(hidden)");
 	})
 	//show unowned / non hidden apps
+	if (localStorage.getItem("hideEnteredGiveaways") === "true" || localStorage.getItem("hideEnteredGiveaways") === true){
+		$('.tickets-col').not(':has(.animated-coupon)').addClass('owned');
+	}
 	$('.owned').fadeOut();
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//hide all user defined apps
-	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn().not(".checked").addClass("checked").length === 0 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(250);
+	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn().not(".checked").addClass("checked").length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(250);
 }
 function nextPage(){
 		$('#indiegala-helper-pageloading').slideDown(250);

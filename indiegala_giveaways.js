@@ -1,6 +1,8 @@
+$('.on-steam-library-text').remove();
 $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('.coins-amount strong').eq(0).html()+'</strong><span> IC</span></div>');
 $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
+
 function showOwnedGames(){
 	$('.tickets-col img.giv-game-img').not('.checked').addClass('checked').each(function(i){ 
 		var str = $(this).attr("src");
@@ -12,7 +14,7 @@ function showOwnedGames(){
 			return;
 		}
 		if (typeof ownedApps[gameID] != "undefined"){
-			$(this).parents(".tickets-col").addClass("owned").find(".main").html("(hidden)");
+			$(this).parents(".tickets-col").remove();
 		}
 		$(this).parents(".tickets-col").find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
 	}).on('error', function(){
@@ -20,19 +22,22 @@ function showOwnedGames(){
 	});
 	
 	$.each(hiddenApps,function(i,app){
-		$('img[alt="'+app+'"]').parents(".tickets-col").addClass("owned").find(".main").html("(hidden)");
+		$('img[alt="'+app+'"]').parents(".tickets-col").remove();
 	})
 	//show unowned / non hidden apps
 	if (localStorage.getItem("hideEnteredGiveaways") === "true" || localStorage.getItem("hideEnteredGiveaways") === true){
-		$('.tickets-col').not(':has(.animated-coupon)').addClass('owned');
+		$('.tickets-col').not(':has(.animated-coupon)').remove();
 	}
-	$('.owned').fadeOut();
+	//remove all leftover owned
+	$('.owned').remove();
+	//Add onclick attr to coupons - enter as fast as you want
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
-	//hide all user defined apps
+	//If less than 2 apps on page then load next page
 	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn().not(".checked").addClass("checked").length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(250);
 }
+
 function nextPage(){
 		$('#indiegala-helper-pageloading').slideDown(250);
 		loadingPage=true;
@@ -54,9 +59,11 @@ function nextPage(){
 		}
 		$.ajax(url,settings);
 }
+
 getOwnedGames(showOwnedGames);
 
 loadingPage=false;
+
 $(window).scroll(function() {
 	var hT = $('.page-nav').eq(1).offset().top,
 		hH = $('.page-nav').eq(1).outerHeight(),
@@ -66,4 +73,5 @@ $(window).scroll(function() {
 		nextPage();
 	}
 });
+
 $(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});

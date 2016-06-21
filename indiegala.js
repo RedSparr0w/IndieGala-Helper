@@ -1,3 +1,4 @@
+version = chrome.runtime.getManifest().version;
 function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {
 	if (!("Notification" in window)) {
 		return;
@@ -13,6 +14,7 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 		});
 	}
 }
+if (localStorage.getItem("version") !== version){localStorage.setItem("version",version);notifyMe("Check out the new options menu!\nv "+version);}
 var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
 '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
@@ -123,7 +125,10 @@ function saveCheckboxOption(){
 /* Check and set values */
 $('#IGH_Options input[type=checkbox]').each(function(){
 	try{
-		if (localStorage.getItem(this.dataset.option) === "true" || localStorage.getItem(this.dataset.option) === true){
+		var optionVal = localStorage.getItem(this.dataset.option);
+		if (optionVal === null){
+			throw "not set";
+		}else if (optionVal === "true" || optionVal === true){
 			$(this).attr("checked",true);
 		}else{
 			$(this).removeAttr("checked");

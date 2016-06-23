@@ -4,7 +4,8 @@ $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-he
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
 
 function showOwnedGames(){
-	$('.tickets-col img.giv-game-img').not('.checked').addClass('checked').each(function(i){ 
+	$('.ticket-cont.on-steam-library').parent().remove();
+	$('.tickets-col img.giv-game-img:not(.checked)').addClass('checked').each(function(i){ 
 		var str = $(this).attr("src");
 		var start;
 		str.indexOf("apps/")>0 ? start = str.indexOf("apps/"):start = str.indexOf("dium/");
@@ -26,7 +27,7 @@ function showOwnedGames(){
 	})
 	//show unowned / non hidden apps
 	if (localStorage.getItem("hideEnteredGiveaways") === "true" || localStorage.getItem("hideEnteredGiveaways") === true){
-		$('.tickets-col').not(':has(.animated-coupon)').remove();
+		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
 	}
 	//remove all leftover owned
 	$('.owned').remove();
@@ -35,26 +36,30 @@ function showOwnedGames(){
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//If less than 2 apps on page then load next page
-	$('.ticket-cont').not('.on-steam-library').parent().not('.owned').not('.item').fadeIn().not(".checked").addClass("checked").length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(250);
+	$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : setTimeout(function(){
+		$('#indiegala-helper-pageloading').slideUp(250)
+		loadingPage=false;
+	},100);
 }
 
 function nextPage(){
-		$('#indiegala-helper-pageloading').slideDown(250);
 		loadingPage=true;
+		$('#indiegala-helper-pageloading').slideDown(250);
 		var url = $('.prev-next').eq(2).attr('href');
 		var settings = {
 			processData:false,
 			success: function(data) {
-				var main = $('.giveaways-main-page', data)
-				$('.tickets-row').append($('.tickets-col', main));
-				$('.page-nav').parent().html($('.page-nav', main))
+				var t0 = performance.now();
+				$('.tickets-row').append($('.tickets-col', data));
+				$('.page-nav').parent().html($('.page-nav', data))
+				console.log("HTML took " + (performance.now() - t0) + "ms.");
+				history.replaceState('data', '', 'https://www.indiegala.com'+url);
+				var t0 = performance.now();
 				showOwnedGames();
+				console.log("Show Owned Games took " + (performance.now() - t0) + "ms.");
 			},
 			error: function() {
 				nextPage();
-			},
-			complete: function() {
-				loadingPage=false;
 			}
 		}
 		$.ajax(url,settings);
@@ -69,7 +74,7 @@ $(window).scroll(function() {
 		hH = $('.page-nav').eq(1).outerHeight(),
 		wH = $(window).height(),
 		wS = $(this).scrollTop();
-	if (wS > (hT+hH-wH) && loadingPage==false){
+	if (wS > (hT+hH-wH) && loadingPage===false){
 		nextPage();
 	}
 });

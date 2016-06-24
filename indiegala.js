@@ -14,7 +14,9 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 		});
 	}
 }
-if (localStorage.getItem("version") !== version){localStorage.setItem("version",version);notifyMe("Check out the new options menu!\nv "+version);}
+if (localStorage.getItem("version") !== version){
+	localStorage.setItem("version",version);
+}
 var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
 '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
@@ -202,7 +204,7 @@ $(document).on("click",".IGH_UnHide",function(){
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
 });
 
-$(document).on("click","input.keys",function(){
+$(document).on("click","input.keys , .serial-won input",function(){
 	try{
 		$(this).select();
 		document.execCommand('copy');

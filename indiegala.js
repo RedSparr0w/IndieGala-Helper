@@ -14,7 +14,13 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 		});
 	}
 }
-if (localStorage.getItem("version") !== version){
+if (localStorage.getItem("version")===null){
+	$(window).load(function(){
+		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
+			$('#indiegala-helper-header h2').click();
+		}
+	});
+} else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
 }
 var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
@@ -152,12 +158,6 @@ steamid=false;
 if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=3){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
-}else{
-	$(window).load(function(){
-		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
-			$('#indiegala-helper-header h2').click();
-		}
-	});
 }
 
 ownedApps = JSON.parse(localStorage.getItem("ownedApps"));

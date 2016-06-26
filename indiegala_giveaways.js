@@ -23,7 +23,7 @@ function showOwnedGames(){
 	});
 	
 	$.each(hiddenApps,function(i,app){
-		$('img[alt="'+app+'"]').parents(".tickets-col").remove();
+		$('img[alt="'+app.replace(/"/g,'\\"')+'"]').parents(".tickets-col").remove();
 	})
 	//show unowned / non hidden apps
 	if (localStorage.getItem("hideEnteredGiveaways") === "true" || localStorage.getItem("hideEnteredGiveaways") === true){

@@ -135,6 +135,9 @@
 	color: white;
 	display:none;
 }
+#IGH_Options h3{
+	color:white;
+}
 #IGH_Options .input-group{
 	width:100%;
 	-webkit-touch-callout: none;

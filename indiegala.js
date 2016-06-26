@@ -53,16 +53,25 @@ var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/
 '					</div>'+
 '				</div>'+
 '				<div id="IGH_Options" class="tab-pane fade">'+
+'					<h3>General</h3>'+
 '					<div class="input-group">'+
 '						<label for="showActivateWindow">'+
 '							<span class="input-group-addon check"><input type="checkbox" data-option="showActivateWindow" id="showActivateWindow"><span></span></span>'+
-'							<span class="input-group-addon name">Show Steam Activate Window on key select</span>'+
+'							<span class="input-group-addon name">Show steam activate window on key select</span>'+
 '						</label>'+
 '					</div>'+
+'					<h3>Giveaways</h3>'+
 '					<div class="input-group">'+
 '						<label for="hideEnteredGiveaways">'+
-'							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways"><span></span></span>'+
-'							<span class="input-group-addon name">Hide Entered Giveaways</span>'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
+'							<span class="input-group-addon name">Hide entered giveaways</span>'+
+'						</label>'+
+'					</div>'+
+'					<h3>Profile</h3>'+
+'					<div class="input-group">'+
+'						<label for="removeAnimationCheckAll">'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="removeAnimationCheckAll" id="removeAnimationCheckAll"><span></span></span>'+
+'							<span class="input-group-addon name">No animation for lost giveaways</span>'+
 '						</label>'+
 '					</div>'+
 '				</div>'+

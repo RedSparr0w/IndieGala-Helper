@@ -3,20 +3,18 @@ $('.giveaway-description').val("GLHF!");
 $(".giveaway-in-progress [rel=in_progress]").attr("onclick","justToggleGivInProgressLib=false;");
 $(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
 
-function handle_check_if_won_response($this, response, i){
-	if ( response['is_winner'] == 'true' ){
-		$this.parent().parent().html( '<div class="serial-won"><input value="'+response['serial']+'" readonly="" type="text"></div>' );
-	}else if ( response['is_winner'] == 'false' ){
-		// not winner
-		$this.attr('disabled', true);
-		$this.html("You did't win :(");
-		setTimeout( function(){ 
-			$this.parents('li').fadeOut(400, function(){ $(this).remove(); });
-		}, 2000+(i*50));
-	}else{
-		// error
-		$( '.fa', $this ).remove();
-		$this.html('<i class="fa fa-refresh" aria-hidden="true"></i> Error. Retry');
+function handle_check_if_won_response(entry, serial, i){
+	if ( serial !== "" ){
+		entry.parent().parent().html( '<div class="serial-won"><input value="'+serial+'" readonly="" type="text"></div>' );
+	}else{// not winner
+		if (localStorage.getItem("removeAnimationCheckAll") === "true" || localStorage.getItem("removeAnimationCheckAll") === true){
+			entry.parents('li').remove();
+		}else{
+			entry.html("You did't win :(");
+			setTimeout( function(){ 
+				entry.parents('li').fadeOut(400, function(){ $(this).remove(); });
+			}, 2000+(i*50));
+		}
 	}
 }
 
@@ -24,34 +22,15 @@ function handle_check_if_won_response($this, response, i){
 $('#checkAllGiveaways').click(function(e){
 	e.preventDefault();
 	$('.btn-check-if-won').each(function(i){
-			var $this = $(this);
-			var entry_id = $( 'input[name="entry_id"]', $this.parent() ).val();
-
-			var response = {}
-			response['is_winner'] = 'false'
-
-			console.log( "### Check if won ajax ### $this.attr('rel'): "+ $this.attr('rel') );
-			if ( $this.attr('rel') != '' ){
-				response['is_winner'] 		= 'true';
-				response['serial'] 			= $this.attr('rel');
-			}
-
-			handle_check_if_won_response( $this, response, i);
-
+			var serial = $(this).attr('rel');
+			handle_check_if_won_response( $(this), serial, i);
+			var entry_id = $( 'input[name="entry_id"]', $(this).parent() ).val();
 			$.ajax({
 				type: "POST",
 				url: '/giveaways/check_if_won',
 				data: JSON.stringify({ 'entry_id': entry_id }),
 				dataType: "json",
-				context: $this,
-				beforeSend: function(){
-					checkIfWonAjaxSemaphore = false;
-				},
-				success: function(data){}, 
-				error: function(){},
-				complete: function(){
-					checkIfWonAjaxSemaphore = true;
-				},
+				context: $(this)
 			});
 	});
 });

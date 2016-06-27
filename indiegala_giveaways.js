@@ -31,8 +31,12 @@ function showOwnedGames(){
 	}
 	//remove all leftover owned
 	$('.owned').remove();
-	//Add onclick attr to coupons - enter as fast as you want
-	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
+	if (typeof loadingPage != "undefined"){
+		//Add onclick attr to coupons - enter as fast as you want
+		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
+	}else{
+		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
+	}
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//If less than 2 apps on page then load next page

@@ -15,6 +15,7 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 	}
 }
 if (localStorage.getItem("version")===null){
+	localStorage.setItem("version",version);
 	$(window).load(function(){
 		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
 			$('#indiegala-helper-header h2').click();

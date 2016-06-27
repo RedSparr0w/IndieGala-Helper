@@ -46,8 +46,9 @@ function nextPage(){
 		var settings = {
 			processData:false,
 			success: function(data) {
-				$('.tickets-row').append($('.tickets-col', data));
-				$('.page-nav').parent().html($('.page-nav', data))
+				var main = $('.giveaways-main-page',data);
+				$('.tickets-row').append($('.tickets-col', main));
+				$('.page-nav').parent().html($('.page-nav', main));
 				history.replaceState('data', '', 'https://www.indiegala.com'+url);
 				showOwnedGames();
 			},

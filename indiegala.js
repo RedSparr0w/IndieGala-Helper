@@ -24,8 +24,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
 }
-var myvar = '<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">'+
-'<div id="indiegala-helper-header">'+
+var myvar = '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
 '</div>'+
 '<div id="indiegala-helper" class="modal fade" role="dialog">'+

@@ -33,14 +33,14 @@ function showOwnedGames(){
 	$('.owned').remove();
 	if (typeof loadingPage != "undefined"){
 		//Add onclick attr to coupons - enter as fast as you want
-		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;handleCoupon(event);");
+		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
 	}else{
 		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
 	}
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//If less than 2 apps on page then load next page
-	$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;}) ;
+	$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
 }
 
 function nextPage(){
@@ -78,3 +78,74 @@ $(window).scroll(function() {
 });
 
 $(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});
+$(document).on('click','.animated-coupon',function(e){handleCoupons(this);});
+
+function handleCouponError($this, status){
+	var parentCont 			= $this.parent().parent().parent();
+	var warningCover 		= $( '.warning-cover', parentCont );
+	var errorMsg;
+	switch(status){
+		case 'duplicate':
+			errorMsg = 'Duplicate entry. Please choose another giveaway.';
+			break;
+		case 'insufficient_credit':
+			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.'; 
+			break;
+		case 'unauthorized':
+			errorMsg = 'You are not authorized access for this giveaway.';
+			break;
+		case 'not_logged':
+			errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
+			break;
+		case 'not_available':
+			errorMsg = 'Sorry but this giveaway is no longer available.';
+			break;
+		default:
+			errorMsg = 'Error. Try again in a few minutes.';
+	}
+	$('.warning-text span', parentCont).text(errorMsg);
+	warningCover.toggle('clip', function(){
+		setTimeout( function(){ warningCover.toggle('clip') }, 4000);
+	});
+}
+
+function handleCoupons(e){
+	$this = $(e);
+	
+	if ( $this.hasClass( 'low-coins' ) ){ handleCouponError($this, 'insufficient_credit'); return false; }
+
+	$this.removeClass( 'animated-coupon' );
+
+	var parentCont 			= $this.parent().parent().parent();
+	var ticketPrice 		= $( '.ticket-price strong', parentCont ).text();
+	var data_to_send = {}
+	data_to_send['giv_id'] 				= $this.parent().attr('rel');
+	data_to_send['ticket_price'] 		= ticketPrice;
+
+	$.ajax({
+		type: "POST",
+		url: '/giveaways/new_entry',
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		data: JSON.stringify(data_to_send),
+		context: $this,
+		success: function(data){
+			if ( data['status'] == 'ok' ){ 
+				$( '.coins-amount strong' ).text( data['new_amount'] );
+				$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
+				$( this ).animate({
+					right: "+=-100",
+					opacity: 0,
+				}, 500, function(){
+					$( this ).remove();
+				});
+			}else{ 
+				handleCouponError( $( this ), data['status'] );
+			}
+		}, 
+		error: function(){ 
+			handleCouponError( $( this ), false );
+		}
+	});
+	
+}

@@ -249,3 +249,9 @@
     border-style: none;
     border-radius: 3px;
 }
+i.fa.fa-thumbs-down {
+	color: #c0392b;
+}
+i.fa.fa-thumbs-up {
+	color: #27ae60;
+}

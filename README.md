@@ -34,6 +34,7 @@
  - auto fill "message field"
 - Completed
  - Added button to check if won all giveaways
+ - Positive/Negative feedback now colored
 
 ## General
 #### Keys

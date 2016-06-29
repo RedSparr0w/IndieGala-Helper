@@ -170,7 +170,14 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 }
 
 ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
-hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+try{
+	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	hiddenApps.filter(function(val) { return val !== null; }).join(';').split(';');
+}catch(e){
+	hiddenApps = [];
+}finally{
+	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
+}
 
 /* Assign Function To Events */
 $('#saveDetails').click(function(e){

@@ -1,19 +1,4 @@
 version = chrome.runtime.getManifest().version;
-function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {
-	if (!("Notification" in window)) {
-		return;
-	}
-	else if (Notification.permission === "granted") {
-		return new Notification(title,{body:body,icon:icon});
-	}
-	else if (Notification.permission !== 'denied') {
-		Notification.requestPermission(function (permission) {
-			if (permission === "granted") {
-				return new Notification(title,{body:body,icon:icon});
-			}
-		});
-	}
-}
 if (localStorage.getItem("version")===null){
 	localStorage.setItem("version",version);
 	$(window).load(function(){
@@ -24,6 +9,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
 }
+
 var myvar = '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
 '</div>'+
@@ -89,8 +75,26 @@ var myvar = '<div id="indiegala-helper-header">'+
 $('.header-placeholder').after(myvar);
 
 /* FUNCTIONS */
+
+//Create notifications
+function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {//set title and icon if not included
+	if (!("Notification" in window)) {//check if notifications supported
+		return;
+	}
+	else if (Notification.permission === "granted") {//check if notifications permission granted
+		return new Notification(title,{body:body,icon:icon});
+	}
+	else if (Notification.permission !== 'denied') {//check that permissions are not denied
+		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
+			if (permission === "granted") {//if permission granted create notification
+				return new Notification(title,{body:body,icon:icon});
+			}
+		});
+	}
+}
+//Get users owned games
 function getOwnedGames(callback){
-	if (steamid == true && Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){
+	if (steamid == true && Number(localStorage.getItem("updatedOwnedApps"))<new Date().getTime()-(86400*1000)){//check if we have a steamID & see how long ago we checked (24 hours)
 		$.ajax({
 			dataType:"json",
 			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid="+localStorage.getItem("SteamID")+"&include_appinfo=0&include_played_free_games=1",
@@ -98,10 +102,11 @@ function getOwnedGames(callback){
 				var ownedApps={};
 				var myApps = res.response.games;
 				$.each(myApps,function(i,v){
-					ownedApps[v.appid]="owned";
+					ownedApps[v.appid]="1";
 				})
-
+				//Set owned apps
 				localStorage.setItem("ownedApps", JSON.stringify(ownedApps));
+				//Set current time as last updated time
 				localStorage.setItem("updatedOwnedApps", new Date().getTime());
 				notifyMe("Owned Games List Updated!");
 			},
@@ -112,6 +117,7 @@ function getOwnedGames(callback){
 			}
 		});
 	}
+	//Set owned apps variable
 	ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
 	if (!callback){
 		try{
@@ -126,12 +132,15 @@ function getOwnedGames(callback){
 
 function markAsOwned(e){
 	var appImg = $(e).parent().find('img').attr("alt");
-	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	//if not string or less than 1 char long then do nothing (avoid nulls)
+	if (typeof appImg !== "string" || appImg.length < 1){
+		return;
+	}
 	hiddenApps.push(appImg);
-	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
+	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
 	$('#IGH_HiddenGames').html("");
 	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
 	});
 }
 
@@ -142,13 +151,16 @@ function saveCheckboxOption(){
 /* Check and set values */
 $('#IGH_Options input[type=checkbox]').each(function(){
 	try{
-		var optionVal = localStorage.getItem(this.dataset.option);
-		if (optionVal === null){
-			throw "not set";
-		}else if (optionVal === "true" || optionVal === true){
-			$(this).attr("checked",true);
-		}else{
-			$(this).removeAttr("checked");
+		switch(localStorage.getItem(this.dataset.option)){
+			case null:
+				throw "not set";
+				break;
+			case "true":
+			case true:
+				$(this).attr("checked",true);
+				break;
+			default:
+				$(this).removeAttr("checked");
 		}
 	}catch(e){
 		localStorage.setItem(this.dataset.option, this.checked);
@@ -156,11 +168,32 @@ $('#IGH_Options input[type=checkbox]').each(function(){
 });
 $('#IGH_Options input[type=checkbox]').on('change', saveCheckboxOption);
 
-if(localStorage.getItem("hiddenApps") == null){
-	localStorage.setItem("hiddenApps",JSON.stringify([]));
+
+try{
+	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+	hiddenApps = hiddenApps.filter(function(val) {
+		switch(val){
+			case null:
+			case "":
+				break;
+			default:
+				return val;
+		}
+	}).join(';').split(';');
+}catch(e){
+	hiddenApps = [];
+}finally{
+	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
+	hiddenApps.forEach(function(v,i){
+		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
+	});
 }
-if(localStorage.getItem("ownedApps") == null){
-	localStorage.setItem("ownedApps",JSON.stringify({}));
+
+switch(localStorage.getItem("ownedApps")){
+	case null:
+		localStorage.setItem("ownedApps",JSON.stringify({}));
+	default:
+		ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
 }
 
 steamid=false;
@@ -169,54 +202,32 @@ if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").le
 	steamid=true;
 }
 
-ownedApps = JSON.parse(localStorage.getItem("ownedApps"));
-try{
-	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
-	hiddenApps.filter(function(val) { return val !== null; }).join(';').split(';');
-}catch(e){
-	hiddenApps = [];
-}finally{
-	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
-}
 
 /* Assign Function To Events */
 $('#saveDetails').click(function(e){
 	e.preventDefault();
-	try{
+	if ($("#SteamID").val().length >=5){
 		localStorage.setItem("SteamID", $("#SteamID").val());
-		if (typeof localStorage.getItem("SteamID") != "undefined" && localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=1){
-			steamid=true;
-			notifyMe("Details Saved!");
-		}
+		steamid=true;
+		notifyMe("Details Saved!");
 		getOwnedGames();
-	}catch(e){
-		notifyMe("Error:\n"+e);
+	}else{
+		notifyMe("Steam ID too short!");
 	}
 });
 
 $('#refreshOwned').click(function(e){
 	try{
-		$(".owned").removeClass("owned");
-		localStorage.removeItem('updatedOwnedApps');
-		getOwnedGames();
-	}catch(e){
+		localStorage.removeItem("updatedOwnedApps");
+	}finally{
 		location.reload();
 	}
 });
 
-$(document).ready(function(){
-	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
-	$('#IGH_HiddenGames').html("");
-	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;" data-val="'+i+'"></i></span></div>');
-	});
-});
-
-$(document).on("click",".IGH_UnHide",function(){
-	$(this).parent().parent().remove();
-	var app = $(this).attr("data-val");
-	var hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
-	hiddenApps.splice(app, 1);
+$(document).on("click",".remove",function(){
+	var app = $(this).prev().html();
+	$(this).parents(".input-group").remove();
+	hiddenApps.splice(hiddenApps.indexOf(app), 1);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
 });
 
@@ -224,8 +235,10 @@ $(document).on("click","input.keys , .serial-won input",function(){
 	try{
 		$(this).select();
 		document.execCommand('copy');
-		if (localStorage.getItem("showActivateWindow") === "true" || localStorage.getItem("showActivateWindow") === true){
-			window.location.href = "steam://open/activateproduct";
+		switch(localStorage.getItem("showActivateWindow")){
+			case "true":
+			case true:
+				window.location.href = "steam://open/activateproduct";
 		}
 	}catch(e){
 		return;

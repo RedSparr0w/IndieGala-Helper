@@ -65,7 +65,7 @@ function nextPage(){
 
 getOwnedGames(showOwnedGames);
 
-loadingPage=false;
+loadingPage=true;
 
 $(window).scroll(function() {
 	var hT = $('.page-nav').eq(1).offset().top,

@@ -4,21 +4,17 @@ $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-he
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
 
 function showOwnedGames(){
-	$('.ticket-cont.on-steam-library').parent().remove();
-	$('.tickets-col img.giv-game-img:not(.checked)').addClass('checked').each(function(i){ 
-		var str = $(this).attr("src");
-		var start;
-		str.indexOf("apps/")>0 ? start = str.indexOf("apps/"):start = str.indexOf("dium/");
-		var end = str.indexOf(".jpg");
-		var gameID = str.substring(start+5,end);
+	$('.tickets-col:not(.checked)').each(function(i){
+		var gameID = $(this).find('.giveaway-game-id').val();
 		if(isNaN(Number(gameID))){
 			return;
 		}
 		if (typeof ownedApps[gameID] != "undefined"){
-			$(this).parents(".tickets-col").remove();
+			$(this).remove();
 		}
-		$(this).parents(".tickets-col").find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
-	}).on('error', function(){
+		$(this).find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
+	});
+	$('img').on('error', function(){
 		$(this).attr('src','/img/trades/img_not_available.png');
 	});
 	
@@ -40,7 +36,17 @@ function showOwnedGames(){
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//If less than 2 apps on page then load next page
-	$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+	if (localStorage.getItem("autoEnterGiveaways") === "true" || localStorage.getItem("autoEnterGiveaways") === true){
+		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
+		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+			$('.animated-coupon').click();
+			nextPage();
+		}else{
+			$('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+		}
+	}else{
+		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+	}
 }
 
 function nextPage(){

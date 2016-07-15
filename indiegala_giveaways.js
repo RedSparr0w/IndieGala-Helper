@@ -74,12 +74,14 @@ getOwnedGames(showOwnedGames);
 loadingPage=true;
 
 $(window).scroll(function() {
-	var hT = $('.page-nav').eq(1).offset().top,
-		hH = $('.page-nav').eq(1).outerHeight(),
-		wH = $(window).height(),
-		wS = $(this).scrollTop();
-	if (wS > (hT+hH-wH) && loadingPage===false){
-		nextPage();
+	if (loadingPage===false){
+		var hT = $('.page-nav').eq(1).offset().top,
+			hH = $('.page-nav').eq(1).outerHeight(),
+			wH = $(window).height(),
+			wS = $(this).scrollTop();
+		if (wS > (hT+hH-wH)){
+			nextPage();
+		}
 	}
 });
 

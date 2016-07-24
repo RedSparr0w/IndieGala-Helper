@@ -8,12 +8,12 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
-	notifyMe("Auto Enter Giveaways Option Available!\nnote: if you have no coins this will not auto load more pages (will need to scroll again)").onclick = function(){
-		location.replace("giveaways");
+	notifyMe("Auto Enter Giveaways & Hide Entered Giveaways has been disabled until IndieGala Site is fixed.").onclick = function(){
 		this.remove()
 	}
 }
-
+localStorage.setItem("hideEnteredGiveaways", false);
+localStorage.setItem("autoEnterGiveaways", false);
 var myvar = '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
 '</div>'+
@@ -53,14 +53,20 @@ var myvar = '<div id="indiegala-helper-header">'+
 '					<h3>Giveaways</h3>'+
 '					<div class="input-group">'+
 '						<label for="hideEnteredGiveaways">'+
-'							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
-'							<span class="input-group-addon name">Hide entered giveaways</span>'+
+'							<span class="input-group-addon check"><input disabled type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
+'							<span class="input-group-addon name">Hide entered giveaways | DISABLED</span>'+
+'						</label>'+
+'					</div>'+
+'					<div class="input-group">'+
+'						<label for="infiniteScroll">'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="infiniteScroll" id="infiniteScroll" checked="true"><span></span></span>'+
+'							<span class="input-group-addon name">Infinite scroll</span>'+
 '						</label>'+
 '					</div>'+
 '					<div class="input-group">'+
 '						<label for="autoEnterGiveaways">'+
-'							<span class="input-group-addon check"><input type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>'+
-'							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain)</span>'+
+'							<span class="input-group-addon check"><input disabled type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>'+
+'							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain) | DISABLED</span>'+
 '						</label>'+
 '					</div>'+
 '					<h3>Profile</h3>'+

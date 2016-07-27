@@ -8,12 +8,11 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
-	notifyMe("Auto Enter Giveaways & Hide Entered Giveaways has been disabled until IndieGala Site is fixed.").onclick = function(){
+	notifyMe("Auto Enter Giveaways & Hide Entered Giveaways has been re-enabled!\nStill waiting for indiegala to fix the giveaways section though ]=").onclick = function(){
 		this.remove()
 	}
 }
-localStorage.setItem("hideEnteredGiveaways", false);
-localStorage.setItem("autoEnterGiveaways", false);
+
 var myvar = '<div id="indiegala-helper-header">'+
 '	<h2 data-toggle="modal" data-target="#indiegala-helper">IndieGala Helper </h2>'+
 '</div>'+
@@ -53,7 +52,7 @@ var myvar = '<div id="indiegala-helper-header">'+
 '					<h3>Giveaways</h3>'+
 '					<div class="input-group">'+
 '						<label for="hideEnteredGiveaways">'+
-'							<span class="input-group-addon check"><input disabled type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
 '							<span class="input-group-addon name">Hide entered giveaways | DISABLED</span>'+
 '						</label>'+
 '					</div>'+
@@ -65,7 +64,7 @@ var myvar = '<div id="indiegala-helper-header">'+
 '					</div>'+
 '					<div class="input-group">'+
 '						<label for="autoEnterGiveaways">'+
-'							<span class="input-group-addon check"><input disabled type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>'+
 '							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain) | DISABLED</span>'+
 '						</label>'+
 '					</div>'+

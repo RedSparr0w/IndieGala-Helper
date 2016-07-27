@@ -4,6 +4,8 @@ $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-he
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
 
 function showOwnedGames(){
+	$('.giv-coupon').addClass('animated-coupon');
+	$('.giv-coupon-link').removeAttr("href");
 	$('.tickets-col:not(.checked)').each(function(i){
 		var gameID = $(this).find('.giveaway-game-id').val();
 		if(isNaN(Number(gameID))){
@@ -124,40 +126,48 @@ function handleCouponError($this, status){
 function handleCoupons(e){
 	$this = $(e);
 	
-	if ( $this.hasClass( 'low-coins' ) ){ handleCouponError($this, 'insufficient_credit'); return false; }
-
 	$this.removeClass( 'animated-coupon' );
-
-	var parentCont 			= $this.parent().parent().parent();
-	var ticketPrice 		= $( '.ticket-price strong', parentCont ).text();
-	var data_to_send = {}
-	data_to_send['giv_id'] 				= $this.parent().attr('rel');
-	data_to_send['ticket_price'] 		= ticketPrice;
-
-	$.ajax({
-		type: "POST",
-		url: '/giveaways/new_entry',
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",
-		data: JSON.stringify(data_to_send),
-		context: $this,
-		success: function(data){
-			if ( data['status'] == 'ok' ){ 
-				$( '.coins-amount strong' ).text( data['new_amount'] );
-				$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
-				$( this ).animate({
-					right: "+=-100",
-					opacity: 0,
-				}, 500, function(){
-					$( this ).remove();
-				});
-			}else{ 
-				handleCouponError( $( this ), data['status'] );
-			}
-		}, 
-		error: function(){ 
-			handleCouponError( $( this ), false );
-		}
-	});
 	
+	if ( $this.hasClass( 'low-coins' ) ){ 
+		handleCouponError($this, 'insufficient_credit'); 
+		$( this ).animate({
+			right: "+=-100",
+			opacity: 0,
+		}, 500, function(){
+			$( this ).remove();
+			return false;
+		});
+	}else{
+		var parentCont 			= $this.parent().parent().parent();
+		var ticketPrice 		= $( '.ticket-price strong', parentCont ).text();
+		var data_to_send = {}
+		data_to_send['giv_id'] 				= $this.parent().attr('rel');
+		data_to_send['ticket_price'] 		= ticketPrice;
+
+		$.ajax({
+			type: "POST",
+			url: '/giveaways/new_entry',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			data: JSON.stringify(data_to_send),
+			context: $this,
+			success: function(data){
+				if ( data['status'] == 'ok' ){ 
+					$( '.coins-amount strong' ).text( data['new_amount'] );
+					$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
+					$( this ).animate({
+						right: "+=-100",
+						opacity: 0,
+					}, 500, function(){
+						$( this ).remove();
+					});
+				}else{ 
+					handleCouponError( $( this ), data['status'] );
+				}
+			}, 
+			error: function(){ 
+				handleCouponError( $( this ), false );
+			}
+		});
+	}
 }

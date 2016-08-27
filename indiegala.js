@@ -53,7 +53,7 @@ var myvar = '<div id="indiegala-helper-header">'+
 '					<div class="input-group">'+
 '						<label for="hideEnteredGiveaways">'+
 '							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+
-'							<span class="input-group-addon name">Hide entered giveaways | DISABLED</span>'+
+'							<span class="input-group-addon name">Hide entered giveaways</span>'+
 '						</label>'+
 '					</div>'+
 '					<div class="input-group">'+
@@ -65,7 +65,7 @@ var myvar = '<div id="indiegala-helper-header">'+
 '					<div class="input-group">'+
 '						<label for="autoEnterGiveaways">'+
 '							<span class="input-group-addon check"><input type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>'+
-'							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain) | DISABLED</span>'+
+'							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain)</span>'+
 '						</label>'+
 '					</div>'+
 '					<h3>Profile</h3>'+

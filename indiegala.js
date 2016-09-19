@@ -8,7 +8,7 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
-	notifyMe("Auto Enter Giveaways & Hide Entered Giveaways has been re-enabled!\nStill waiting for indiegala to fix the giveaways section though ]=").onclick = function(){
+	notifyMe("IndieGala Helper Updated!\nv"+version).onclick = function(){
 		this.remove()
 	}
 }

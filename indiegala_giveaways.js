@@ -97,29 +97,39 @@ $(document).on('click','.animated-coupon',function(e){handleCoupons(this);});
 function handleCouponError($this, status){
 	var parentCont 			= $this.parent().parent().parent();
 	var warningCover 		= $( '.warning-cover', parentCont );
+	var hideCover 			= true;
 	var errorMsg;
 	switch(status){
 		case 'duplicate':
 			errorMsg = 'Duplicate entry. Please choose another giveaway.';
+			hideCover = false;
 			break;
 		case 'insufficient_credit':
 			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.'; 
+			hideCover = false;
 			break;
 		case 'unauthorized':
 			errorMsg = 'You are not authorized access for this giveaway.';
+			hideCover = false;
 			break;
 		case 'not_logged':
 			errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
+			hideCover = false;
 			break;
 		case 'not_available':
 			errorMsg = 'Sorry but this giveaway is no longer available.';
+			hideCover = false;
 			break;
 		default:
 			errorMsg = 'Error. Try again in a few minutes.';
 	}
 	$('.warning-text span', parentCont).text(errorMsg);
 	warningCover.toggle('clip', function(){
-		setTimeout( function(){ warningCover.toggle('clip') }, 4000);
+		if (hideCover === true){
+			setTimeout( function(){ warningCover.toggle('clip') }, 4000);
+		}else{
+			$this.remove();
+		}
 	});
 }
 

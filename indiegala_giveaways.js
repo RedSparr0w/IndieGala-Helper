@@ -29,12 +29,8 @@ function showOwnedGames(){
 	}
 	//remove all leftover owned
 	$('.owned').remove();
-	if (typeof loadingPage != "undefined"){
-		//Add onclick attr to coupons - enter as fast as you want
-		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
-	}else{
-		$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
-	}
+	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
+	
 	//Add button to hide specific apps
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
 	//If less than 2 apps on page then load next page
@@ -58,6 +54,10 @@ function nextPage(){
 		loadingPage=true;
 		$('#indiegala-helper-pageloading').slideDown(250);
 		var url = $('.prev-next').eq(2).attr('href');
+		if (typeof url == "undefined"){
+			$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });
+			return;
+		}
 		var settings = {
 			processData:false,
 			success: function(data) {
@@ -97,37 +97,32 @@ $(document).on('click','.animated-coupon',function(e){handleCoupons(this);});
 function handleCouponError($this, status){
 	var parentCont 			= $this.parent().parent().parent();
 	var warningCover 		= $( '.warning-cover', parentCont );
-	var hideCover 			= true;
+	var clipTicket 			= true;
 	var errorMsg;
 	switch(status){
 		case 'duplicate':
 			errorMsg = 'Duplicate entry. Please choose another giveaway.';
-			hideCover = false;
 			break;
 		case 'insufficient_credit':
 			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.'; 
-			hideCover = false;
 			break;
 		case 'unauthorized':
 			errorMsg = 'You are not authorized access for this giveaway.';
-			hideCover = false;
 			break;
 		case 'not_logged':
 			errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
-			hideCover = false;
 			break;
 		case 'not_available':
 			errorMsg = 'Sorry but this giveaway is no longer available.';
-			hideCover = false;
 			break;
 		default:
+			clipTicket = false;
 			errorMsg = 'Error. Try again in a few minutes.';
 	}
 	$('.warning-text span', parentCont).text(errorMsg);
 	warningCover.toggle('clip', function(){
-		if (hideCover === true){
-			setTimeout( function(){ warningCover.toggle('clip') }, 4000);
-		}else{
+		setTimeout( function(){ warningCover.toggle('clip') }, 4000);
+		if (clipTicket === true){
 			$this.remove();
 		}
 	});

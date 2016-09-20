@@ -8,7 +8,7 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
-	notifyMe("IndieGala Helper Updated!\nv"+version).onclick = function(){
+	notifyMe("Bundles now show owned games and approx trading card return value correctly!\nv"+version).onclick = function(){
 		this.remove()
 	}
 }
@@ -215,6 +215,10 @@ steamid=false;
 if(localStorage.getItem("SteamID") != null && localStorage.getItem("SteamID").length >=3){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
+}else{
+	notifyMe("Please setup your steamID!\nClick \"IndieGala Helper\" up the top of the site then enter your steamID").onclick = function(){
+		this.remove()
+	}
 }
 
 

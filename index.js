@@ -1,3 +1,3 @@
 chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.create({"url": "https://www.indiegala.com/"});
+	chrome.tabs.create({"url": "https://www.indiegala.com/profile"});
 });

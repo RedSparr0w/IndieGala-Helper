@@ -2,10 +2,11 @@
 
 # Downloads
 #### Chrome
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/alhjnofcnnpeaphgeakdhkebafjcpeae.svg?maxAge=2592000&style=flat-square)](https://chrome.google.com/webstore/detail/indiegala-helper/alhjnofcnnpeaphgeakdhkebafjcpeae) [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating/alhjnofcnnpeaphgeakdhkebafjcpeae.svg?maxAge=2592000&style=flat-square)](https://chrome.google.com/webstore/detail/indiegala-helper/alhjnofcnnpeaphgeakdhkebafjcpeae)
+[![Chrome Web Store-version](https://img.shields.io/chrome-web-store/v/alhjnofcnnpeaphgeakdhkebafjcpeae.svg?maxAge=2592000&style=flat-square)![Chrome Web Store-rating](https://img.shields.io/chrome-web-store/rating/alhjnofcnnpeaphgeakdhkebafjcpeae.svg?maxAge=2592000&style=flat-square)![Chrome Web Store-users](https://img.shields.io/chrome-web-store/d/alhjnofcnnpeaphgeakdhkebafjcpeae.svg?style=flat-square&label=users)](https://chrome.google.com/webstore/detail/indiegala-helper/alhjnofcnnpeaphgeakdhkebafjcpeae)
 - https://chrome.google.com/webstore/detail/indiegala-helper/alhjnofcnnpeaphgeakdhkebafjcpeae
 
 #### Firefox
+[![amo-version](https://img.shields.io/amo/v/Indiegala-Helper.svg?style=flat-square)![amo-rating](https://img.shields.io/amo/rating/Indiegala-Helper.svg?style=flat-square)![amo-users](https://img.shields.io/amo/users/Indiegala-Helper.svg?style=flat-square)](https://addons.mozilla.org/en-US/firefox/addon/indiegala-helper/)
 - https://addons.mozilla.org/en-US/firefox/addon/indiegala-helper/
 
 # Features

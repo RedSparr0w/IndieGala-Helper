@@ -12,7 +12,12 @@ function showOwnedGames(){
 			return;
 		}
 		if (typeof ownedApps[gameID] != "undefined"){
-			$(this).remove();
+			if (localStorage.getItem("hideOwnedGames") === "true" || localStorage.getItem("hideOwnedGames") === true){
+				$(this).remove();
+				return;
+			}else{
+				$(this).addClass("owned");
+			}
 		}
 		$(this).find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
 	});
@@ -28,7 +33,9 @@ function showOwnedGames(){
 		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
 	}
 	//remove all leftover owned
-	$('.owned').remove();
+	if (localStorage.getItem("hideOwnedGames") === "true" || localStorage.getItem("hideOwnedGames") === true){
+		$('.owned').remove();
+	}
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
 	
 	//Add button to hide specific apps

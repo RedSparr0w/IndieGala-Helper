@@ -8,7 +8,7 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
-	notifyMe("Bundles now show owned games and approx trading card return value correctly!\nv"+version).onclick = function(){
+	notifyMe("You can now disable owned games being hidden from giveaways/trades!\nv"+version).onclick = function(){
 		this.remove()
 	}
 }
@@ -50,6 +50,12 @@ var myvar = '<div id="indiegala-helper-header">'+
 '						</label>'+
 '					</div>'+
 '					<h3>Giveaways</h3>'+
+'					<div class="input-group">'+
+'						<label for="hideOwnedGames">'+
+'							<span class="input-group-addon check"><input type="checkbox" data-option="hideOwnedGames" id="hideOwnedGames" checked="true"><span></span></span>'+
+'							<span class="input-group-addon name">Hide owned games</span>'+
+'						</label>'+
+'					</div>'+
 '					<div class="input-group">'+
 '						<label for="hideEnteredGiveaways">'+
 '							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>'+

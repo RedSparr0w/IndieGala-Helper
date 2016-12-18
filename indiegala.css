@@ -240,7 +240,7 @@
 	margin-right:0px !important;
 }
 /* PROFILE */
-#checkAllGiveaways{
+#checkAllGiveaways, #reloadCompletedGiveaways{
     font-weight: 600;
     width: 200px;
     text-transform: uppercase;
@@ -253,4 +253,7 @@ i.fa.fa-thumbs-down {
 }
 i.fa.fa-thumbs-up {
 	color: #27ae60;
+}
+i.fa.fa-check{
+  color: #2980b9
 }

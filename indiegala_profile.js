@@ -25,7 +25,9 @@ function checked_all(checked){
       url: '/giveaways/library_completed',
       dataType: "json",
       error: function(){
-        checked_all(checked)
+        setTimeout(function(){
+          checked_all(checked)
+        },2000);
       },
       success: function(data){
         checked=0;
@@ -76,6 +78,19 @@ $(".giveaway-completed [rel=completed]").on('click',function(){
   });
   $("#reloadCompletedGiveaways").click(function(e){
     e.preventDefault();
-    checked_all(20);
+    $('.giveaway-completed').parent().find('.giveaways-completed-list').eq(0).html('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading" style="color:#333"></i>');
+    $.ajax({
+      type: "GET",
+      url: '/giveaways/library_completed',
+      dataType: "json",
+      error: function(){
+        setTimeout(function(){
+          $("#reloadCompletedGiveaways").click();
+        },2000);
+      },
+      success: function(data){
+        $('.giveaway-completed').parent().find('.giveaways-list-cont-inner').html(data.html);
+      }
+    });
   });
 });

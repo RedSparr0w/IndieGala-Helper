@@ -1,8 +1,13 @@
+// Remove Indiegalas "Owned Games" overlay
 $('.on-steam-library-text').remove();
+// Show current coin balance
 $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('#silver-coins-menu').html()+'</strong><span> IC</span></div>');
+// Add infinite page loading spinner
 $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
+// Show page numbers at bottom of page aswell
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
 
+// Mark owned games as owned || remove owned games from list || remove hidden apps
 function showOwnedGames(){
 	$('.giv-coupon').addClass('animated-coupon');
 	$('.giv-coupon-link').removeAttr("href");
@@ -57,6 +62,7 @@ function showOwnedGames(){
 	}
 }
 
+// Load next page via ajax
 function nextPage(){
 		loadingPage=true;
 		$('#indiegala-helper-pageloading').slideDown(250);
@@ -81,10 +87,13 @@ function nextPage(){
 		$.ajax(url,settings);
 }
 
-getOwnedGames(showOwnedGames);
-
+// Set loading page as true, will be set to false once "showOwnedGames" is processed
 loadingPage=true;
 
+// Check we have latest list of owned games
+getOwnedGames(showOwnedGames);
+
+// If infinite scroll is checked then listen to scroll event and load more pages as needed
 if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("infiniteScroll") === true){
 	$(window).scroll(function() {
 		if (loadingPage===false){
@@ -98,9 +107,13 @@ if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("i
 		}
 	});
 }
+
+// Add apps to hidden apps list
 $(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});
+// Enter Giveaways without opening new tabs via ajax
 $(document).on('click','.animated-coupon',function(e){handleCoupons(this);});
 
+// If request to enter giveaway is unsuccessful handle error code
 function handleCouponError($this, status){
 	var parentCont 			= $this.parent().parent().parent();
 	var warningCover 		= $( '.warning-cover', parentCont );
@@ -135,6 +148,7 @@ function handleCouponError($this, status){
 	});
 }
 
+// Enter Giveaways via ajax function
 function handleCoupons(e){
 	$this = $(e);
 	

@@ -1,11 +1,13 @@
+// Set Description text for creating a giveaway
 $('.giveaway-description').val("GLHF!");
+// When "giveaways" -> "in progress" || "completed" is closed then re-opened, get updated data from server
 $(".giveaway-in-progress [rel=in_progress]").attr("onclick","justToggleGivInProgressLib=false;");
 $(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
 
 function handle_check_if_won_response(entry, serial, i){
-	if ( serial !== "" ){
+	if ( serial !== "" ){// YOU WIN!
 		entry.parent().parent().html( '<div class="serial-won"><input value="'+serial+'" readonly="" type="text"></div>' );
-	}else{// not winner
+	}else{// Not a winner
 		if (localStorage.getItem("removeAnimationCheckAll") === "true" || localStorage.getItem("removeAnimationCheckAll") === true){
 			entry.parents('li').remove();
 		}else{
@@ -17,6 +19,7 @@ function handle_check_if_won_response(entry, serial, i){
 	}
 }
 
+// Check all 20 "to check" giveaways have been "checked"
 function checked_all(checked){
   if (checked >= 20){
     $('.giveaway-completed').parent().find('.giveaways-completed-list').eq(0).html('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading" style="color:#333"></i>');
@@ -24,10 +27,10 @@ function checked_all(checked){
       type: "GET",
       url: '/giveaways/library_completed',
       dataType: "json",
-      error: function(){
+      error: function(){// On error check again after x seconds
         setTimeout(function(){
           checked_all(checked)
-        },2000);
+        },3000);
       },
       success: function(data){
         checked=0;
@@ -53,9 +56,15 @@ function checked_all(checked){
     return false;
   }
 }
+
+// Check when completed tab is clicked
 $(".giveaway-completed [rel=completed]").on('click',function(){
+  // No longer listen to "completed" tab click
   $(".giveaway-completed [rel=completed]").off('click');
+  // Add "Check all" && "Reload" buttons to "completed tab"
   $('.giveaway-completed').parent().find('.giveaways-list-cont p').html('<strong>Indiegala Helper Notes:</strong><br/>Once you click the "CHECK ALL" button we will check the first 20 then load the next 20 and so on until all "To check" giveaways have been checked!<br/>When checking all giveaways any "Won" giveaways will move to the "Won" category.').after('<input id="checkAllGiveaways" type="submit" class="btn palette-background-1 right" style="color:white;" value="Check All" /><input id="reloadCompletedGiveaways" type="submit" class="btn palette-background-4 right" style="color:white;" value="Reload">');
+  
+  // Check all "to check" giveaways when button clicked
   $('#checkAllGiveaways').click(function(e){
     e.preventDefault();
     var checked = 0;
@@ -76,6 +85,8 @@ $(".giveaway-completed [rel=completed]").on('click',function(){
         });
     });
   });
+  
+  // Refresh "completed" giveaways tab
   $("#reloadCompletedGiveaways").click(function(e){
     e.preventDefault();
     $('.giveaway-completed').parent().find('.giveaways-completed-list').eq(0).html('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading" style="color:#333"></i>');

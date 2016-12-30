@@ -1,5 +1,5 @@
 $('.on-steam-library-text').remove();
-$('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('.coins-amount strong').eq(0).html()+'</strong><span> IC</span></div>');
+$('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('#silver-coins-menu').html()+'</strong><span> IC</span></div>');
 $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
 

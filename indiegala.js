@@ -9,7 +9,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") < version){
 	localStorage.setItem("version",version);
 	localStorage.setItem("removeAnimationCheckAll",false);
-	notifyMe("Added ability to check all \"To check\" giveaways (no more refreshing)\nv"+version).onclick = function(){
+	notifyMe('Giveaways - "Silver Coins" now showing correctly\nv'+version).onclick = function(){
 		this.remove()
 	}
 }

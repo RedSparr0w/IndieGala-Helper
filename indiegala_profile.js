@@ -84,9 +84,7 @@ $(".giveaway-completed [rel=completed]").on('click',function(){
       url: '/giveaways/library_completed',
       dataType: "json",
       error: function(){
-        setTimeout(function(){
-          $("#reloadCompletedGiveaways").click();
-        },2000);
+        $('.giveaway-completed').parent().find('.giveaways-completed-list').eq(0).html('<h2>Retry</h2>');
       },
       success: function(data){
         $('.giveaway-completed').parent().find('.giveaways-list-cont-inner').html(data.html);

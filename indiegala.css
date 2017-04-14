@@ -1,258 +1,254 @@
 /* Modal and Options */
 #indiegala-helper{
-	color:white;
-	padding-top:80px
+  color:white;
+  padding-top:80px
 }
-#indiegala-helper .modal-content{
-	max-height: calc(100vh - 150px);
-	overflow: hidden;
+#indiegala-helper .modal-content {
+  max-height: calc(100vh - 150px);
+  overflow: hidden;
 }
-#indiegala-helper .modal-content, #indiegala-helper-header {
-    padding: 10px;
-    height: auto;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-    color: #606468;
-    background-color: #2c2f39;
-	text-align:center;
+#indiegala-helper .modal-content {
+  padding: 10px;
+  height: auto;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  color: #606468;
+  background-color: #272727;
+  text-align:center;
 }
 #indiegala-helper .modal-body {
-	max-height: calc(100vh - 320px);
-	overflow-x: hidden;
-	overflow-y: auto;
+  max-height: calc(100vh - 320px);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 #indiegala-helper a,
 #indiegala-helper a:visited {
-    text-decoration: none;
-    color: #fff;
+  text-decoration: none;
+  color: #fff;
 }
 #indiegala-helper .nav>li>a:focus,
-#indiegala-helper .nav-tabs>li.active>a{
-    background-color: #A70000;
-	color:#fff;
+#indiegala-helper .nav-tabs>li.active>a {
+  background-color: #A70000;
+  color:#fff;
 }
 #indiegala-helper .nav>li>a:hover {
-    background-color: #CC001D;
-	color:#fff;
+  background-color: #CC001D;
+  color:#fff;
 }
 #indiegala-helper .input-wrapper {
-    margin-bottom: 13px;
-}
-#indiegala-helper-header h2 {
-    color: #fff;
-	cursor:pointer !important;
+  margin-bottom: 13px;
 }
 #indiegala-helper p {
-    text-align: center;
+  text-align: center;
 }
 #IGH_setup input,
 #IGH_setup label {
-    height: 49px;
-    box-shadow: 0 1px 1px #292a32;
+  height: 49px;
+  box-shadow: 0 1px 1px #292a32;
 }
 #IGH_setup input:not([type='submit']) {
-    font-weight: 600;
-    box-sizing: border-box;
-    width: 235px;
-    height: 49px;
-    padding-right: 4px;
-    padding-left: 18px;
-    color: #fff;
-    border-style: none;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    outline-style: none;
-    background-color: #3b4148;
+  font-weight: 600;
+  box-sizing: border-box;
+  width: 235px;
+  height: 49px;
+  padding-right: 4px;
+  padding-left: 18px;
+  color: #fff;
+  border-style: none;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  outline-style: none;
+  background-color: #474747;
 }
 #IGH_setup label {
-    display: inline-block;
-    width: 46px;
-    text-align: center;
-    vertical-align: top;
-    color: #606468;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    background-color: #363b41;
+  display: inline-block;
+  width: 46px;
+  text-align: center;
+  vertical-align: top;
+  color: #606468;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  background-color: #474747;
 }
 #IGH_setup i[class^='fa'] {
-    line-height: 1.2;
-    color: #606468;
+  line-height: 1.2;
+  color: #FFFFFF;
 }
 #IGH_setup ::-webkit-input-placeholder {
-    color: #767a7f;
+  color: #767a7f;
 }
 #IGH_setup ::-moz-placeholder {
-    color: #767a7f;
+  color: #767a7f;
 }
 #IGH_setup :-moz-placeholder {
-    color: #767a7f;
+  color: #767a7f;
 }
 #IGH_setup :-ms-input-placeholder {
-    color: #767a7f;
+  color: #767a7f;
 }
 #IGH_setup span {
-    color: #85868b;
+  color: #85868b;
 }
 #IGH_setup input[type='submit'] {
-    font-weight: 600;
-    width: 280px;
-    margin-top: 14px;
-    text-transform: uppercase;
-    color: #fff;
-    border-style: none;
-    border-radius: 3px;
+  font-weight: 600;
+  width: 280px;
+  margin-top: 14px;
+  text-transform: uppercase;
+  color: #fff;
+  border-style: none;
+  border-radius: 3px;
 }
 .owned {
-    -webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-	transition: 1s;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: 1s;
 }
 .owned:hover{
-    -webkit-filter: grayscale(0%);
-	filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
 }
 .owned .bundle-item-cont:hover{
-	opacity: 0.8;
+  opacity: 0.8;
 }
 .owned .bundle-item-header:after{
-	content:"(owned)";
-	float:right;
-	font-size:80%;
+  content:"(owned)";
+  float:right;
+  font-size:80%;
 }
 #IGH_HiddenGames .input-group-addon.name{
-	width:90%;
+  width:90%;
 }
 #IGH_HiddenGames .input-group-addon.remove{
-	background-color:#CC001D;
-	color:white;
-	cursor:pointer !important;
+  background-color:#CC001D;
+  color:white;
+  cursor:pointer !important;
 }
 #indiegala-helper-pageloading {
-	text-align: center;
-	width: 100%;
-	margin-top: 80px;
-	margin-bottom: 80px;
-	color: white;
+  text-align: center;
+  width: 100%;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  color: white;
 }
 #IGH_Options h3{
-	color:white;
+  color:white;
 }
 #IGH_Options .input-group{
-	width:100%;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  width:100%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 #IGH_Options .input-group-addon.name{
-	width:90%;
+  width:90%;
 }
 #IGH_Options label{
-	cursor:pointer !important;
+  cursor:pointer !important;
 }
 #IGH_Options input[type=checkbox]{
-	display:none;
+  display:none;
 }
 #IGH_Options input[type=checkbox] + span:before{
-	font-family: FontAwesome;
-	content: "\f096";
-	font-size:20px;
+  font-family: FontAwesome;
+  content: "\f096";
+  font-size:20px;
 }
 #IGH_Options input[type=checkbox]:checked + span:before{
-	color:green;
-	content: "\f046";
+  color:green;
+  content: "\f046";
 }
 /* GIVE AWAYS */
 .giveaways-main-page .page-nav{
-	margin-top: 15px;
+  margin-top: 15px;
 }
 .tickets-col {
-	display:none;
+  display:none;
 }
 .price-type-cont.palette-background-7{
-	background:#D67400 !important;
+  background:#D67400 !important;
 }
 .tickets-col .main {
-	color: #CC001D;
+  color: #CC001D;
 }
 .tickets-col .main.unknown {
-	color: #000;
+  color: #000;
 }
 .tickets-col a.viewOnSteam {
-	font-family:Arial, sans-serif !important;
-	text-shadow:none !important;
+  font-family:Arial, sans-serif !important;
+  text-shadow:none !important;
 }
 .tickets-col a.viewOnSteam:hover {
-	color: #CC001D;
+  color: #CC001D;
 }
 #indiegala-helper-coins {
-    position: fixed;
-    top: 80px;
-    right: 0px;
-    padding: 10px;
-    background-color: #A70000;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border: 1px solid #000;
-    color:white;
+  position: fixed;
+  top: 80px;
+  right: 0px;
+  padding: 10px;
+  background-color: #272727;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid #000;
+  color:white;
 }
 .ticket-left{
-	overflow: hidden;
-	position: relative;
+  overflow: hidden;
+  position: relative;
 }
 .ticket-left:hover > .mark-as-owned{
-	left:-93px;
+  left:-93px;
 }
 .mark-as-owned {
-    position: absolute;
-    top: 0px;
-    left: -100%;
-	color:white;
-    background-color: #A70000;
-    padding: 5px;
-    border-bottom-right-radius: 5px;
-    transition: 0.5s;
-	cursor:pointer !important;
+  position: absolute;
+  top: 0px;
+  left: -100%;
+  color:white;
+  background-color: #A70000;
+  padding: 5px;
+  border-bottom-right-radius: 5px;
+  transition: 0.5s;
+  cursor:pointer !important;
 }
 .mark-as-owned:hover {
-    left: 0px !important;
+  left: 0px !important;
 }
 /* TRADES */
 .trade-cont .not-guaranteed-trade{
-	background:#D67400 !important;
+  background:#D67400 !important;
 }
 .trade-cont.owned .trade-type:after{
-	content:" | (OWNED)";
+  content:" | (OWNED)";
 }
 .trade_box{
-	overflow:hidden;
+  overflow:hidden;
 }
 .trade_img:hover > .mark-as-owned{
-	left:-109px;
+  left:-109px;
 }
 .trade-cont.left {
-	display:none;
-	width:33.3% !important;
-	padding-left:9px;
-	padding-right:9px;
-	margin-right:0px !important;
+  display:none;
+  width:33.3% !important;
+  padding-left:9px;
+  padding-right:9px;
+  margin-right:0px !important;
 }
 /* PROFILE */
 #checkAllGiveaways, #reloadCompletedGiveaways{
-    font-weight: 600;
-    width: 200px;
-    text-transform: uppercase;
-    color: #fff;
-    border-style: none;
-    border-radius: 3px;
+  font-weight: 600;
+  width: 200px;
+  text-transform: uppercase;
+  color: #fff;
+  border-style: none;
+  border-radius: 3px;
 }
 i.fa.fa-thumbs-down {
-	color: #c0392b;
+  color: #c0392b;
 }
 i.fa.fa-thumbs-up {
-	color: #27ae60;
+  color: #27ae60;
 }
 i.fa.fa-check{
   color: #2980b9

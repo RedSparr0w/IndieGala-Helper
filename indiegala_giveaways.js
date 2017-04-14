@@ -1,11 +1,21 @@
 // Remove Indiegalas "Owned Games" overlay
 $('.on-steam-library-text').remove();
 // Show current coin balance
-$('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+$('#silver-coins-menu').html()+'</strong><span> IC</span></div>');
+
 // Add infinite page loading spinner
 $('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
 // Show page numbers at bottom of page aswell
 $('.page-nav').parent().clone().insertAfter('.sort-menu');
+
+function getGalaSilver(){
+	try{
+		var galaSilver = Number($('.account-galamoney').html().match(/[0-9]/)[0]);
+    $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+galaSilver+'</strong><span> <img src="/img/gala-silver.png"/></span></div>');
+	}catch(e){
+    setTimeout(getGalaSilver, 1000);
+	}
+}
+getGalaSilver();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
 function showOwnedGames(){

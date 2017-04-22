@@ -9,7 +9,7 @@ $('.page-nav').parent().clone().insertAfter('.sort-menu');
 
 function getGalaSilver(){
 	try{
-		var galaSilver = Number($('.account-galamoney').html().match(/[0-9]/)[0]);
+		var galaSilver = Number($('.account-galamoney').html().match(/\d+/)[0]);
     $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+galaSilver+'</strong><span> <img src="/img/gala-silver.png"/></span></div>');
 	}catch(e){
     setTimeout(getGalaSilver, 1000);

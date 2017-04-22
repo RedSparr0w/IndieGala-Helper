@@ -5,18 +5,19 @@ version = chrome.runtime.getManifest().version;
 if (localStorage.getItem("version")===null){
 	localStorage.setItem("version",version);
 	$(window).load(function(){
-    /*shows modal on click. disabled for now
+    /* shows options modal when notification clicked *
 		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
 			$('#indiegala-helper-header h2').click();
 		}
-    */
+    //*/
 	});
 } else if (localStorage.getItem("version") != version){
-  // Display notification relaying update
 	localStorage.setItem("version",version);
+  /* Display notification relaying update *
 	notifyMe('Haven\'t updated in awhile,\nAccess settings from the menu on the left.\nEntering giveaways straight from giveaway page should now be working again!\n- v'+version).onclick = function(){
 		this.remove()
 	}
+  //*/
 }
 
 // Indiegala Helper Menu

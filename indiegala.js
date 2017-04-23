@@ -1,6 +1,23 @@
 // Get extension current version
 version = chrome.runtime.getManifest().version;
 
+// Create Notifications
+function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {//set title and icon if not included
+	if (!("Notification" in window)) {//check if notifications supported
+		return;
+	}
+	else if (Notification.permission === "granted") {//check if notifications permission granted
+		return new Notification(title,{body:body,icon:icon});
+	}
+	else if (Notification.permission !== 'denied') {//check that permissions are not denied
+		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
+			if (permission === "granted") {//if permission granted create notification
+				return new Notification(title,{body:body,icon:icon});
+			}
+		});
+	}
+}
+
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem("version")===null){
 	localStorage.setItem("version",version);
@@ -13,8 +30,8 @@ if (localStorage.getItem("version")===null){
 	});
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
-  /* Display notification relaying update *
-	notifyMe('Haven\'t updated in awhile,\nAccess settings from the menu on the left.\nEntering giveaways straight from giveaway page should now be working again!\n- v'+version).onclick = function(){
+  /* Display notification relaying update */
+	notifyMe('Added option for custom default message when creating a new giveaway!\n- v'+version).onclick = function(){
 		this.remove()
 	}
   //*/
@@ -50,44 +67,36 @@ $('#log-in-status-cont').after(`
 				</div>
 				<div id="IGH_Options" class="tab-pane fade">
 					<h3>General</h3>
-					<div class="input-group">
 						<label for="showActivateWindow">
 							<span class="input-group-addon check"><input type="checkbox" data-option="showActivateWindow" id="showActivateWindow"><span></span></span>
 							<span class="input-group-addon name">Show steam activate window on key select</span>
 						</label>
-					</div>
 					<h3>Giveaways</h3>
-					<div class="input-group">
 						<label for="hideOwnedGames">
 							<span class="input-group-addon check"><input type="checkbox" data-option="hideOwnedGames" id="hideOwnedGames" checked="true"><span></span></span>
 							<span class="input-group-addon name">Hide owned games</span>
 						</label>
-					</div>
-					<div class="input-group">
 						<label for="hideEnteredGiveaways">
 							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>
 							<span class="input-group-addon name">Hide entered giveaways</span>
 						</label>
-					</div>
-					<div class="input-group">
 						<label for="infiniteScroll">
 							<span class="input-group-addon check"><input type="checkbox" data-option="infiniteScroll" id="infiniteScroll" checked="true"><span></span></span>
 							<span class="input-group-addon name">Infinite scroll</span>
 						</label>
-					</div>
-					<div class="input-group">
 						<label for="autoEnterGiveaways">
 							<span class="input-group-addon check"><input type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>
 							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain)</span>
 						</label>
-					</div>
+						<label for="hideOwnedGames">
+							<span class="input-group-addon name">Create New Giveaway Default Message<br/><textarea data-option="newGiveawayMessage" id="newGiveawayMessage" style="width:80%" rows="3">${localStorage.newGiveawayMessage || "GLHF"}</textarea></span>
+							<span class="input-group-addon"><span></span></span>
+						</label>
 					<h3>Profile</h3>
-					<div class="input-group">
 						<label for="removeAnimationCheckAll">
 							<span class="input-group-addon check"><input type="checkbox" data-option="removeAnimationCheckAll" id="removeAnimationCheckAll"><span></span></span>
 							<span class="input-group-addon name">No animation for lost giveaways</span>
 						</label>
-					</div>
 				</div>
 				<div id="IGH_HiddenGames" class="tab-pane fade">
 				</div>
@@ -98,23 +107,6 @@ $('#log-in-status-cont').after(`
 		</div>
 	</div>
 </div>`);
-
-// Create Notifications
-function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {//set title and icon if not included
-	if (!("Notification" in window)) {//check if notifications supported
-		return;
-	}
-	else if (Notification.permission === "granted") {//check if notifications permission granted
-		return new Notification(title,{body:body,icon:icon});
-	}
-	else if (Notification.permission !== 'denied') {//check that permissions are not denied
-		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
-			if (permission === "granted") {//if permission granted create notification
-				return new Notification(title,{body:body,icon:icon});
-			}
-		});
-	}
-}
 
 // Get users owned apps
 function getOwnedGames(callback){
@@ -173,6 +165,9 @@ function markAsOwned(e){
 function saveCheckboxOption(){
 		localStorage.setItem(this.dataset.option, this.checked);
 };
+function saveTextareaOption(){
+		localStorage.setItem(this.dataset.option, this.value);
+}
 
 /* Check and set values */
 $('#IGH_Options input[type=checkbox]').each(function(){
@@ -193,6 +188,7 @@ $('#IGH_Options input[type=checkbox]').each(function(){
 	}
 });
 $('#IGH_Options input[type=checkbox]').on('change', saveCheckboxOption);
+$('#IGH_Options textarea').on('input', saveTextareaOption);
 
 // Push hidden apps to IGH menu
 try{

@@ -1,5 +1,6 @@
 // Get extension current version
-version = chrome.runtime.getManifest().version;
+const version = chrome.runtime.getManifest().version;
+var hiddenApps = [];
 
 // Create Notifications
 function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg",closeOnClick=true) {//set title and icon if not included
@@ -44,8 +45,8 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
 	/* Display notification relaying update */
-	if(!notifyMe('Applied fix for people who have notifications disabled!\n- v'+version, 'IndieGala Helper Updated')){
-		alert('Applied fix for people who have notifications disabled!\n(Consider enabling them, They don\'t come up too often)\n- v'+version);
+	if(!notifyMe('Added ability to backup/restore hidden apps list!\n- v'+version, 'IndieGala Helper Updated')){
+		alert('Added ability to backup/restore hidden apps list.\nApplied fix for people who have notifications disabled!\n(Consider enabling them, They don\'t come up too often)\n- v'+version);
 	}
 	//*/
 }
@@ -112,6 +113,13 @@ $('#log-in-status-cont').after(`
 						</label>
 				</div>
 				<div id="IGH_HiddenGames" class="tab-pane fade">
+          <div id="hiddengame_list"></div>
+          <br/>
+          <a id="backupHiddenApps" class="btn btn-success">Backup List</a>
+          <label for="importHiddenApps">
+            <a class="btn btn-warning">Import Backup</a>
+            <input type="file" id="importHiddenApps" value="Import" accept=".json" style="display:none" />
+          </label>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -168,9 +176,11 @@ function markAsOwned(e){
 	}
 	hiddenApps.push(appImg);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
-	$('#IGH_HiddenGames').html("");
+  let DLStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(hiddenApps,null,2));
+  $('#backupHiddenApps').attr("href", DLStr).attr("download", "IGH HiddenApps_Backup.json");
+	$('#IGH_HiddenGames #hiddengame_list').html("");
 	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
+		$('#IGH_HiddenGames #hiddengame_list').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
 	});
 }
 
@@ -204,25 +214,31 @@ $('#IGH_Options input[type=checkbox]').on('change', saveCheckboxOption);
 $('#IGH_Options textarea').on('input', saveTextareaOption);
 
 // Push hidden apps to IGH menu
-try{
-	hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
-	hiddenApps = hiddenApps.filter(function(val) {
-		switch(val){
-			case null:
-			case "":
-				break;
-			default:
-				return val;
-		}
-	}).join(';').split(';');
-}catch(e){
-	hiddenApps = [];
-}finally{
-	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
-	hiddenApps.forEach(function(v,i){
-		$('#IGH_HiddenGames').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
-	});
+function setHiddenApps(){
+  try{
+    hiddenApps = JSON.parse(localStorage.getItem("hiddenApps"));
+    hiddenApps = hiddenApps.filter(function(val) {
+      switch(val){
+        case null:
+        case "":
+          break;
+        default:
+          return val;
+      }
+    }).join(';').split(';');
+  }catch(e){
+    hiddenApps = [];
+  }finally{
+    localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
+    let DLStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(hiddenApps,null,2));
+    $('#backupHiddenApps').attr("href", DLStr).attr("download", "IGH HiddenApps_Backup.json");
+    $('#IGH_HiddenGames #hiddengame_list').html("");
+    hiddenApps.forEach(function(v,i){
+      $('#IGH_HiddenGames #hiddengame_list').append('<div class="input-group"><span class="input-group-addon name">'+v+'</span><span class="input-group-addon remove"><i class="fa fa-times IGH_UnHide" style="color:white;"></i></span></div>');
+    });
+  }
 }
+setHiddenApps();
 
 // If owned apps not set, then set as blank array
 switch(localStorage.getItem("ownedApps")){
@@ -269,6 +285,8 @@ $(document).on("click",".remove",function(){
 	$(this).parents(".input-group").remove();
 	hiddenApps.splice(hiddenApps.indexOf(app), 1);
 	localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps));
+  let DLStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(hiddenApps,null,2));
+  $('#backupHiddenApps').attr("href", DLStr).attr("download", "IGH HiddenApps_Backup.json");
 });
 
 // When game key clicked, select the whole key and copy to clipboard
@@ -285,4 +303,28 @@ $(document).on("click","input.keys , .serial-won input",function(){
 	}catch(e){
 		return;
 	}
+});
+
+$('#importHiddenApps').on("change",function() {
+  var files = document.getElementById('importHiddenApps').files;
+  if (files.length <= 0) {
+    return false;
+  }
+
+  var fr = new FileReader();
+
+  fr.onload = function(e) { 
+    try{
+      hiddenApps = JSON.parse(e.target.result);
+    }catch(e){
+      console.error(e);
+      alert("Something went wrong!\nPlease check you uploaded a valid .json file");
+      return;
+    }
+    localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
+    setHiddenApps();
+    document.getElementById('importHiddenApps').value = "";
+  }
+
+  fr.readAsText(files.item(0));
 });

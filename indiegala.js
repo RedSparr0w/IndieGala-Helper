@@ -2,17 +2,30 @@
 version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg") {//set title and icon if not included
+function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg",closeOnClick=true) {//set title and icon if not included
+	let notification = false;
 	if (!("Notification" in window)) {//check if notifications supported
-		return;
+		return notification;
 	}
 	else if (Notification.permission === "granted") {//check if notifications permission granted
-		return new Notification(title,{body:body,icon:icon});
+		notification = new Notification(title,{body:body,icon:icon});
+		if (!!closeOnClick){
+			notification.onclick = function(){
+				this.close()
+			}
+		}
+		return notification;
 	}
 	else if (Notification.permission !== 'denied') {//check that permissions are not denied
 		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
 			if (permission === "granted") {//if permission granted create notification
-				return new Notification(title,{body:body,icon:icon});
+				notification = new Notification(title,{body:body,icon:icon});
+				if (!!closeOnClick){
+					notification.onclick = function(){
+						this.close()
+					}
+				}
+				return notification;
 			}
 		});
 	}
@@ -21,25 +34,25 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem("version")===null){
 	localStorage.setItem("version",version);
+	/* show options modal when notification clicked *
 	$(window).load(function(){
-    /* shows options modal when notification clicked *
 		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
-			$('#indiegala-helper-header h2').click();
+			$('#OpenIndieGalaHelper').click();
 		}
-    //*/
 	});
+	//*/
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
-  /* Display notification relaying update */
-	notifyMe('Added option for custom default message when creating a new giveaway!\n- v'+version).onclick = function(){
-		this.remove()
+	/* Display notification relaying update */
+	if(!notifyMe('Applied fix for people who have notifications disabled!\n- v'+version, 'IndieGala Helper Updated')){
+		alert('Applied fix for people who have notifications disabled!\n(Consider enabling them, They don\'t come up too often)\n- v'+version);
 	}
-  //*/
+	//*/
 }
 
 // Indiegala Helper Menu
 $('#log-in-status-cont').after(`
-<li><a class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
+<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
 <div id="indiegala-helper" class="modal fade" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -225,9 +238,7 @@ if(localStorage.getItem("SteamID") != null){
 	$("#SteamID").val(localStorage.getItem("SteamID"));
 	steamid=true;
 }else{
-	notifyMe('Please setup your steamID!\nClick "IndieGala Helper" up the top of the site then enter your steamID').onclick = function(){
-		this.remove()
-	}
+	notifyMe('Please setup your steamID!\nClick "IndieGala Helper" up the top of the site then enter your steamID');
 }
 
 // Save SteamID on "Save Details" button click
@@ -265,7 +276,7 @@ $(document).on("click","input.keys , .serial-won input",function(){
 	try{
 		$(this).select();
 		document.execCommand('copy');
-    // Check if "show steam activate window" is ticked
+		// Check if "show steam activate window" is ticked
 		switch(localStorage.getItem("showActivateWindow")){
 			case "true":
 			case true:

@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "2.1.1",
+	"version": "2.2.1",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
@@ -28,6 +28,9 @@
 		},
 		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
+			"exclude_matches": [
+				"https://www.indiegala.com/giveaways/detail*"
+      ],
 			"js": ["indiegala.js","indiegala_giveaways.js"]
 		},
 		{

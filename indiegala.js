@@ -45,8 +45,8 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
 	/* Display notification relaying update */
-	if(!notifyMe('Added ability to backup/restore hidden apps list!\n- v'+version, 'IndieGala Helper Updated')){
-		alert('Added ability to backup/restore hidden apps list.\nApplied fix for people who have notifications disabled!\n(Consider enabling them, They don\'t come up too often)\n- v'+version);
+	if(!notifyMe('Removed auto entry for giveaways, Also can no longer enter giveaways from the main screen, You will have to go into each one individually.\n(Thanks IndieGala)\n- v'+version, 'IndieGala Helper Updated')){
+		alert('IndieGala Helper Updated\n' + 'Removed auto entry for giveaways, Also can no longer enter giveaways from the main screen, You will have to go into each one individually.\n(Thanks IndieGala)\n- v'+version);
 	}
 	//*/
 }

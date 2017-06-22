@@ -58,18 +58,32 @@ function showOwnedGames(){
 	//If less than 2 apps on page then load next page
 	if (localStorage.getItem("autoEnterGiveaways") === "true" || localStorage.getItem("autoEnterGiveaways") === true){
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
-		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-			$('.animated-coupon').click();
-			nextPage();
-		}else{
+		if (Number($('#indiegala-helper-coins strong').html() ) <= 0){
 			$('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
-		}
+		}else{
+     // nextPage();
+    }
 	} else if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("infiniteScroll") === true) {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
 	} else {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
 		$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });
 	}
+}
+
+if (localStorage.getItem("autoEnterGiveaways") === "true" || localStorage.getItem("autoEnterGiveaways") === true){
+  setInterval(function(){
+    if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+      try{
+        $('.animated-coupon').eq(0).click();
+      }catch(e){
+        console.error(e);
+      }
+    }
+    if ($('.animated-coupon').length <= 0){
+      nextPage();
+    }
+  },5000);
 }
 
 // Load next page via ajax

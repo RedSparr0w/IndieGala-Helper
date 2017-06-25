@@ -1,45 +1,22 @@
 {
 	"manifest_version": 2,
-	"name": "IndieGala Helper",
-	"version": "2.2.1",
+	"name": "IndieGala Helper 3",
+	"version": "3.0.0",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
 		}
 	},
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
-			"js": ["jquery-3.1.0.min.js"],
+			"js": ["jquery-3.1.0.min.js","indiegala.js"],
 			"css": ["indiegala.css"],
-			"run_at": "document_start"
-		},
-		{
-			"matches": ["https://www.indiegala.com/*"],
-			"exclude_matches": [
-				"https://www.indiegala.com/",
-				"https://www.indiegala.com/giveaways*",
-				"https://www.indiegala.com/trades*",
-				"https://www.indiegala.com/forums*",
-				"https://www.indiegala.com/profile*",
-				"https://www.indiegala.com/store*"
-			],
-			"js": ["indiegala.js","indiegala_bundles.js"]
-		},
-		{
-			"matches": ["https://www.indiegala.com/giveaways*"],
-			"exclude_matches": [
-				"https://www.indiegala.com/giveaways/detail*"
-      ],
-			"js": ["indiegala.js","indiegala_giveaways.js"]
-		},
-		{
-			"matches": ["https://www.indiegala.com/profile*"],
-			"js": ["indiegala.js","indiegala_profile.js"]
-		},
-		{
-			"matches": ["https://www.indiegala.com/trades*"],
-			"js": ["indiegala.js","indiegala_trades.js"]
+			"run_at": "document_idle"
 		}
 	],
 	"background": {
@@ -49,6 +26,10 @@
 		"default_icon": "icon.png"
 	},
 	"permissions": [
-		"https://api.enhancedsteam.com/"
-	]
+		"https://api.enhancedsteam.com/",
+    "storage"
+	],
+  "web_accessible_resources": [
+    "options.html"
+  ]
 }

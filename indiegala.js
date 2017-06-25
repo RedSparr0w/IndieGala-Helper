@@ -1,6 +1,22 @@
 // Get extension current version
 const version = chrome.runtime.getManifest().version;
 var hiddenApps = [];
+var settings = {
+  theme: "dark",
+  theme_color: "red",
+  steam_id: "",
+  show_steam_activate_window: true,
+  hide_high_level_giveaways: true,
+  hide_owned_games: true,
+  hide_entered_giveaways: true,
+  infinite_scroll: true,
+  new_giveaway_message: "GLHF!",
+  new_giveaway_level: 0
+};
+
+chrome.storage.sync.get(settings, function(setting) {
+  settings = setting;
+});
 
 // Create Notifications
 function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg",closeOnClick=true) {//set title and icon if not included
@@ -52,82 +68,17 @@ if (localStorage.getItem("version")===null){
 }
 
 // Indiegala Helper Menu
-$('#log-in-status-cont').after(`
-<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
-<div id="indiegala-helper" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#IGH_setup">Setup</a></li>
-					<li><a data-toggle="tab" href="#IGH_Options">Options</a></li>
-					<li><a data-toggle="tab" href="#IGH_HiddenGames">Hidden Games</a></li>
-				</ul>
-			</div>
-			<div class="modal-body tab-content">
-				<div id="IGH_setup" class="tab-pane fade in active">
-					<div class="input-wrapper">
-						<label for="SteamID"><i class="fa fa-steam fa-3x"></i></label>
-						<input type="text" id="SteamID" placeholder="Steam ID 64">
-						<p>
-							<a href="https://steamid.io/lookup" target="_BLANK">Get Steam ID →</a>
-						</p>
-					</div>
-					<div class="input-wrapper">
-						<input type="submit" id="saveDetails" class="palette-background-1" value="Save Details"><br/>
-						<input type="submit" id="refreshOwned" class="palette-background-2" value="Refresh Owned Games">
-					</div>
-				</div>
-				<div id="IGH_Options" class="tab-pane fade">
-					<h3>General</h3>
-						<label for="showActivateWindow">
-							<span class="input-group-addon check"><input type="checkbox" data-option="showActivateWindow" id="showActivateWindow"><span></span></span>
-							<span class="input-group-addon name">Show steam activate window on key select</span>
-						</label>
-					<h3>Giveaways</h3>
-						<label for="hideOwnedGames">
-							<span class="input-group-addon check"><input type="checkbox" data-option="hideOwnedGames" id="hideOwnedGames" checked="true"><span></span></span>
-							<span class="input-group-addon name">Hide owned games</span>
-						</label>
-						<label for="hideEnteredGiveaways">
-							<span class="input-group-addon check"><input type="checkbox" data-option="hideEnteredGiveaways" id="hideEnteredGiveaways" checked="true"><span></span></span>
-							<span class="input-group-addon name">Hide entered giveaways</span>
-						</label>
-						<label for="infiniteScroll">
-							<span class="input-group-addon check"><input type="checkbox" data-option="infiniteScroll" id="infiniteScroll" checked="true"><span></span></span>
-							<span class="input-group-addon name">Infinite scroll</span>
-						</label>
-						<label for="autoEnterGiveaways">
-							<span class="input-group-addon check"><input type="checkbox" data-option="autoEnterGiveaways" id="autoEnterGiveaways"><span></span></span>
-							<span class="input-group-addon name">Auto enter giveaways (until 0 coins remain)</span>
-						</label>
-						<label for="hideOwnedGames">
-							<span class="input-group-addon name">Create New Giveaway Default Message<br/><textarea data-option="newGiveawayMessage" id="newGiveawayMessage" style="width:80%" rows="3">${localStorage.newGiveawayMessage || "GLHF"}</textarea></span>
-							<span class="input-group-addon"><span></span></span>
-						</label>
-					<h3>Profile</h3>
-						<label for="removeAnimationCheckAll">
-							<span class="input-group-addon check"><input type="checkbox" data-option="removeAnimationCheckAll" id="removeAnimationCheckAll"><span></span></span>
-							<span class="input-group-addon name">No animation for lost giveaways</span>
-						</label>
-				</div>
-				<div id="IGH_HiddenGames" class="tab-pane fade">
-          <div id="hiddengame_list"></div>
-          <br/>
-          <a id="backupHiddenApps" class="btn btn-success">Backup List</a>
-          <label for="importHiddenApps">
-            <a class="btn btn-warning">Import Backup</a>
-            <input type="file" id="importHiddenApps" value="Import" accept=".json" style="display:none" />
-          </label>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>`);
+$('#log-in-status-cont').after(`<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>`);
+
+$('#OpenIndieGalaHelper').on('click', function(){
+  if (chrome.runtime.openOptionsPage) {
+    // New way to open options pages, if supported (Chrome 42+).
+    chrome.runtime.openOptionsPage();
+  } else {
+    // Reasonable fallback.
+    window.open(chrome.runtime.getURL('options.html'));
+  }
+});
 
 // Get users owned apps
 function getOwnedGames(callback){

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Test Extension Options</title>
+  <link rel="stylesheet" href="./include/css/font-awesome.min.css">
+  <link rel="stylesheet" href="./include/css/framework7.material.min.css">
+  <link rel="stylesheet" href="./options.css">
+  <link rel="stylesheet" href="./include/css/framework7.material.colors.min.css">
+  <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
+</head>
+
+<body id="IGH" class="theme-red layout-dark" style="min-height:450px;width:400px;">
+  <div class="panel panel-right panel-reveal">
+    <div class="view view-right">
+      <div class="pages navbar-fixed">
+        <div data-page="panel-right1" class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center">Theme</div>
+              <div class="right"><a href="#" class="close-panel link icon-only"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="content-block-title">Choose Layout Theme</div>
+            <div class="content-block">
+              <div class="row">
+                <div data-theme="light" data-layout="" class="col-50 layout-theme layout-default active"></div>
+                <div data-theme="dark" class="col-50 layout-theme layout-dark"></div>
+              </div>
+            </div>
+            <div class="content-block-title">Choose Color Theme</div>
+            <div class="content-block">
+              <div class="row">
+                <div data-theme="red" class="col-20 color-theme bg-red"></div>
+                <div data-theme="pink" class="col-20 color-theme bg-pink"></div>
+                <div data-theme="purple" class="col-20 color-theme bg-purple"></div>
+                <div data-theme="deeppurple" class="col-20 color-theme bg-deeppurple"></div>
+                <div data-theme="indigo" class="col-20 color-theme bg-indigo"></div>
+              </div>
+              <div class="row">
+                <div data-theme="blue" class="col-20 color-theme bg-blue"></div>
+                <div data-theme="lightblue" class="col-20 color-theme bg-lightblue"></div>
+                <div data-theme="cyan" class="col-20 color-theme bg-cyan"></div>
+                <div data-theme="teal" class="col-20 color-theme bg-teal"></div>
+                <div data-theme="green" class="col-20 color-theme bg-green"></div>
+              </div>
+              <div class="row">
+                <div data-theme="lightgreen" class="col-20 color-theme bg-lightgreen"></div>
+                <div data-theme="lime" class="col-20 color-theme bg-lime"></div>
+                <div data-theme="yellow" class="col-20 color-theme bg-yellow"></div>
+                <div data-theme="amber" class="col-20 color-theme bg-amber"></div>
+                <div data-theme="orange" class="col-20 color-theme bg-orange"></div>
+              </div>
+              <div class="row">
+                <div data-theme="deeporange" class="col-20 color-theme bg-deeporange"></div>
+                <div data-theme="brown" class="col-20 color-theme bg-brown"></div>
+                <div data-theme="gray" class="col-20 color-theme bg-gray"></div>
+                <div data-theme="bluegray" class="col-20 color-theme bg-bluegray"></div>
+                <div data-theme="black" class="col-20 color-theme bg-black"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="views">
+    <div class="view view-main">
+      <div class="pages navbar-fixed">
+        <div data-page="index" class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="left"><a href="#" class="open-panel link icon-only"><i class="fa fa-paint-brush" aria-hidden="true"></i></a></a></div>
+              <div class="center">IndieGala Helper</div>
+              <!-- <div class="right"><a href="#" onclick="window.close();" class="link icon-only"><i class="fa fa-times" aria-hidden="true"></i></a></div> -->
+            </div>
+          </div>
+          <div class="toolbar tabbar">
+            <div class="toolbar-inner">
+              <a href="#Tab_Options" class="tab-link active">Options</a>
+              <a href="#Tab_BlackListApps" class="tab-link">Blacklist Apps</a>
+              <a href="#Tab_BlackListUsers" class="tab-link">Blacklist Users</a>
+              <span class="tab-link-highlight" style="width: 33.3333%; transform: translate3d(0%, 0px, 0px);"></span>
+            </div>
+          </div>
+          <div class="tabs" style="margin-top:105px;">
+            <div id="Tab_Options" class="page-content tab active">
+              <div class="content-block">
+                <form class="list-block inputs-list">
+                  <ul>
+                    <h2>Account</h2>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Steam ID 64</div>
+                          <div class="item-input item-input-field">
+                            <input id="steam_id" type="text" placeholder="12345678901234567">
+                          <a href="https://steamid.io/lookup" target="_BLANK" class="subtitle label">https://steamid.io/lookup</a>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <h2>General</h2>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Show Steam Activate Window On Key Select</div>
+                          <div class="item-input">
+                            <label class="label-switch">
+                              <input id="show_steam_activate_window" type="checkbox">
+                              <div class="checkbox"></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <h2>Entering Giveaways</h2>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Hide Giveaways Above My Level</div>
+                          <div class="item-input">
+                            <label class="label-switch">
+                              <input id="hide_high_level_giveaways" type="checkbox">
+                              <div class="checkbox"></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Hide Owned Games</div>
+                          <div class="item-input">
+                            <label class="label-switch">
+                              <input id="hide_owned_games" type="checkbox">
+                              <div class="checkbox"></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Hide Entered Giveaways</div>
+                          <div class="item-input">
+                            <label class="label-switch">
+                              <input id="hide_entered_giveaways" type="checkbox">
+                              <div class="checkbox"></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Infinite Scroll</div>
+                          <div class="item-input">
+                            <label class="label-switch">
+                              <input id="infinite_scroll" type="checkbox">
+                              <div class="checkbox"></div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <h2>Creating Giveaways</h2>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Default New Giveaway Message</div>
+                          <div class="item-input item-input-field">
+                            <textarea id="new_giveaway_message" type="text" placeholder="GLHF!">GLHF</textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Default New Giveaway Level</div>
+                          <div class="item-input item-input-field">
+                            <input id="new_giveaway_level" type="number" placeholder="0" min="0" step="1" value="0">
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <a id="save" href="#" class="button button-fill button-raised">Save</a>
+                </form>
+              </div>
+            </div>
+            <div id="Tab_BlackListApps" class="page-content tab">
+              <div class="content-block">
+              </div>
+            </div>
+            <div id="Tab_BlackListUsers" class="page-content tab">
+              <div class="content-block">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="./include/js/framework7.min.js"></script>
+  <script type="text/javascript" src="./include/js/jquery-3.1.1.min.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

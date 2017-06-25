@@ -1,0 +1,208 @@
+.navbar-fixed .page-content {
+  margin-top: 56px;
+  padding-top: 0px;
+  height: calc(100vh - 56px);
+}
+.page-content.tab {
+  height: calc(100vh - 106px);
+}
+
+/* Now Playing */
+.solid-bg {
+  color: rgba(255,255,255,.87);
+}
+.theme-red .solid-bg {
+  background: #f44336;
+}
+.theme-pink .solid-bg {
+  background: #e91e63;
+}
+.theme-purple .solid-bg {
+  background: #9c27b0;
+}
+.theme-deeppurple .solid-bg {
+  background: #673ab7;
+}
+.theme-indigo .solid-bg {
+  background: #3f51b5;
+}
+.theme-blue  .solid-bg {
+  background: #2196f3;
+}
+.theme-lightblue .solid-bg {
+  background: #03a9f4;
+}
+.theme-cyan .solid-bg {
+  background: #00bcd4;
+}
+.theme-teal .solid-bg {
+  background: #009688;
+}
+.theme-green .solid-bg {
+  background: #4caf50;
+}
+.theme-lightgreen .solid-bg {
+  background: #8bc34a;
+}
+.theme-lime .solid-bg {
+  background: #cddc39;
+}
+.theme-yellow .solid-bg {
+  background: #ffeb3b;
+}
+.theme-amber .solid-bg {
+  background: #ffc107;
+}
+.theme-orange .solid-bg {
+  background: #ff9800;
+}
+.theme-deeporange .solid-bg {
+  background: #ff5722;
+}
+.theme-brown .solid-bg {
+  background: #795548;
+}
+.theme-gray .solid-bg {
+  background: #9e9e9e;
+}
+.theme-bluegray .solid-bg {
+  background: #607d8b;
+}
+.theme-black .solid-bg {
+  background: #000000;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+  height: 5px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+.theme-red ::-webkit-scrollbar-thumb {
+  background: #f44336;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-pink ::-webkit-scrollbar-thumb {
+  background: #e91e63;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-purple ::-webkit-scrollbar-thumb {
+  background: #9c27b0;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-deeppurple ::-webkit-scrollbar-thumb {
+  background: #673ab7;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-indigo ::-webkit-scrollbar-thumb {
+  background: #3f51b5;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-blue  ::-webkit-scrollbar-thumb {
+  background: #2196f3;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-lightblue ::-webkit-scrollbar-thumb {
+  background: #03a9f4;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-cyan ::-webkit-scrollbar-thumb {
+  background: #00bcd4;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-teal ::-webkit-scrollbar-thumb {
+  background: #009688;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-green ::-webkit-scrollbar-thumb {
+  background: #4caf50;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-lightgreen ::-webkit-scrollbar-thumb {
+  background: #8bc34a;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-lime ::-webkit-scrollbar-thumb {
+  background: #cddc39;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-yellow ::-webkit-scrollbar-thumb {
+  background: #ffeb3b;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-amber ::-webkit-scrollbar-thumb {
+  background: #ffc107;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-orange ::-webkit-scrollbar-thumb {
+  background: #ff9800;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-deeporange ::-webkit-scrollbar-thumb {
+  background: #ff5722;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-brown ::-webkit-scrollbar-thumb {
+  background: #795548;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-gray ::-webkit-scrollbar-thumb {
+  background: #9e9e9e;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-bluegray ::-webkit-scrollbar-thumb {
+  background: #607d8b;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+.theme-black ::-webkit-scrollbar-thumb {
+  background: #000000;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+
+/* Theme Changer Layout */
+.layout-theme {
+  height: 44px;
+  cursor: pointer;
+}
+.layout-theme.layout-default {
+  background: #f3f3f3;
+}
+.layout-theme.layout-dark {
+  background: #000;
+}
+.color-theme {
+  height: 44px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}

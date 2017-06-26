@@ -1,22 +1,6 @@
 // Get extension current version
 const version = chrome.runtime.getManifest().version;
 var hiddenApps = [];
-var settings = {
-  theme: "dark",
-  theme_color: "red",
-  steam_id: "",
-  show_steam_activate_window: true,
-  hide_high_level_giveaways: true,
-  hide_owned_games: true,
-  hide_entered_giveaways: true,
-  infinite_scroll: true,
-  new_giveaway_message: "GLHF!",
-  new_giveaway_level: 0
-};
-
-chrome.storage.sync.get(settings, function(setting) {
-  settings = setting;
-});
 
 // Create Notifications
 function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg",closeOnClick=true) {//set title and icon if not included
@@ -51,7 +35,7 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem("version")===null){
 	localStorage.setItem("version",version);
-	/* show options modal when notification clicked *
+	//* show options modal when notification clicked *
 	$(window).load(function(){
 		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
 			$('#OpenIndieGalaHelper').click();
@@ -61,23 +45,27 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
 	/* Display notification relaying update */
-	if(!notifyMe('Removed auto entry for giveaways, Also can no longer enter giveaways from the main screen, You will have to go into each one individually.\n(Thanks IndieGala)\n- v'+version, 'IndieGala Helper Updated')){
-		alert('IndieGala Helper Updated\n' + 'Removed auto entry for giveaways, Also can no longer enter giveaways from the main screen, You will have to go into each one individually.\n(Thanks IndieGala)\n- v'+version);
+	if(!notifyMe('Updated options menu,\nNew options also have been added\n(All options have been reset)\n- v'+version, 'IndieGala Helper Updated')){
+		alert('IndieGala Helper Updated\n' + 'Updated options menu,\nNew options also have been added\n(All options have been reset)\n- v'+version);
 	}
 	//*/
 }
 
 // Indiegala Helper Menu
-$('#log-in-status-cont').after(`<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>`);
+$('#log-in-status-cont').after(`
+	<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
+	<div id="indiegala-helper" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<i id="closeModal" class="fa fa-times" aria-hidden="true" data-dismiss="modal" style="position: absolute;right: 10px;top: 10px;font-size: 25px;color: white;cursor: pointer;"></i>
+				<iframe src="${chrome.runtime.getURL('options.html')}" style="height:75vh;width:100%;margin-bottom:-7px;" frameBorder="0"></iframe>
+			</div>
+		</div>
+	</div>
+	`);
 
-$('#OpenIndieGalaHelper').on('click', function(){
-  if (chrome.runtime.openOptionsPage) {
-    // New way to open options pages, if supported (Chrome 42+).
-    chrome.runtime.openOptionsPage();
-  } else {
-    // Reasonable fallback.
-    window.open(chrome.runtime.getURL('options.html'));
-  }
+$('#closeModal').on('click', function(){
+	refreshSettings();
 });
 
 // Get users owned apps
@@ -208,19 +196,6 @@ if(localStorage.getItem("SteamID") != null){
 	notifyMe('Please setup your steamID!\nClick "IndieGala Helper" up the top of the site then enter your steamID');
 }
 
-// Save SteamID on "Save Details" button click
-$('#saveDetails').click(function(e){
-	e.preventDefault();
-	if ($("#SteamID").val().length >=5){
-		localStorage.setItem("SteamID", $("#SteamID").val());
-		steamid=true;
-		notifyMe("Details Saved!");
-		getOwnedGames();
-	}else{
-		notifyMe("Steam ID too short!");
-	}
-});
-
 // Refresh users owned games when "Refresh owned games" is clicked
 $('#refreshOwned').click(function(e){
 	try{
@@ -246,9 +221,7 @@ $(document).on("click","input.keys , .serial-won input",function(){
 		$(this).select();
 		document.execCommand('copy');
 		// Check if "show steam activate window" is ticked
-		switch(localStorage.getItem("showActivateWindow")){
-			case "true":
-			case true:
+		if( settings.show_steam_activate_window ){
 				window.location.href = "steam://open/activateproduct";
 		}
 	}catch(e){

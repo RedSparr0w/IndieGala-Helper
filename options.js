@@ -9,7 +9,9 @@ var settings = {
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
-  new_giveaway_level: 0
+  new_giveaway_level: 0,
+  blacklist_apps: {},
+  blacklist_users: {}
 };
 
 // Init App
@@ -55,7 +57,7 @@ function updateSetting(obj,val){
 
 // Saves options to chrome.storage.sync.
 function save_options() {
-	
+  
   settings.steam_id = document.getElementById('steam_id').value;
   settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
   settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
@@ -65,9 +67,12 @@ function save_options() {
   settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
   settings.new_giveaway_duration = document.getElementById('new_giveaway_duration').value;
   settings.new_giveaway_level = document.getElementById('new_giveaway_level').value;
-	
+  
   chrome.storage.sync.set(settings, function() {
-    console.log('Saved!');
+    $("#save").html("Saved!");
+    setTimeout(function(){
+      $("#save").html("Save");
+    }, 2000);
   });
 }
 

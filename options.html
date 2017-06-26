@@ -9,7 +9,7 @@
   <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
 </head>
 
-<body id="IGH" class="theme-red layout-dark" style="min-height:450px;width:400px;">
+<body id="IGH" class="theme-red layout-dark" style="min-height:450px;min-width:400px;">
   <div class="panel panel-right panel-reveal">
     <div class="view view-right">
       <div class="pages navbar-fixed">
@@ -171,7 +171,7 @@
                     <li>
                       <div class="item-content">
                         <div class="item-inner">
-                          <div class="item-title label">Default New Giveaway Message</div>
+                          <div class="item-title label">Default Giveaway Message</div>
                           <div class="item-input item-input-field">
                             <textarea id="new_giveaway_message" type="text" placeholder="GLHF!">GLHF</textarea>
                           </div>
@@ -181,7 +181,17 @@
                     <li>
                       <div class="item-content">
                         <div class="item-inner">
-                          <div class="item-title label">Default New Giveaway Level</div>
+                          <div class="item-title label">Default Giveaway Duration (days)</div>
+                          <div class="item-input item-input-field">
+                            <input id="new_giveaway_duration" type="number" placeholder="1" min="1" step="1" value="1">
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="item-content">
+                        <div class="item-inner">
+                          <div class="item-title label">Default Giveaway Level</div>
                           <div class="item-input item-input-field">
                             <input id="new_giveaway_level" type="number" placeholder="0" min="0" step="1" value="0">
                           </div>

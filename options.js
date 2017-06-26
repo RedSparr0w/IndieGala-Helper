@@ -8,6 +8,7 @@ var settings = {
   hide_entered_giveaways: true,
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
+  new_giveaway_duration: 1,
   new_giveaway_level: 0
 };
 
@@ -54,6 +55,7 @@ function updateSetting(obj,val){
 
 // Saves options to chrome.storage.sync.
 function save_options() {
+	
   settings.steam_id = document.getElementById('steam_id').value;
   settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
   settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
@@ -61,7 +63,9 @@ function save_options() {
   settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
   settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
   settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
+  settings.new_giveaway_duration = document.getElementById('new_giveaway_duration').value;
   settings.new_giveaway_level = document.getElementById('new_giveaway_level').value;
+	
   chrome.storage.sync.set(settings, function() {
     console.log('Saved!');
   });
@@ -88,6 +92,7 @@ function restore_options() {
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;
     document.getElementById('infinite_scroll').checked = setting.infinite_scroll;
     document.getElementById('new_giveaway_message').value = setting.new_giveaway_message;
+    document.getElementById('new_giveaway_duration').value = setting.new_giveaway_duration;
     document.getElementById('new_giveaway_level').value = setting.new_giveaway_level;
   });
 }

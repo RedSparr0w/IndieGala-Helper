@@ -14,24 +14,25 @@ var settings = {
   blacklist_users: {}
 };
 
-// Init App
+// Init Framework 7 App
 var myApp = new Framework7({
     modalTitle: 'IndieGala Helper',
     material: true,
     router: false
 });
 
-// Expose Internal DOM library
+//Framework7 DOM library
 var $$ = Dom7;
 
-/* ===== Color themes ===== */
+/* ===== Color / Themes ===== */
 $$('.color-theme').click(function () {
     var classList = $$('body')[0].classList;
     for (var i = 0; i < classList.length; i++) {
         if (classList[i].indexOf('theme') === 0) classList.remove(classList[i]);
     }
     classList.add('theme-' + $$(this).attr('data-theme'));
-    updateSetting('theme_color',$$(this).attr('data-theme'));
+    settings['theme_color'] = $$(this).attr('data-theme');
+		save_options();
 });
 $$('.layout-theme').click(function () {
     var classList = $$('body')[0].classList;
@@ -39,7 +40,8 @@ $$('.layout-theme').click(function () {
         if (classList[i].indexOf('layout-') === 0) classList.remove(classList[i]);
     }
     classList.add('layout-' + $$(this).attr('data-theme'));
-    updateSetting('theme',$$(this).attr('data-theme'));
+    settings['theme'] = $$(this).attr('data-theme');
+		save_options();
 });
 
 /* ===== Change statusbar bg when panel opened/closed ===== */
@@ -50,12 +52,8 @@ $$('.panel-right').on('close', function () {
     $$('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
 });
 
-function updateSetting(obj,val){
-  settings[obj] = val;
-  save_options();
-}
-
 // Saves options to chrome.storage.sync.
+var savedTimeout;
 function save_options() {
   
   settings.steam_id = document.getElementById('steam_id').value;
@@ -70,9 +68,13 @@ function save_options() {
   
   chrome.storage.sync.set(settings, function() {
     $("#save").html("Saved!");
-    setTimeout(function(){
-      $("#save").html("Save");
-    }, 2000);
+		try {
+			clearTimeout(savedTimeout);
+		}finally{
+			savedTimeout = setTimeout(function(){
+				$("#save").html("Save");
+			}, 2000);
+		}
   });
 }
 

@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"name": "IndieGala Helper 3",
+	"name": "IndieGala Helper",
 	"version": "3.0.0",
 	"applications": {
 		"gecko": {

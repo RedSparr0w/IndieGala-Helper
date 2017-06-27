@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="./include/css/framework7.material.min.css">
   <link rel="stylesheet" href="./options.css">
   <link rel="stylesheet" href="./include/css/framework7.material.colors.min.css">
-  <link href="http://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
 </head>
 
 <body id="IGH" class="theme-red layout-dark" style="min-height:450px;min-width:400px;">
@@ -100,6 +100,7 @@
                         </div>
                       </div>
                     </li>
+										<a id="refresh_owned" href="#" class="button button-fill button-raised">Reload Owned Games</a>
                     <h2>General</h2>
                     <li>
                       <div class="item-content">
@@ -204,7 +205,20 @@
               </div>
             </div>
             <div id="Tab_BlackListApps" class="page-content tab">
-              <div class="content-block">
+							<div class="list-block">
+								<ul id="app_blacklist">
+									<li>
+										<div class="item-content">
+											<div class="item-inner">
+												<div class="item-title">Nosferatu: The Wrath of Malachi</div>
+												<div class="item-after"><span class="badge"><i class="fa fa-times" aria-hidden="true"></i></span></div>
+											</div>
+										</div>
+									</li>
+								</ul>
+              </div>
+							<div class="content-block">
+								<p class="buttons-row"><a id="backup_blacklist_apps" href="#" class="button button-fill color-blue">Backup</a><a id="restore_blacklist_apps" href="#" class="button button-fill color-green">Restore</a></p>
               </div>
             </div>
             <div id="Tab_BlackListUsers" class="page-content tab">

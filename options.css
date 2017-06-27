@@ -6,6 +6,10 @@
 .page-content.tab {
   height: calc(100vh - 106px);
 }
+.remove{
+	cursor: pointer;
+	font-size: 12px;
+}
 
 /* Now Playing */
 .solid-bg {

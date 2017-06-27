@@ -105,10 +105,28 @@
   border-style: none;
   border-radius: 3px;
 }
+.higher-level {
+  -webkit-filter: blur(2px);
+	filter:blur(2px);
+  transition: 0.5s;
+}
+.higher-level:hover {
+  -webkit-filter: blur(0px);
+	filter:blur(0px);
+}
+.higher-level.owned {
+  -webkit-filter: blur(2px) grayscale(100%);
+	filter:blur(2px) grayscale(100%);
+  transition: 0.5s;
+}
+.higher-level.owned:hover {
+  -webkit-filter: blur(0px) grayscale(0%);
+	filter:blur(0px) grayscale(0%);
+}
 .owned {
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
-  transition: 1s;
+  transition: 0.5s;
 }
 .owned:hover{
   -webkit-filter: grayscale(0%);
@@ -206,7 +224,7 @@
   position: relative;
 }
 .ticket-left:hover > .mark-as-owned{
-  left:-93px;
+  left:-83px;
 }
 .mark-as-owned {
   position: absolute;

@@ -22,6 +22,11 @@
 			"matches": ["https://www.indiegala.com/*"],
 			"js": ["indiegala.js"],
 			"run_at": "document_idle"
+		},
+		{
+			"matches": ["https://www.indiegala.com/giveaways*"],
+			"exclude_matches": ["https://www.indiegala.com/giveaways/detail*"],
+			"js": ["indiegala_giveaways.js"]
 		}
 	],
 	"background": {

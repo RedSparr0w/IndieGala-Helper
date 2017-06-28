@@ -60,7 +60,7 @@ $$('.panel-right').on('close', function () {
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
-	if (!!force_update || settings.steam_id.length == 17 && Number(local_settings.owned_apps_last_update) > (new Date().getTime() - (24 * 60 * 60 * 1000)) ){//check if we have a steamID & see how long ago we checked (24 hours)
+	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) > (new Date().getTime() - (24 * 60 * 60 * 1000))) ){//check if we have a steamID & see how long ago we checked (24 hours)
 		$.ajax({
 			dataType:"json",
 			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=" + settings.steam_id + "&include_appinfo=0&include_played_free_games=1",
@@ -152,7 +152,7 @@ function save_options(type = 'sync') {
 function restore_options() {
    let themeClassList = $$('body')[0].classList;
   // Use default value (settings obj) if option not set
-  chrome.storage.sync.get(settings, function(setting) {
+  chrome.storage.sync.get(settings, function(setting){
     for (let i = themeClassList.length-1; i >= 0 ; i--){
       if (themeClassList[i].indexOf('layout-') === 0) themeClassList.remove(themeClassList[i]);
       if (themeClassList[i].indexOf('theme') === 0) themeClassList.remove(themeClassList[i]);
@@ -185,15 +185,17 @@ function restore_options() {
 				save_options('sync');
 			});
 		}
-		// Check Owned Apps
-		getOwnedGames();
-		document.getElementById('refresh_owned').addEventListener('click', function(){
-			getOwnedGames(true);
-		});
 		// Blacklist stuff
 		list_blacklisted_apps();
 		$(document).on("click",".remove",function(){
 			remove_blacklist_app(this);
+		});
+  });
+  chrome.storage.local.get(local_settings, function(setting){
+		// Check Owned Apps
+		getOwnedGames();
+		document.getElementById('refresh_owned').addEventListener('click', function(){
+			getOwnedGames(true);
 		});
   });
 }

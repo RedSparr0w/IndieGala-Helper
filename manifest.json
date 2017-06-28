@@ -24,9 +24,25 @@
 			"run_at": "document_idle"
 		},
 		{
+			"matches": ["https://www.indiegala.com/profile*"],
+			"js": ["indiegala_profile.js"]
+		},
+		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
 			"exclude_matches": ["https://www.indiegala.com/giveaways/detail*"],
 			"js": ["indiegala_giveaways.js"]
+		},
+		{
+			"matches": ["https://www.indiegala.com/*"],
+			"exclude_matches": [
+				"https://www.indiegala.com/",
+				"https://www.indiegala.com/giveaways*",
+				"https://www.indiegala.com/trades*",
+				"https://www.indiegala.com/forums*",
+				"https://www.indiegala.com/profile*",
+				"https://www.indiegala.com/store*"
+			],
+			"js": ["indiegala_bundles.js"]
 		}
 	],
 	"background": {

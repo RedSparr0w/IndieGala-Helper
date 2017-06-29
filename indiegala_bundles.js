@@ -32,9 +32,8 @@ function showOwnedGames(){
 	});
   // Mark owned games
 	$.each(bundleApps,function(i, app_id){
-    console.log(app_id);
 		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			$("[src$='"+v+".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
+			$("[src$='" + app_id + ".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
 		}
 	});
 }

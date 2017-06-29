@@ -70,13 +70,14 @@ $('#OpenIndieGalaHelper').on('click', function(){
 
 // Push to hidden apps
 function markAsOwned(e){
-	var el = $(e).parents('.ticket-cont');
+	var el = $(e).parents('.tickets-col');
 	var app_id = el.find('.giveaway-game-id').val();
 	var app_name = el.find('img').attr('alt');
 	// if not a string OR less than 1 char long then do nothing (avoid nulls)
 	if (typeof app_id !== "string" || app_id.length < 1){
 		return;
 	}
+	$('input[value="' + app_id + '"]').parents(".tickets-col").remove();
 	settings.blacklist_apps[app_id] = app_name;
 	chrome.storage.sync.set(settings);
 }
@@ -110,6 +111,16 @@ function get_user_level(){
 		}
 	});
 }
+
+// Supress confirm message when getting key
+if (!!settings.suppress_confirm_show_key_dialog)
+$("[id*=fetchlink]").on('click', function(){
+	var realConfirm=window.confirm;
+	window.confirm=function(){
+		window.confirm=realConfirm;
+		return true;
+	};
+})
 
 $('#importHiddenApps').on("change",function() {
   var files = document.getElementById('importHiddenApps').files;

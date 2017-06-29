@@ -30,6 +30,7 @@ function showOwnedGames(){
 	
 	$('.tickets-col:not(.checked)').each(function(i){
 		let app_id = Number($(this).find('.giveaway-game-id').val());
+		let app_name = $(this).find('img').attr('alt');
 		let giveaway_level = Number($(this).find('.type-level-cont').text().match('[0-9]+')[0]);
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
@@ -41,6 +42,11 @@ function showOwnedGames(){
 			}else{
 				$(this).addClass("higher-level");
 			}
+		}
+		// Remove If Soundtrack
+		if (!!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
+			$(this).remove();
+			return;
 		}
 		// Remove If Blacklisted
 		if (typeof settings.blacklist_apps[app_id] != "undefined"){
@@ -61,7 +67,7 @@ function showOwnedGames(){
 	});
 	
 	$('img').on('error', function(){
-		$(this).attr('src','/img/trades/img_not_available.png');
+		$(this).attr('src','http://i.imgur.com/eMShBmW.png');
 	});
 	
 	// Allow entry from main page
@@ -72,7 +78,7 @@ function showOwnedGames(){
   
 	//If less than 2 apps on page & inifiniteScroll then load next page
   if (!!settings.infinite_scroll) {
-		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
 	} else {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
 		$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });

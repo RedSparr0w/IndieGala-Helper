@@ -3,6 +3,8 @@ var settings = {
   theme_color: "red",
   steam_id: "",
   show_steam_activate_window: true,
+	suppress_confirm_show_key_dialog: true,
+	hide_soundtracks: true,
   hide_high_level_giveaways: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
@@ -60,7 +62,7 @@ $$('.panel-right').on('close', function () {
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
-	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) > (new Date().getTime() - (24 * 60 * 60 * 1000))) ){//check if we have a steamID & see how long ago we checked (24 hours)
+	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) < (new Date().getTime() - (24 * 60 * 60 * 1000))) ){//check if we have a steamID & see how long ago we checked (24 hours)
 		$.ajax({
 			dataType:"json",
 			url:"https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=" + settings.steam_id + "&include_appinfo=0&include_played_free_games=1",
@@ -124,6 +126,8 @@ function save_options(type = 'sync') {
 			settings.steam_id = document.getElementById('steam_id').value;
 			settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
 			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
+			settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
+			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
 			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
 			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
 			settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
@@ -163,6 +167,8 @@ function restore_options() {
     document.getElementById('steam_id').value = setting.steam_id;
     document.getElementById('show_steam_activate_window').checked = setting.show_steam_activate_window;
     document.getElementById('hide_high_level_giveaways').checked = setting.hide_high_level_giveaways;
+    document.getElementById('suppress_confirm_show_key_dialog').checked = setting.suppress_confirm_show_key_dialog;
+    document.getElementById('hide_soundtracks').checked = setting.hide_soundtracks;
     document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;
     document.getElementById('infinite_scroll').checked = setting.infinite_scroll;
@@ -193,6 +199,7 @@ function restore_options() {
   });
   chrome.storage.local.get(local_settings, function(setting){
 		// Check Owned Apps
+		local_settings = setting;
 		getOwnedGames();
 		document.getElementById('refresh_owned').addEventListener('click', function(){
 			getOwnedGames(true);

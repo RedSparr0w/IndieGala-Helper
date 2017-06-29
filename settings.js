@@ -3,6 +3,8 @@ var settings = {
   theme_color: "red",
   steam_id: "",
   show_steam_activate_window: true,
+	suppress_confirm_show_key_dialog: true,
+	hide_soundtracks: true,
   hide_high_level_giveaways: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
@@ -27,7 +29,7 @@ function refreshSettings(type = 'sync'){
 			});
 			break;
 		case 'local':
-			chrome.storage.local.get(settings, function(setting) {
+			chrome.storage.local.get(local_settings, function(setting) {
 				local_settings = setting;
 			});
 			break;

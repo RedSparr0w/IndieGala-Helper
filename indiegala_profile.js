@@ -1,6 +1,5 @@
 // When "giveaways" -> "in progress" || "completed" is closed then re-opened, get updated data from server
-$(".giveaway-in-progress [rel=in_progress]").attr("onclick","justToggleGivInProgressLib=false;");
-$(".giveaway-completed [rel=completed]").attr("onclick","justToggleGivCompletedLib=false;");
+$(".giveaways-library-cont .open-library[rel=completed]").attr("onclick","justToggleGivCompletedLibToCheck=false;justToggleGivCompletedLibWon=false;justToggleGivCompletedLib=false;openSingleLibDetAjaxSemaphore.tocheck = true;openSingleLibDetAjaxSemaphore.won = true;");
 
 $('.open-new-giveaway-form').on('click', function(){
   $('.open-new-giveaway-form').off('click');

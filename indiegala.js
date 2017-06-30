@@ -113,14 +113,18 @@ function get_user_level(){
 }
 
 // Supress confirm message when getting key
-if (!!settings.suppress_confirm_show_key_dialog)
-$("[id*=fetchlink]").on('click', function(){
-	var realConfirm=window.confirm;
-	window.confirm=function(){
-		window.confirm=realConfirm;
-		return true;
-	};
-})
+if (!!settings.suppress_confirm_show_key_dialog){
+	var el = document.createElement("script");
+	el.innerHTML = `
+		$("[id*=fetchlink]").on('click', function(){
+			var realConfirm=window.confirm;
+			window.confirm=function(){
+				window.confirm=realConfirm;
+				return true;
+			};
+		});`;
+	document.head.appendChild(el);
+}
 
 $('#importHiddenApps').on("change",function() {
   var files = document.getElementById('importHiddenApps').files;

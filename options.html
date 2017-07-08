@@ -233,22 +233,21 @@
             <div id="Tab_BlackListApps" class="page-content tab">
 							<div class="list-block">
 								<ul id="app_blacklist">
-									<li>
-										<div class="item-content">
-											<div class="item-inner">
-												<div class="item-title">Nosferatu: The Wrath of Malachi</div>
-												<div class="item-after"><span class="badge"><i class="fa fa-times" aria-hidden="true"></i></span></div>
-											</div>
-										</div>
-									</li>
 								</ul>
               </div>
 							<div class="content-block">
-								<p class="buttons-row"><a id="backup_blacklist_apps" href="#" class="button button-fill color-blue">Backup</a><a id="restore_blacklist_apps" href="#" class="button button-fill color-green">Restore</a></p>
+								<p class="buttons-row">
+									<a id="backup_blacklist_apps" href="#" class="button button-fill color-blue" style="width:50%">Backup</a>
+									<label for="restore_blacklist_apps" style="width:50%">
+										<a class="button button-fill color-green">Restore</a>
+										<input type="file" id="restore_blacklist_apps" value="Import" accept=".json" style="display:none" />
+									</label>
+								</p>
               </div>
             </div>
             <div id="Tab_BlackListUsers" class="page-content tab">
               <div class="content-block">
+								<h2>Coming Soon</h2>
               </div>
             </div>
           </div>

@@ -105,6 +105,36 @@ function list_blacklisted_apps(){
 	$('#backup_blacklist_apps').attr("href", DLStr).attr("download", "IGH Blacklist_Apps_Backup.json");
 }
 
+$('#restore_blacklist_apps').on("change",function() {
+  var files = document.getElementById('restore_blacklist_apps').files;
+  if (files.length <= 0) {
+    return false;
+  }
+
+  var fr = new FileReader();
+
+  fr.onload = function(e) { 
+    try{
+      hiddenApps = JSON.parse(e.target.result);
+    }catch(e){
+      console.error(e);
+      alert("Something went wrong!\nPlease check you uploaded a valid .json file");
+      return;
+    }
+		console.log(hiddenApps);
+		if (hiddenApps.constructor === Array){
+      alert("You cannot use the old backup file,\nThe structure has changed,\nSorry for this inconvenience.\n- IndieGala Helper");
+      return;
+		}
+    settings.blacklist_apps = hiddenApps;
+    list_blacklisted_apps();
+		save_options('sync');
+    document.getElementById('restore_blacklist_apps').value = "";
+  }
+
+  fr.readAsText(files.item(0));
+});
+
 function remove_blacklist_app(el){
 	let id = $(el).attr('data-id');
 	delete settings.blacklist_apps[id];

@@ -126,27 +126,3 @@ if (!!settings.suppress_confirm_show_key_dialog){
 		});`;
 	document.head.appendChild(el);
 }
-
-$('#importHiddenApps').on("change",function() {
-  var files = document.getElementById('importHiddenApps').files;
-  if (files.length <= 0) {
-    return false;
-  }
-
-  var fr = new FileReader();
-
-  fr.onload = function(e) { 
-    try{
-      hiddenApps = JSON.parse(e.target.result);
-    }catch(e){
-      console.error(e);
-      alert("Something went wrong!\nPlease check you uploaded a valid .json file");
-      return;
-    }
-    localStorage.setItem("hiddenApps",JSON.stringify(hiddenApps.sort()));
-    setHiddenApps();
-    document.getElementById('importHiddenApps').value = "";
-  }
-
-  fr.readAsText(files.item(0));
-});

@@ -111,13 +111,15 @@
   overflow: hidden;
   position: relative;
 }
+.ticket-left .mark-as-owned{
+	left: -105px;
+}
 .ticket-left:hover > .mark-as-owned{
-  left:-83px;
+	left: -83px;
 }
 .mark-as-owned {
   position: absolute;
   top: 0px;
-	left: -83px;
 	z-index: 1;
   color:white;
   background-color: #A70000;
@@ -142,8 +144,11 @@ aside.animated-coupon.checked {
 .trade_box{
   overflow:hidden;
 }
+.trade_img .mark-as-owned{
+  left:-120px;
+}
 .trade_img:hover > .mark-as-owned{
-  left:-109px;
+  left:-98px;
 }
 .trade-cont.left {
   display:none;

@@ -30,7 +30,8 @@ function showOwnedGames(){
 	
 	$('.tickets-col:not(.checked)').each(function(i){
 		let app_id = Number($(this).find('.giveaway-game-id').val());
-		let app_name = $(this).find('img').attr('alt');
+		let app_image = $(this).find('img');
+		let app_name = app_image.attr('alt');
 		let giveaway_level = Number($(this).find('.type-level-cont').text().match('[0-9]+')[0]);
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
@@ -64,6 +65,7 @@ function showOwnedGames(){
 		}
 		// Add link to steam store page
 		$(this).find(".info-row").eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
+		app_image.attr('src', app_image.attr('data-src'));
 	});
 	
 	$('img').on('error', function(){

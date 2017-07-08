@@ -45,8 +45,9 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
 	/* Display notification relaying update */
-	if(!notifyMe('Updated options menu,\nNew options also have been added\n(All options have been reset)\n- v'+version, 'IndieGala Helper Updated')){
-		alert('IndieGala Helper Updated\n' + 'Updated options menu,\nNew options also have been added\n(All options have been reset)\n- v'+version);
+	let update_message = 'New options have been added,\nOptions now sync across computers.\n(All options have been reset!)';
+	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
+		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}
 	//*/
 }

@@ -16,49 +16,71 @@ function getGalaSilver(){
 	}
 }
 getGalaSilver();
+get_user_level();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
 function showOwnedGames(){
 	$('.giv-coupon').addClass('animated-coupon');
 	$('.giv-coupon-link').removeAttr("href");
+	
+	// Remove Entered Giveaways
+	if (!!settings.hide_entered_giveaways){
+		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
+	}
+	
 	$('.tickets-col:not(.checked)').each(function(i){
-		var gameID = $(this).find('.giveaway-game-id').val();
-		if(isNaN(Number(gameID))){
+		let app_id = Number($(this).find('.giveaway-game-id').val());
+		let app_image = $(this).find('img');
+		let app_name = app_image.attr('alt');
+		let giveaway_level = Number($(this).find('.type-level-cont').text().match('[0-9]+')[0]);
+		// Check if app_id is valid
+		if (isNaN(app_id)){ app_id = 0; }
+		// Remove if above users level
+		if (giveaway_level > settings.current_level){
+			if(!!settings.hide_high_level_giveaways){
+				$(this).remove();
+				return;
+			}else{
+				$(this).addClass("higher-level");
+			}
+		}
+		// Remove If Soundtrack
+		if (!!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
+			$(this).remove();
 			return;
 		}
-		if (typeof ownedApps[gameID] != "undefined"){
-			if (localStorage.getItem("hideOwnedGames") === "true" || localStorage.getItem("hideOwnedGames") === true){
+		// Remove If Blacklisted
+		if (typeof settings.blacklist_apps[app_id] != "undefined"){
+			$(this).remove();
+			return;
+		}
+		// Remove/Display If Owned
+		if ( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
+			if (!!settings.hide_owned_games){
 				$(this).remove();
 				return;
 			}else{
 				$(this).addClass("owned");
 			}
 		}
-		$(this).find(".info-row").eq(2).html('<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/'+gameID+'" target="_BLANK">View on Steam &rarr;</a>');
-	});
-	$('img').on('error', function(){
-		$(this).attr('src','/img/trades/img_not_available.png');
+		// Add link to steam store page
+		$(this).find(".info-row").eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
+		app_image.attr('src', app_image.attr('data-src'));
 	});
 	
-	$.each(hiddenApps,function(i,app){
-		$('img[alt="'+app.replace(/"/g,'\\"')+'"]').parents(".tickets-col").remove();
-	})
-	//show unowned / non hidden apps
-	if (localStorage.getItem("hideEnteredGiveaways") === "true" || localStorage.getItem("hideEnteredGiveaways") === true){
-		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
-	}
-	//remove all leftover owned
-	if (localStorage.getItem("hideOwnedGames") === "true" || localStorage.getItem("hideOwnedGames") === true){
-		$('.owned').remove();
-	}
+	$('img').on('error', function(){
+		$(this).attr('src','http://i.imgur.com/eMShBmW.png');
+	});
+	
+	// Allow entry from main page
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
 	
-	//Add button to hide specific apps
-	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
+	// Add button to add to blacklist
+	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
   
 	//If less than 2 apps on page & inifiniteScroll then load next page
-  if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("infiniteScroll") === true) {
-		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 2 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+  if (!!settings.infinite_scroll) {
+		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
 	} else {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
 		$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });
@@ -111,10 +133,10 @@ function nextPage(){
 loadingPage=true;
 
 // Check we have latest list of owned games
-getOwnedGames(showOwnedGames);
+showOwnedGames();
 
 // If infinite scroll is checked then listen to scroll event and load more pages as needed
-if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("infiniteScroll") === true){
+if (!!settings.infinite_scroll){
 	$(window).scroll(function() {
 		if (loadingPage===false){
 			var hT = $('.page-nav').eq(1).offset().top,
@@ -129,7 +151,7 @@ if (localStorage.getItem("infiniteScroll") === "true" || localStorage.getItem("i
 }
 
 // Add apps to hidden apps list
-$(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);showOwnedGames();});
+$(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);/*showOwnedGames();*/});
 // Enter Giveaways without opening new tabs via ajax
 $(document).on('click','.animated-coupon',function(e){handleCoupons(this);});
 
@@ -157,7 +179,7 @@ function handleCouponError($this, status){
 			break;
 		default:
 			clipTicket = false;
-			errorMsg = 'Error. Try again in a few minutes.';
+			errorMsg = `Error: "${status}". Try again in a few minutes.`;
 	}
 	$('.warning-text span', parentCont).text(errorMsg);
 	warningCover.toggle('clip', function(){
@@ -212,7 +234,7 @@ function handleCoupons(e){
 				}
 			}, 
 			error: function(){ 
-				handleCouponError( $( this ), false );
+				handleCouponError( $( this ), 'unknown error' );
 			}
 		});
 	}

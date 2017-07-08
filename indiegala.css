@@ -28,87 +28,31 @@
   overflow-y: auto;
   background-color: #474747;
 }
-#indiegala-helper a,
-#indiegala-helper a:visited {
-  text-decoration: none;
-  color: #fff;
+.giv-game-img {
+	opacity:1 !important;
 }
-#indiegala-helper .nav>li>a:focus,
-#indiegala-helper .nav-tabs>li.active>a {
-  background-color: #474747;
-  color:#fff;
+.higher-level {
+  -webkit-filter: blur(2px);
+	filter:blur(2px);
+  transition: 0.5s;
 }
-#indiegala-helper .nav>li:not(.active)>a:hover {
-  background-color: #656565;
-  color:#fff;
+.higher-level:hover {
+  -webkit-filter: blur(0px);
+	filter:blur(0px);
 }
-#indiegala-helper .input-wrapper {
-  margin-bottom: 13px;
+.higher-level.owned {
+  -webkit-filter: blur(2px) grayscale(100%);
+	filter:blur(2px) grayscale(100%);
+  transition: 0.5s;
 }
-#indiegala-helper p {
-  text-align: center;
-}
-#IGH_setup input,
-#IGH_setup label {
-  height: 49px;
-  box-shadow: 0 1px 1px #292a32;
-}
-#IGH_setup input:not([type='submit']) {
-  font-weight: 600;
-  box-sizing: border-box;
-  width: 235px;
-  height: 49px;
-  padding-right: 4px;
-  padding-left: 18px;
-  color: #fff;
-  border-style: none;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-  outline-style: none;
-  background-color: #272727;
-}
-#IGH_setup label {
-  display: inline-block;
-  width: 46px;
-  text-align: center;
-  vertical-align: top;
-  color: #606468;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  background-color: #272727;
-}
-#IGH_setup i[class^='fa'] {
-  line-height: 1.2;
-  color: #FFFFFF;
-}
-#IGH_setup ::-webkit-input-placeholder {
-  color: #767a7f;
-}
-#IGH_setup ::-moz-placeholder {
-  color: #767a7f;
-}
-#IGH_setup :-moz-placeholder {
-  color: #767a7f;
-}
-#IGH_setup :-ms-input-placeholder {
-  color: #767a7f;
-}
-#IGH_setup span {
-  color: #85868b;
-}
-#IGH_setup input[type='submit'] {
-  font-weight: 600;
-  width: 280px;
-  margin-top: 14px;
-  text-transform: uppercase;
-  color: #fff;
-  border-style: none;
-  border-radius: 3px;
+.higher-level.owned:hover {
+  -webkit-filter: blur(0px) grayscale(0%);
+	filter:blur(0px) grayscale(0%);
 }
 .owned {
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
-  transition: 1s;
+  transition: 0.5s;
 }
 .owned:hover{
   -webkit-filter: grayscale(0%);
@@ -122,50 +66,12 @@
   float:right;
   font-size:80%;
 }
-#IGH_HiddenGames .input-group-addon.name{
-  width:90%;
-}
-#IGH_HiddenGames .input-group-addon.remove{
-  background-color:#CC001D;
-  color:white;
-  cursor:pointer !important;
-}
 #indiegala-helper-pageloading {
   text-align: center;
   width: 100%;
   margin-top: 80px;
   margin-bottom: 80px;
   color: white;
-}
-#IGH_Options h3{
-  color:white;
-}
-#IGH_Options .input-group{
-  width:100%;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-#IGH_Options .input-group-addon.name{
-  width:90%;
-}
-#IGH_Options label{
-  cursor:pointer !important;
-}
-#IGH_Options input[type=checkbox]{
-  display:none;
-}
-#IGH_Options input[type=checkbox] + span:before{
-  font-family: FontAwesome;
-  content: "\f096";
-  font-size:20px;
-}
-#IGH_Options input[type=checkbox]:checked + span:before{
-  color:green;
-  content: "\f046";
 }
 /* GIVE AWAYS */
 .giveaways-main-page .page-nav{
@@ -205,13 +111,16 @@
   overflow: hidden;
   position: relative;
 }
+.ticket-left .mark-as-owned{
+	left: -105px;
+}
 .ticket-left:hover > .mark-as-owned{
-  left:-93px;
+	left: -83px;
 }
 .mark-as-owned {
   position: absolute;
   top: 0px;
-  left: -100%;
+	z-index: 1;
   color:white;
   background-color: #A70000;
   padding: 5px;
@@ -221,6 +130,9 @@
 }
 .mark-as-owned:hover {
   left: 0px !important;
+}
+aside.animated-coupon.checked {
+	cursor: alias;
 }
 /* TRADES */
 .trade-cont .not-guaranteed-trade{
@@ -232,8 +144,11 @@
 .trade_box{
   overflow:hidden;
 }
+.trade_img .mark-as-owned{
+  left:-120px;
+}
 .trade_img:hover > .mark-as-owned{
-  left:-109px;
+  left:-98px;
 }
 .trade-cont.left {
   display:none;

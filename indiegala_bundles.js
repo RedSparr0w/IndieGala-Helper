@@ -12,10 +12,10 @@ function showOwnedGames(){
   // Once games loaded to page get card values
 	$('.carousel-game-item').each(function(i){
 		var cardsValue = 0;
-		var gameID = $(this).attr('rel');
-		bundleApps.push(gameID);
+		var app_id = Number($(this).attr('rel'));
+		bundleApps.push(app_id);
 		$.ajax({
-			url: "https://api.enhancedsteam.com/market_data/card_prices/?cur=usd&appid="+gameID,
+			url: "https://api.enhancedsteam.com/market_data/card_prices/?cur=usd&appid="+app_id,
 			success: function(result){
 				if (typeof result !== "object"){
 					return;
@@ -26,17 +26,15 @@ function showOwnedGames(){
 					}
 				});
 				var discount = Number((cardsValue/2).toFixed(2));
-				$("[src$='"+gameID+".jpg']").parents(".bundle-item-padding").find('.palette-background-1').append(' ($'+discount.toFixed(2)+")");
+				$("[src$='"+app_id+".jpg']").parents(".bundle-item-padding").find('.palette-background-1').append(' ($'+discount.toFixed(2)+")");
 			}
 		});
 	});
   // Mark owned games
-	$.each(bundleApps,function(i,v){
-		if(typeof ownedApps[v] != "undefined"){
-			$("[src$='"+v+".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
+	$.each(bundleApps,function(i, app_id){
+		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
+			$("[src$='" + app_id + ".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
 		}
 	});
 }
-
-// Check owned games list is upto date
-getOwnedGames(showOwnedGames);
+showOwnedGames();

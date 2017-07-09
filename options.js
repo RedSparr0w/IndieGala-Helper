@@ -77,11 +77,18 @@ function getOwnedGames(force_update = false){
 				// Set current time as last updated time
 				local_settings.owned_apps_last_update = new Date().getTime();
 				save_options('local');
+				myApp.alert('Owned Games List Updated!<br/>Games Found: ' + ownedApps.length);
 			},
 			error: function(e){
 				// Don't check for atleast another 30 minutes - Steam may be down
 				local_settings.owned_apps_last_update = Number(local_settings.owned_apps_last_update) + (30 * 60 * 1000);
 				save_options('local');
+				myApp.alert('Something went wrong when updating your owned games list, Your IP may be blocked by Cloudflare, You could try using a VPN to get around this.');
+				try{
+					console.error('Owned Games Update Error: ' + e);
+				}catch(err){
+					console.error(err);
+				}
 			}
 		});
 	}

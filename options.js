@@ -1,3 +1,4 @@
+// Set Default Settings
 var settings = {
   theme: "dark",
   theme_color: "red",
@@ -8,6 +9,7 @@ var settings = {
   hide_high_level_giveaways: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
+  hide_above_price: 0,
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
@@ -16,6 +18,7 @@ var settings = {
   blacklist_users: [],
 	current_level: 0
 };
+
 var local_settings = {
 	owned_apps: [],
 	owned_apps_last_update: null
@@ -167,10 +170,11 @@ function save_options(type = 'sync') {
 			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
 			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
 			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
+			settings.hide_above_price = Number(document.getElementById('hide_above_price').value);
 			settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
 			settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
-			settings.new_giveaway_duration = document.getElementById('new_giveaway_duration').value;
-			settings.new_giveaway_level = document.getElementById('new_giveaway_level').value;
+			settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
+			settings.new_giveaway_level = Number(document.getElementById('new_giveaway_level').value);
 			
 			chrome.storage.sync.set(settings, function() {
 				$("#save").html("Saved!");
@@ -208,6 +212,7 @@ function restore_options() {
     document.getElementById('hide_soundtracks').checked = setting.hide_soundtracks;
     document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;
+    document.getElementById('hide_above_price').value = setting.hide_above_price;
     document.getElementById('infinite_scroll').checked = setting.infinite_scroll;
     document.getElementById('new_giveaway_message').value = setting.new_giveaway_message;
     document.getElementById('new_giveaway_duration').value = setting.new_giveaway_duration;

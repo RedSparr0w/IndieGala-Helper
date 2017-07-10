@@ -33,6 +33,8 @@ function showOwnedGames(){
 		let app_image = $(this).find('img');
 		let app_name = app_image.attr('alt');
 		let giveaway_level = Number($(this).find('.type-level-cont').text().match('[0-9]+')[0]);
+    let giveaway_price = Number($(this).find('.ticket-price strong').text());
+    
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
 		// Remove if above users level
@@ -43,6 +45,11 @@ function showOwnedGames(){
 			}else{
 				$(this).addClass("higher-level");
 			}
+		}
+		// Remove if above defined price
+		if (!!settings.hide_above_price && giveaway_price > settings.hide_above_price){
+      $(this).remove();
+      return;
 		}
 		// Remove If Soundtrack
 		if (!!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
@@ -65,6 +72,7 @@ function showOwnedGames(){
 		}
 		// Add link to steam store page
 		$(this).find(".info-row").eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
+    // Show app image
 		app_image.attr('src', app_image.attr('data-src'));
 	});
 	

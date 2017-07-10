@@ -1,3 +1,4 @@
+// Set Default Settings
 var settings = {
   theme: "dark",
   theme_color: "red",
@@ -8,6 +9,7 @@ var settings = {
   hide_high_level_giveaways: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
+  hide_above_price: 0,
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
@@ -16,6 +18,7 @@ var settings = {
   blacklist_users: [],
 	current_level: 0
 };
+
 var local_settings = {
 	owned_apps: [],
 	owned_apps_last_update: null

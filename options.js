@@ -5,8 +5,9 @@ var settings = {
   steam_id: "",
   show_steam_activate_window: true,
 	suppress_confirm_show_key_dialog: true,
-	hide_soundtracks: true,
+  auto_enter_giveaways: false,
   hide_high_level_giveaways: true,
+	hide_soundtracks: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
   hide_above_price: 0,
@@ -165,8 +166,9 @@ function save_options(type = 'sync') {
 		case 'sync':
 			settings.steam_id = document.getElementById('steam_id').value;
 			settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
-			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
 			settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
+			settings.auto_enter_giveaways = document.getElementById('auto_enter_giveaways').checked;
+			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
 			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
 			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
 			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
@@ -207,8 +209,9 @@ function restore_options() {
     themeClassList.add('theme-' + setting.theme_color);
     document.getElementById('steam_id').value = setting.steam_id;
     document.getElementById('show_steam_activate_window').checked = setting.show_steam_activate_window;
-    document.getElementById('hide_high_level_giveaways').checked = setting.hide_high_level_giveaways;
     document.getElementById('suppress_confirm_show_key_dialog').checked = setting.suppress_confirm_show_key_dialog;
+    document.getElementById('auto_enter_giveaways').checked = setting.auto_enter_giveaways;
+    document.getElementById('hide_high_level_giveaways').checked = setting.hide_high_level_giveaways;
     document.getElementById('hide_soundtracks').checked = setting.hide_soundtracks;
     document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;

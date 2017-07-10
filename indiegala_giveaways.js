@@ -10,7 +10,7 @@ $('.page-nav').parent().clone().insertAfter('.sort-menu');
 function getGalaSilver(){
 	try{
 		var galaSilver = Number($('.account-galamoney').html().match(/\d+/)[0]);
-    $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>'+galaSilver+'</strong><span> <img src="/img/gala-silver.png"/></span></div>');
+    $('body').append(`<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>${galaSilver}</strong><span> <img src="/img/gala-silver.png"/></span></div>`);
 	}catch(e){
     setTimeout(getGalaSilver, 1000);
 	}
@@ -95,22 +95,14 @@ function showOwnedGames(){
 	}
 }
 
-/* BROKEN CURRENTLY
-if (localStorage.getItem("autoEnterGiveaways") === "true" || localStorage.getItem("autoEnterGiveaways") === true){
+// Auto enter giveaways
+if (!!settings.auto_enter_giveaways){
   setInterval(function(){
     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-      try{
-        $('.animated-coupon').eq(0).click();
-      }catch(e){
-        console.error(e);
-      }
+      $('.animated-coupon').length > 0 ? $('.animated-coupon').eq(0).click() : (!loadingPage ? nextPage() : false);
     }
-    if ($('.animated-coupon').length <= 0){
-      nextPage();
-    }
-  },5000);
+  }, 3000);
 }
-*/
 
 // Load next page via ajax
 function nextPage(){
@@ -138,7 +130,7 @@ function nextPage(){
 }
 
 // Set loading page as true, will be set to false once "showOwnedGames" is processed
-loadingPage=true;
+var loadingPage = true;
 
 // Check we have latest list of owned games
 showOwnedGames();

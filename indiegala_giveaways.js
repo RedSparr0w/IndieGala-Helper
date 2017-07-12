@@ -99,7 +99,7 @@ function showOwnedGames(){
 if (!!settings.auto_enter_giveaways){
   setInterval(function(){
     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-      $('.animated-coupon').length > 0 ? $('.animated-coupon').eq(0).click() : (!loadingPage ? nextPage() : false);
+      $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loadingPage ? nextPage() : false);
     }
   }, 3000);
 }

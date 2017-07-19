@@ -97,13 +97,14 @@ setInterval(function(){
 // Load next page via ajax
 function nextPage(){
 		loading_page=true;
-		$('#indiegala-helper-pageloading').slideDown(250);
-		page++;
 		var url_address = $('a.prev-next').eq(2).attr('href');
-		if (typeof url_address == "undefined"){
+		// If last page or undefined url return
+		if (typeof url_address == "undefined" || url_address == location.pathname){
 			$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
 			return;
 		}
+		
+		$('#indiegala-helper-pageloading').slideDown(250);
 		var url_attr = url_address.split('/');
 		var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
 		var settings = {
@@ -125,7 +126,6 @@ function nextPage(){
 
 // Set loading page as true, will be set to false once "showOwnedGames" is processed
 var loading_page = true;
-var page = Number($('.page-nav .palette-background-5').html());
 var page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways

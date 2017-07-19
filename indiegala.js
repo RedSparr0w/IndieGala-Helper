@@ -45,7 +45,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem("version") != version){
 	localStorage.setItem("version",version);
 	/* Display notification relaying update */
-	let update_message = 'New options have been added,\nOptions now sync across computers.\n(All options have been reset!)';
+	let update_message = 'Auto Enter Giveaways!\n(Slow and steady wins the race)\nps: please stop changing things indiegala ツ';
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}

@@ -1,12 +1,3 @@
-// Remove Indiegalas "Owned Games" overlay
-$('.on-steam-library-text').remove();
-// Show current coin balance
-
-// Add infinite page loading spinner
-$('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
-// Show page numbers at bottom of page aswell
-$('.page-nav').parent().clone().insertAfter('.sort-menu');
-
 function getGalaSilver(){
 	try{
 		var galaSilver = Number($('.account-galamoney').html().match(/\d+/)[0]);
@@ -15,7 +6,6 @@ function getGalaSilver(){
     setTimeout(getGalaSilver, 1000);
 	}
 }
-getGalaSilver();
 get_user_level();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
@@ -33,8 +23,8 @@ function showOwnedGames(){
 		let app_image = $(this).find('img');
 		let app_name = app_image.attr('alt');
 		let giveaway_level = Number($(this).find('.type-level-cont').text().match('[0-9]+')[0]);
-    let giveaway_price = Number($(this).find('.ticket-price strong').text());
-    
+		let giveaway_price = Number($(this).find('.ticket-price strong').text());
+		
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
 		// Remove if above users level
@@ -48,8 +38,8 @@ function showOwnedGames(){
 		}
 		// Remove if above defined price
 		if (!!settings.hide_above_price && giveaway_price > settings.hide_above_price){
-      $(this).remove();
-      return;
+			$(this).remove();
+			return;
 		}
 		// Remove If Soundtrack
 		if (!!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
@@ -72,7 +62,7 @@ function showOwnedGames(){
 		}
 		// Add link to steam store page
 		$(this).find(".info-row").eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
-    // Show app image
+		// Show app image
 		app_image.attr('src', app_image.attr('data-src'));
 	});
 	
@@ -88,38 +78,42 @@ function showOwnedGames(){
   
 	//If less than 2 apps on page & inifiniteScroll then load next page
   if (!!settings.infinite_scroll) {
-		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loadingPage=false;});
+		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
 	} else {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
-		$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });
+		$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
 	}
 }
 
 // Auto enter giveaways
-if (!!settings.auto_enter_giveaways){
-  setInterval(function(){
+setInterval(function(){
+	if (!!page_loaded && !!settings.auto_enter_giveaways){
     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-      $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loadingPage ? nextPage() : false);
+      $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
     }
-  }, 3000);
-}
+	}
+}, 3000);
 
 // Load next page via ajax
 function nextPage(){
-		loadingPage=true;
+		loading_page=true;
 		$('#indiegala-helper-pageloading').slideDown(250);
-		var url = $('.prev-next').eq(2).attr('href');
-		if (typeof url == "undefined"){
-			$('#indiegala-helper-pageloading').slideUp( function(){ loadingPage=false; });
+		page++;
+		var url_address = $('a.prev-next').eq(2).attr('href');
+		if (typeof url_address == "undefined"){
+			$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
 			return;
 		}
+		var url_attr = url_address.split('/');
+		var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
 		var settings = {
+			dataType: 'json',
 			processData:false,
 			success: function(data) {
-				var main = $('.giveaways-main-page',data);
-				$('.tickets-row').append($('.tickets-col', main));
-				$('.page-nav').parent().html($('.page-nav', main));
-				history.replaceState('data', '', 'https://www.indiegala.com'+url);
+				data = $.parseHTML(data.content);
+				$('.tickets-row').append($('.tickets-col', data));
+				$('.page-nav').parent().html($('.page-nav', data));
+				history.replaceState('data', '', 'https://www.indiegala.com' + url_address);
 				showOwnedGames();
 			},
 			error: function() {
@@ -130,15 +124,34 @@ function nextPage(){
 }
 
 // Set loading page as true, will be set to false once "showOwnedGames" is processed
-var loadingPage = true;
+var loading_page = true;
+var page = Number($('.page-nav .palette-background-5').html());
+var page_loaded = false;
 
-// Check we have latest list of owned games
-showOwnedGames();
+// Wait until indiegala loads the initial giveaways
+var wait_for_page = setInterval(function(){
+	if($('.tickets-col').length >= 24){
+		clearInterval(wait_for_page);
+		page_loaded = true;
+		// Remove Indiegalas Placeholder Giveaways
+		$('.giv-placeholder').remove();
+		// Remove Indiegalas "Owned Games" overlay
+		$('.on-steam-library-text').remove();
+		// Show current coin balance
+		getGalaSilver();
+		// Add infinite page loading spinner
+		$('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
+		// Show page numbers at top & bottom of page
+		$('.page-nav').parent().clone().insertAfter('.sort-menu');
+		// Show/Remove giveaways based on user settings
+		showOwnedGames();
+	}
+}, 500);
 
 // If infinite scroll is checked then listen to scroll event and load more pages as needed
 if (!!settings.infinite_scroll){
 	$(window).scroll(function() {
-		if (loadingPage===false){
+		if (loading_page===false){
 			var hT = $('.page-nav').eq(1).offset().top,
 				hH = $('.page-nav').eq(1).outerHeight(),
 				wH = $(window).height(),

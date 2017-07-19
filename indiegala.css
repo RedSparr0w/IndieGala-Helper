@@ -158,13 +158,49 @@ aside.animated-coupon.checked {
   margin-right:0px !important;
 }
 /* PROFILE */
-#checkAllGiveaways, #reloadCompletedGiveaways{
-  font-weight: 600;
-  width: 200px;
-  text-transform: uppercase;
-  color: #fff;
-  border-style: none;
-  border-radius: 3px;
+.span-key {
+	position: relative;
+	overflow: hidden;
+}
+.span-key .donate_indiegala_helper {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	color: rgb(52, 152, 219);
+	cursor: pointer;
+	height: 24px;
+	line-height: 10px;
+	padding: 3px 10px;
+}
+.span-key .donate-text-view {
+	left: -173px;
+	top: -1px;
+	height: 24px;
+	line-height: 6px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 6px 0px;
+}
+.donate_indiegala_helper {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	color: rgb(52, 152, 219);
+	cursor: pointer;
+}
+.donate-text-view {
+	position: absolute;
+	top: 0px;
+	left: -167px;
+	height: 33px;
+	line-height: 15px;
+	padding: 9px;
+	display: none;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+.donate_indiegala_helper:hover > .donate-text-view{
+	display: block;
 }
 i.fa.fa-thumbs-down {
   color: #c0392b;

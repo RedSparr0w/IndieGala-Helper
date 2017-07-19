@@ -3,12 +3,12 @@ const version = chrome.runtime.getManifest().version;
 var hiddenApps = [];
 
 // Create Notifications
-function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/img/og_image/indiegala_icon.jpg",closeOnClick=true) {//set title and icon if not included
+function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg',closeOnClick=true) {//set title and icon if not included
 	let notification = false;
 	if (!("Notification" in window)) {//check if notifications supported
 		return notification;
 	}
-	else if (Notification.permission === "granted") {//check if notifications permission granted
+	else if (Notification.permission === 'granted') {//check if notifications permission granted
 		notification = new Notification(title,{body:body,icon:icon});
 		if (!!closeOnClick){
 			notification.onclick = function(){
@@ -19,7 +19,7 @@ function notifyMe(body,title="IndieGala Helper",icon="https://www.indiegala.com/
 	}
 	else if (Notification.permission !== 'denied') {//check that permissions are not denied
 		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
-			if (permission === "granted") {//if permission granted create notification
+			if (permission === 'granted') {//if permission granted create notification
 				notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
 					notification.onclick = function(){
@@ -42,10 +42,10 @@ if (localStorage.getItem("version")===null){
 		}
 	});
 	//*/
-} else if (localStorage.getItem("version") != version){
-	localStorage.setItem("version",version);
+} else if (localStorage.getItem('version') != version){
+	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = 'Auto Enter Giveaways!\n(Slow and steady wins the race)\nps: please stop changing things indiegala ツ';
+	let update_message = 'Auto Enter Giveaways!\n(Slow and steady wins the race)\nDonate keys, Max Participants ツ';
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}
@@ -78,13 +78,13 @@ function markAsOwned(e){
 	if (typeof app_id !== "string" || app_id.length < 1){
 		return;
 	}
-	$('input[value="' + app_id + '"]').parents(".tickets-col").remove();
+	$('input[value="' + app_id + '"]').parents('.tickets-col').remove();
 	settings.blacklist_apps[app_id] = app_name;
 	chrome.storage.sync.set(settings);
 }
 
 // When game key clicked, select the whole key and copy to clipboard
-$(document).on("click","input.keys , .serial-won input",function(){
+$(document).on('click','input.keys , .serial-won input',function(){
 	try{
 		$(this).select();
 		document.execCommand('copy');
@@ -95,6 +95,43 @@ $(document).on("click","input.keys , .serial-won input",function(){
 	}catch(e){
 		return;
 	}
+});
+
+// Add donate key button
+setInterval(function(){
+	$('.serial-won input:not(.checked)').each(function(i){
+		$(this).after(`
+		<div class="entry-elem align-c donate_indiegala_helper">
+			<i class="fa fa-coffee" aria-hidden="true"></i>
+			<div class="donate-text-view"><p>Donate to IndieGala Helper!</p></div>
+		</div>
+		`);
+		$(this).addClass('checked');
+	});
+	$('input.keys:not(.checked)').each(function(i){
+		$(this).after(`
+		<div class="entry-elem align-c donate_indiegala_helper">
+			<i class="fa fa-coffee" aria-hidden="true"></i>
+			<div class="donate-text-view"><p>Donate to IndieGala Helper!</p></div>
+		</div>
+		`);
+		$(this).addClass('checked');
+	});
+}, 500);
+
+// Send key to redsparr0w on donate key click
+$(document).on('click','.donate_indiegala_helper',function(){
+	let data = {};
+	let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
+	data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
+	data.product_key = $('input', el).val();
+	data.user = settings.steam_id;
+	$.post('https://indiegala.redsparr0w.com/donate',data,function(data, success){
+		if(success == 'success')
+			el.remove();
+		
+		notifyMe(data.msg);
+	});
 });
 
 function get_user_level(){
@@ -115,7 +152,7 @@ function get_user_level(){
 
 // Supress confirm message when getting key
 if (!!settings.suppress_confirm_show_key_dialog){
-	var el = document.createElement("script");
+	var el = document.createElement('script');
 	el.innerHTML = `
 		$("[id*=fetchlink]").on('click', function(){
 			var realConfirm=window.confirm;

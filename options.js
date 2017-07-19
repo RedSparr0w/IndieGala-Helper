@@ -11,6 +11,7 @@ var settings = {
   hide_owned_games: true,
   hide_entered_giveaways: true,
   hide_above_price: 0,
+  hide_above_participants: 0,
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
@@ -173,6 +174,7 @@ function save_options(type = 'sync') {
 			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
 			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
 			settings.hide_above_price = Number(document.getElementById('hide_above_price').value);
+			settings.hide_above_participants = Number(document.getElementById('hide_above_participants').value);
 			settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
 			settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
 			settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
@@ -216,6 +218,7 @@ function restore_options() {
     document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;
     document.getElementById('hide_above_price').value = setting.hide_above_price;
+    document.getElementById('hide_above_participants').value = setting.hide_above_participants;
     document.getElementById('infinite_scroll').checked = setting.infinite_scroll;
     document.getElementById('new_giveaway_message').value = setting.new_giveaway_message;
     document.getElementById('new_giveaway_duration').value = setting.new_giveaway_duration;

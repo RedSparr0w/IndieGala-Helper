@@ -204,7 +204,10 @@ function handleCouponError($this, status){
 	warningCover.toggle('clip', function(){
 		setTimeout( function(){ warningCover.toggle('clip') }, 4000);
 		if (clipTicket === true){
-			$this.remove();
+			$this.css('right','-50px').css('opacity','0');
+			setTimeout(function(){
+				$this.remove();
+			}, 500);
 		}
 	});
 }
@@ -217,13 +220,11 @@ function handleCoupons(e){
 	
 	if ( $this.hasClass( 'low-coins' ) ){ 
 		handleCouponError($this, 'insufficient_credit'); 
-		$( this ).animate({
-			right: "+=-100",
-			opacity: 0,
-		}, 500, function(){
-			$( this ).remove();
-			return false;
-		});
+		$this.css('right','-50px').css('opacity','0');
+		setTimeout(function(){
+			$this.remove();
+		}, 500);
+		return false;
 	}else{
 		var parentCont 			= $this.parent().parent().parent();
 		var ticketPrice 		= $( '.ticket-price strong', parentCont ).text();
@@ -242,12 +243,10 @@ function handleCoupons(e){
 				if ( data['status'] == 'ok' ){ 
 					$( '.coins-amount strong' ).text( data['new_amount'] );
 					$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
-					$( this ).animate({
-						right: "+=-100",
-						opacity: 0,
-					}, 500, function(){
-						$( this ).remove();
-					});
+					$this.css('right','-50px').css('opacity','0');
+					setTimeout(function(){
+						$this.remove();
+					}, 500);
 				}else{ 
 					handleCouponError( $( this ), data['status'] );
 				}

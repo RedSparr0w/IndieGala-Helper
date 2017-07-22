@@ -45,7 +45,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = 'Auto Enter Giveaways!\n(Slow and steady wins the race)\nDonate keys, Max Participants ツ';
+	let update_message = 'Minor Fixes.\nBigger app blacklist coming soon.';
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}

@@ -211,3 +211,8 @@ i.fa.fa-thumbs-up {
 i.fa.fa-check{
   color: #2980b9
 }
+
+/* FIXES */
+#ajax-giv-list-cont {
+  position: relative !important;
+}

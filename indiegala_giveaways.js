@@ -1,10 +1,25 @@
 function getGalaSilver(){
-	try{
-		var galaSilver = Number($('.account-galamoney').html().match(/\d+/)[0]);
-    $('body').append(`<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>${galaSilver}</strong><span> <img src="/img/gala-silver.png"/></span></div>`);
-	}catch(e){
-    setTimeout(getGalaSilver, 1000);
-	}
+  $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
+  $.ajax({
+    type: 'GET',
+    url: '/get_user_info?',
+    data: {
+      'uniq_param': (new Date()).getTime(),
+      'show_coins': 'True'
+    },
+    cache: false,
+    dataType: 'json',
+    success: function(data) {
+      if (data.status === 'ok') {
+        $('#indiegala-helper-coins strong').text(data.silver_coins_tot);
+      } else {
+        $('#indiegala-helper-coins').text(data.status.replace('_', ' '));
+      }
+    },
+    error: function(xhr, ajaxOptions, thrownError){
+      $('#indiegala-helper-coins').text('error');
+    }
+  });
 }
 get_user_level();
 

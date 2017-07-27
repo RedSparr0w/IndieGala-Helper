@@ -1,6 +1,6 @@
 function getGalaSilver(){
 	try{
-		var galaSilver = Number($('.account-galamoney').html().match(/\d+/)[0]);
+		var galaSilver = Number($('.account-galamoney').eq(1).html().match(/\d+/)[0]);
     $('body').append(`<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong>${galaSilver}</strong><span> <img src="/img/gala-silver.png"/></span></div>`);
 	}catch(e){
     setTimeout(getGalaSilver, 1000);

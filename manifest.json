@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "3.2.2",
+	"version": "3.2.3",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"

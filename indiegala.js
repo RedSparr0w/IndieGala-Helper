@@ -45,7 +45,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Minor Fixes.\n"Auto Join" should be working again.`;
+	let update_message = `More Fixes!`;
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}

@@ -121,17 +121,19 @@ setInterval(function(){
 
 // Send key to redsparr0w on donate key click
 $(document).on('click','.donate_indiegala_helper',function(){
-	let data = {};
-	let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
-	data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
-	data.product_key = $('input', el).val();
-	data.user = settings.steam_id;
-	$.post('https://indiegala.redsparr0w.com/donate',data,function(data, success){
-		if(success == 'success')
-			el.remove();
-		
-		notifyMe(data.msg);
-	});
+	if (confirm("Are you sure you want to donate this steam key to IndieGala Helper?")) {
+		let data = {};
+		let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
+		data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
+		data.product_key = $('input', el).val();
+		data.user = settings.steam_id;
+		$.post('https://indiegala.redsparr0w.com/donate',data,function(data, success){
+			if(success == 'success')
+				el.remove();
+
+			notifyMe(data.msg);
+		});
+	}
 });
 
 function get_user_level(){

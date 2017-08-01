@@ -2,9 +2,9 @@ function getGalaSilver(){
   $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
   $.ajax({
     type: 'GET',
-    url: '/get_user_info?',
+    url: 'https://www.indiegala.com/get_user_info',
     data: {
-      'uniq_param': (new Date()).getTime(),
+      'uniq_param': new Date().getTime(),
       'show_coins': 'True'
     },
     cache: false,
@@ -249,7 +249,7 @@ function handleCoupons(e){
 
 		$.ajax({
 			type: "POST",
-			url: '/giveaways/new_entry',
+			url: 'https://www.indiegala.com/giveaways/new_entry',
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			data: JSON.stringify(data_to_send),

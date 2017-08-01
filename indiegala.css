@@ -61,8 +61,8 @@
 .owned .bundle-item-cont:hover{
   opacity: 0.8;
 }
-.owned .bundle-item-header:after{
-  content:"(owned)";
+.owned .bundle-item-trading-cards-cont:after{
+  content:"(OWNED)";
   float:right;
   font-size:80%;
 }

@@ -2,39 +2,42 @@ var bundleApps = [];
 
 // Mark owned games and get values of cards
 function showOwnedGames(){
-  // Wait for games to be loaded into the page
+	// Wait for page to load games
 	if ($('.carousel-game-item').length <= 0){
 		setTimeout(function(){
 			showOwnedGames();
 		},1000);
 		return;
 	}
-  // Once games loaded to page get card values
+	// Once games loaded to page get app ids
 	$('.carousel-game-item').each(function(i){
-		var cardsValue = 0;
-		var app_id = Number($(this).attr('rel'));
+		let apps_total_cards_value = 0;
+		let app_id = Number($(this).attr('rel'));
+		
+		// Mark games as owned
+		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
+			$(`[src$='${app_id}.jpg']`).parents(".bundle-item-container").parent().addClass("owned");
+		}
+		
+		// Get card values
 		bundleApps.push(app_id);
 		$.ajax({
-			url: "https://api.enhancedsteam.com/market_data/card_prices/?cur=usd&appid="+app_id,
+			url: "https://api.enhancedsteam.com/market_data/card_prices/?appid="+app_id,
 			success: function(result){
 				if (typeof result !== "object"){
 					return;
 				}
 				$.each(result,function(index,value){
 					if (value.game.indexOf("Foil") <= 0) {
-						cardsValue += Number(value.price);
+						apps_total_cards_value += Number(value.price);
 					}
 				});
-				var discount = Number((cardsValue/2).toFixed(2));
-				$("[src$='"+app_id+".jpg']").parents(".bundle-item-padding").find('.palette-background-1').append(' ($'+discount.toFixed(2)+")");
+				
+				// Divide the total by 2 as you get half the total cards as free drops
+				let discount = Number((apps_total_cards_value/2).toFixed(2));
+				$(`[src$='${app_id}.jpg']`).parents(".bundle-item-padding").find("span[class^='trading-']").append(' ($'+discount.toFixed(2)+")");
 			}
 		});
-	});
-  // Mark owned games
-	$.each(bundleApps,function(i, app_id){
-		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			$("[src$='" + app_id + ".jpg']").parents(".bundle-item-cont").parent().addClass("owned");
-		}
 	});
 }
 showOwnedGames();

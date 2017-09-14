@@ -88,7 +88,7 @@ function showOwnedGames(){
 	});
 	
 	$('img').on('error', function(){
-		$(this).attr('src','http://i.imgur.com/eMShBmW.png');
+		$(this).attr('src','//i.imgur.com/eMShBmW.png');
 	});
 	
 	// Allow entry from main page

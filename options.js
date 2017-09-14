@@ -26,6 +26,20 @@ var local_settings = {
 	owned_apps_last_update: null
 }
 
+if (/firefox/i.test(navigator.userAgent)){
+   window.oldGetComputedStyle = window.getComputedStyle;
+   window.getComputedStyle = function (element, pseudoElt) {
+      var t = window.oldGetComputedStyle(element, pseudoElt);
+      if (t === null) {
+         return {
+            getPropertyValue: function(){}
+         };
+      } else{
+         return t;
+      }
+   };
+}
+
 // Init Framework 7 App
 var myApp = new Framework7({
     modalTitle: 'IndieGala Helper',

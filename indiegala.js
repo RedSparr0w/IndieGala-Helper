@@ -1,6 +1,5 @@
 // Get extension current version
 const version = chrome.runtime.getManifest().version;
-var hiddenApps = [];
 
 // Create Notifications
 function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg',closeOnClick=true) {//set title and icon if not included
@@ -79,7 +78,7 @@ function markAsOwned(e){
 		return;
 	}
 	$('input[value="' + app_id + '"]').parents('.tickets-col').remove();
-	settings.blacklist_apps[app_id] = app_name;
+	local_settings.blacklist_apps[app_id] = app_name;
 	chrome.storage.sync.set(settings);
 }
 
@@ -129,7 +128,7 @@ $(document).on('click','.donate_indiegala_helper',function(){
 	$.post('https://indiegala.redsparr0w.com/donate',data,function(data, success){
 		if(success == 'success')
 			el.remove();
-		
+
 		notifyMe(data.msg);
 	});
 });

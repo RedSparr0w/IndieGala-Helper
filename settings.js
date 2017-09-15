@@ -16,12 +16,12 @@ var settings = {
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
   new_giveaway_level: 0,
-  blacklist_apps: {},
-  blacklist_users: [],
 	current_level: 0
 };
 
 var local_settings = {
+  blacklist_apps: {},
+  blacklist_users: [],
 	owned_apps: [],
 	owned_apps_last_update: null
 }

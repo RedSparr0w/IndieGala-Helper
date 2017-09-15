@@ -16,12 +16,12 @@ var settings = {
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,
   new_giveaway_level: 0,
-  blacklist_apps: {},
-  blacklist_users: [],
 	current_level: 0
 };
 
 var local_settings = {
+  blacklist_apps: {},
+  blacklist_users: [],
 	owned_apps: [],
 	owned_apps_last_update: null
 }
@@ -116,7 +116,7 @@ function getOwnedGames(force_update = false){
 
 function list_blacklisted_apps(){
 	$('#app_blacklist').html("");
-	$.each(settings.blacklist_apps, function(app_id, app_name){
+	$.each(local_settings.blacklist_apps, function(app_id, app_name){
 		$('#app_blacklist').append(`
 									<li>
 										<div class="item-content">
@@ -127,7 +127,7 @@ function list_blacklisted_apps(){
 										</div>
 									</li>`);
 	});
-	let DLStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(settings.blacklist_apps,null,2));
+	let DLStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(local_settings.blacklist_apps,null,2));
 	$('#backup_blacklist_apps').attr("href", DLStr).attr("download", "IGH Blacklist_Apps_Backup.json");
 }
 
@@ -139,7 +139,7 @@ $('#restore_blacklist_apps').on("change",function() {
 
   var fr = new FileReader();
 
-  fr.onload = function(e) { 
+  fr.onload = function(e) {
     try{
       hiddenApps = JSON.parse(e.target.result);
     }catch(e){
@@ -152,7 +152,7 @@ $('#restore_blacklist_apps').on("change",function() {
       alert("You cannot use the old backup file,\nThe structure has changed,\nSorry for this inconvenience.\n- IndieGala Helper");
       return;
 		}
-    settings.blacklist_apps = hiddenApps;
+    local_settings.blacklist_apps = hiddenApps;
     list_blacklisted_apps();
 		save_options('sync');
     document.getElementById('restore_blacklist_apps').value = "";
@@ -163,7 +163,7 @@ $('#restore_blacklist_apps').on("change",function() {
 
 function remove_blacklist_app(el){
 	let id = $(el).attr('data-id');
-	delete settings.blacklist_apps[id];
+	delete local_settings.blacklist_apps[id];
 	save_options('sync');
   list_blacklisted_apps();
 }
@@ -193,7 +193,7 @@ function save_options(type = 'sync') {
 			settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
 			settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
 			settings.new_giveaway_level = Number(document.getElementById('new_giveaway_level').value);
-			
+
 			chrome.storage.sync.set(settings, function() {
 				$("#save").html("Saved!");
 				try {
@@ -237,7 +237,7 @@ function restore_options() {
     document.getElementById('new_giveaway_message').value = setting.new_giveaway_message;
     document.getElementById('new_giveaway_duration').value = setting.new_giveaway_duration;
     document.getElementById('new_giveaway_level').value = setting.new_giveaway_level;
-		
+
 		/** Events for after options are restored **/
 		// Save options when save button clicked
 		document.getElementById('save').addEventListener('click', function(){
@@ -253,11 +253,6 @@ function restore_options() {
 				save_options('sync');
 			});
 		}
-		// Blacklist stuff
-		list_blacklisted_apps();
-		$(document).on("click",".remove",function(){
-			remove_blacklist_app(this);
-		});
   });
   chrome.storage.local.get(local_settings, function(setting){
 		// Check Owned Apps
@@ -265,6 +260,11 @@ function restore_options() {
 		getOwnedGames();
 		document.getElementById('refresh_owned').addEventListener('click', function(){
 			getOwnedGames(true);
+		});
+		// Blacklist stuff
+		list_blacklisted_apps();
+		$(document).on("click",".remove",function(){
+			remove_blacklist_app(this);
 		});
   });
 }

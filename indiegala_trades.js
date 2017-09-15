@@ -11,7 +11,7 @@ function showOwnedGames(){
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
 		// Remove If Blacklisted
-		if (typeof settings.blacklist_apps[app_id] != "undefined"){
+		if (typeof local_settings.blacklist_apps[app_id] != "undefined"){
 			$(this).parents(".trade-cont").remove();
 			return;
 		}
@@ -28,10 +28,10 @@ function showOwnedGames(){
 	}).on('error', function(){
 		$(this).attr('src','http://i.imgur.com/eMShBmW.png');
 	});
-	
+
 	// Add button to hide specific apps
 	$('.trade_img').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
-	
+
 	// Show remaining apps
 	$('.trade-cont').fadeIn();
 }

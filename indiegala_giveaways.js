@@ -27,12 +27,12 @@ get_user_level();
 function showOwnedGames(){
 	$('.giv-coupon').addClass('animated-coupon');
 	$('.giv-coupon-link').removeAttr("href");
-	
+
 	// Remove Entered Giveaways
 	if (!!settings.hide_entered_giveaways){
 		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
 	}
-	
+
 	$('.tickets-col:not(.checked)').each(function(i){
 		let app_id = Number($(this).find('.giveaway-game-id').val()) || 0;
 		let app_image = $(this).find('img');
@@ -40,7 +40,7 @@ function showOwnedGames(){
 		let giveaway_level = Number($('.type-level-cont', this).text().match('[0-9]+')[0] || 0);
 		let giveaway_participants = Number($('.box_pad_5', this).text().match(/([0-9]+) participants/)[1] || 0)
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
-		
+
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
 		// Remove if above users level
@@ -68,7 +68,7 @@ function showOwnedGames(){
 			return;
 		}
 		// Remove If Blacklisted
-		if (typeof settings.blacklist_apps[app_id] != "undefined"){
+		if (typeof local_settings.blacklist_apps[app_id] != "undefined"){
 			$(this).remove();
 			return;
 		}
@@ -86,17 +86,17 @@ function showOwnedGames(){
 		// Show app image
 		app_image.attr('src', app_image.attr('data-src'));
 	});
-	
+
 	$('img').on('error', function(){
 		$(this).attr('src','//i.imgur.com/eMShBmW.png');
 	});
-	
+
 	// Allow entry from main page
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
-	
+
 	// Add button to add to blacklist
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
-  
+
 	//If less than 2 apps on page & inifiniteScroll then load next page
   if (!!settings.infinite_scroll) {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
@@ -124,7 +124,7 @@ function nextPage(){
 			$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
 			return;
 		}
-		
+
 		$('#indiegala-helper-pageloading').slideDown(250);
 		var url_attr = url_address.split('/');
 		var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
@@ -200,7 +200,7 @@ function handleCouponError($this, status){
 			errorMsg = 'Duplicate entry. Please choose another giveaway.';
 			break;
 		case 'insufficient_credit':
-			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.'; 
+			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.';
 			break;
 		case 'unauthorized':
 			errorMsg = 'You are not authorized access for this giveaway.';
@@ -230,11 +230,11 @@ function handleCouponError($this, status){
 // Enter Giveaways via ajax function
 function handleCoupons(e){
 	$this = $(e);
-	
+
 	$this.removeClass( 'animated-coupon' );
-	
-	if ( $this.hasClass( 'low-coins' ) ){ 
-		handleCouponError($this, 'insufficient_credit'); 
+
+	if ( $this.hasClass( 'low-coins' ) ){
+		handleCouponError($this, 'insufficient_credit');
 		$this.css('right','-50px').css('opacity','0');
 		setTimeout(function(){
 			$this.remove();
@@ -255,18 +255,18 @@ function handleCoupons(e){
 			data: JSON.stringify(data_to_send),
 			context: $this,
 			success: function(data){
-				if ( data['status'] == 'ok' ){ 
+				if ( data['status'] == 'ok' ){
 					$( '.coins-amount strong' ).text( data['new_amount'] );
 					$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
 					$this.css('right','-50px').css('opacity','0');
 					setTimeout(function(){
 						$this.remove();
 					}, 500);
-				}else{ 
+				}else{
 					handleCouponError( $( this ), data['status'] );
 				}
-			}, 
-			error: function(){ 
+			},
+			error: function(){
 				handleCouponError( $( this ), 'unknown error' );
 			}
 		});

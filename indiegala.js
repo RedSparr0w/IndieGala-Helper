@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Firefox Bug Fix`;
+	let update_message = `[FIX] Add games to local blacklist`;
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}
@@ -79,7 +79,7 @@ function markAsOwned(e){
 	}
 	$('input[value="' + app_id + '"]').parents('.tickets-col').remove();
 	local_settings.blacklist_apps[app_id] = app_name;
-	chrome.storage.sync.set(settings);
+	chrome.storage.local.set(local_settings);
 }
 
 // When game key clicked, select the whole key and copy to clipboard

@@ -7,7 +7,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 
 function checkVersion(check_version, above = false){
-	let old_version = !!localStorage.getItem("version") ? localStorage.getItem("version").split(".").map(Number) : "0.0.0";
+	let old_version = !!localStorage.getItem("version") ? localStorage.getItem("version").split(".").map(Number)[0] : "0.0.0";
 	check_version = check_version.split(".").map(Number)
 	while (old_version.length < check_version.length) old_version.push(0);
 	while (check_version.length < old_version.length) check_version.push(0);

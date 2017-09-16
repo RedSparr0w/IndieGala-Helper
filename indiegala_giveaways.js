@@ -91,8 +91,8 @@ function showOwnedGames(){
 		$(this).attr('src','//i.imgur.com/eMShBmW.png');
 	});
 
-	// Allow entry from main page
-	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=true;");
+	// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
+	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=false;");
 
 	// Add button to add to blacklist
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');

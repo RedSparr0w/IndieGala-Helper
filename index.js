@@ -20,11 +20,12 @@ function checkVersion(check_version, above = false){
 }
 
 if (checkVersion("4.0.0", false)){
-	localStorage.setItem("version",version);
-
 	chrome.storage.sync.get({blacklist_apps: {}}, function(blacklist) {
 		chrome.storage.local.set(blacklist, function(blacklist) {
 			chrome.storage.sync.remove('blacklist_apps');
 		});
 	});
 }
+
+// Leave this at the end so it is set after all the version checks have been completed
+localStorage.setItem("version",version);

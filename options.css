@@ -1,9 +1,9 @@
 .navbar-fixed .page-content {
   margin-top: 56px;
-  padding-top: 0px;
   height: calc(100vh - 56px);
 }
 .page-content.tab {
+  padding-top: 0px !important;
   height: calc(100vh - 106px);
 }
 .remove{

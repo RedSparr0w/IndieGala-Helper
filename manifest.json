@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "4.1.0",
+	"version": "4.1.1",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
@@ -14,7 +14,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
-			"js": ["/include/js/jquery-3.1.1.min.js","settings.js"],
+			"js": ["/include/js/jquery-3.2.1.min.js","settings.js"],
 			"css": ["indiegala.css"],
 			"run_at": "document_start"
 		},

@@ -37,12 +37,18 @@ function showOwnedGames(){
 		let app_id = Number($(this).find('.giveaway-game-id').val()) || 0;
 		let app_image = $(this).find('img');
 		let app_name = app_image.attr('alt');
+		let giveaway_not_guaranteed = !!$('.type-level-cont', this).text().match(/(not\sguaranteed)/i);
 		let giveaway_level = Number($('.type-level-cont', this).text().match('[0-9]+')[0] || 0);
-		let giveaway_participants = Number($('.box_pad_5', this).text().match(/([0-9]+) participants/)[1] || 0)
+		let giveaway_participants = Number($('.box_pad_5', this).text().match(/([0-9]+) participants/i)[1] || 0)
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
 
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
+		// Remove if "not guaranteed"
+		if (!!settings.hide_not_guaranteed && !!giveaway_not_guaranteed){
+				$(this).remove();
+				return;
+		}
 		// Remove if above users level
 		if (giveaway_level > settings.current_level){
 			if(!!settings.hide_high_level_giveaways){

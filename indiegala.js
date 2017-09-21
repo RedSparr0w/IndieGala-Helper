@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added option to hide "Not Guaranteed" giveaways`;
+	let update_message = `Added option to always show "Guaranteed" giveaways`;
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}

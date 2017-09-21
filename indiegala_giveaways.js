@@ -1,25 +1,25 @@
 function getGalaSilver(){
-  $('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
-  $.ajax({
-    type: 'GET',
-    url: 'https://www.indiegala.com/get_user_info',
-    data: {
-      'uniq_param': new Date().getTime(),
-      'show_coins': 'True'
-    },
-    cache: false,
-    dataType: 'json',
-    success: function(data) {
-      if (data.status === 'ok') {
-        $('#indiegala-helper-coins strong').text(data.silver_coins_tot);
-      } else {
-        $('#indiegala-helper-coins').text(data.status.replace('_', ' '));
-      }
-    },
-    error: function(xhr, ajaxOptions, thrownError){
-      $('#indiegala-helper-coins').text('error');
-    }
-  });
+	$('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
+	$.ajax({
+		type: 'GET',
+		url: 'https://www.indiegala.com/get_user_info',
+		data: {
+			'uniq_param': new Date().getTime(),
+			'show_coins': 'True'
+		},
+		cache: false,
+		dataType: 'json',
+		success: function(data) {
+			if (data.status === 'ok') {
+				$('#indiegala-helper-coins strong').text(data.silver_coins_tot);
+			} else {
+				$('#indiegala-helper-coins').text(data.status.replace('_', ' '));
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError){
+			$('#indiegala-helper-coins').text('error');
+		}
+	});
 }
 get_user_level();
 
@@ -34,24 +34,29 @@ function showOwnedGames(){
 	}
 
 	$('.tickets-col:not(.checked)').each(function(i){
-		let app_id = Number($(this).find('.giveaway-game-id').val()) || 0;
-		let app_image = $(this).find('img');
+		let app_id = Number($('.giveaway-game-id', this).val()) || 0;
+		let app_image = $('img', this);
 		let app_name = app_image.attr('alt');
-		let giveaway_not_guaranteed = !!$('.type-level-cont', this).text().match(/(not\sguaranteed)/i);
-		let giveaway_level = Number($('.type-level-cont', this).text().match('[0-9]+')[0] || 0);
-		let giveaway_participants = Number($('.box_pad_5', this).text().match(/([0-9]+) participants/i)[1] || 0)
+		let do_not_remove = false;
+		let giveaway_guaranteed = ($('.type-level-cont', this).text().match(/((not\s)?guaranteed)/i) || [null])[0] == "guaranteed";
+		let giveaway_level = Number(($('.type-level-cont', this).text().match('[0-9]+') || [0])[0]);
+		let giveaway_participants = Number(($('.box_pad_5', this).text().match(/([0-9]+) participants/i) || [0,0])[1]);
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
 
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
+		// Keep if guaranteed
+		if (!!settings.always_show_guaranteed && !!giveaway_guaranteed){
+			do_not_remove = true;
+		}
 		// Remove if "not guaranteed"
-		if (!!settings.hide_not_guaranteed && !!giveaway_not_guaranteed){
+		if (!!settings.hide_not_guaranteed && !giveaway_guaranteed){
 				$(this).remove();
 				return;
 		}
 		// Remove if above users level
 		if (giveaway_level > settings.current_level){
-			if(!!settings.hide_high_level_giveaways){
+			if(!do_not_remove && !!settings.hide_high_level_giveaways){
 				$(this).remove();
 				return;
 			}else{
@@ -59,17 +64,17 @@ function showOwnedGames(){
 			}
 		}
 		// Remove if above defined price
-		if (!!settings.hide_above_price && giveaway_price > settings.hide_above_price){
+		if (!do_not_remove && !!settings.hide_above_price && giveaway_price > settings.hide_above_price){
 			$(this).remove();
 			return;
 		}
 		// Remove if above defined participants
-		if (!!settings.hide_above_participants && giveaway_participants > settings.hide_above_participants){
+		if (!do_not_remove && !!settings.hide_above_participants && giveaway_participants > settings.hide_above_participants){
 			$(this).remove();
 			return;
 		}
 		// Remove If Soundtrack
-		if (!!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
+		if (!do_not_remove && !!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
 			$(this).remove();
 			return;
 		}
@@ -80,7 +85,7 @@ function showOwnedGames(){
 		}
 		// Remove/Display If Owned
 		if ( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			if (!!settings.hide_owned_games){
+			if (!do_not_remove && !!settings.hide_owned_games){
 				$(this).remove();
 				return;
 			}else{
@@ -88,7 +93,7 @@ function showOwnedGames(){
 			}
 		}
 		// Add link to steam store page
-		$(this).find(".info-row").eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
+		$(".info-row", this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
 		// Show app image
 		app_image.attr('src', app_image.attr('data-src'));
 	});
@@ -104,7 +109,7 @@ function showOwnedGames(){
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
 
 	//If less than 2 apps on page & inifiniteScroll then load next page
-  if (!!settings.infinite_scroll) {
+	if (!!settings.infinite_scroll) {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
 	} else {
 		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
@@ -115,9 +120,9 @@ function showOwnedGames(){
 // Auto enter giveaways
 setInterval(function(){
 	if (!!page_loaded && !!settings.auto_enter_giveaways){
-    if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-      $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
-    }
+		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+			$('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
+		}
 	}
 }, 3000);
 
@@ -138,6 +143,10 @@ function nextPage(){
 			dataType: 'json',
 			processData:false,
 			success: function(data) {
+				if (!data.content){
+					nextPage();
+					return;
+				}
 				data = $.parseHTML(data.content);
 				$('.tickets-row').append($('.tickets-col', data));
 				$('.page-nav').parent().html($('.page-nav', data));

@@ -13,6 +13,7 @@ var settings = {
   hide_above_price: 0,
   hide_above_participants: 0,
   hide_not_guaranteed: false,
+  always_show_guaranteed: false,
   infinite_scroll: true,
   new_giveaway_message: "GLHF!",
   new_giveaway_duration: 1,

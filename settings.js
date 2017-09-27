@@ -25,7 +25,8 @@ var local_settings = {
   blacklist_apps: {},
   blacklist_users: [],
 	owned_apps: [],
-	owned_apps_last_update: null
+	owned_apps_last_update: null,
+  steam_sessionid: false
 }
 
 function refreshSettings(type = 'sync'){

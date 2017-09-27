@@ -100,6 +100,10 @@ $(document).on('click','input.keys , .serial-won input',function(){
 setInterval(function(){
 	$('.serial-won input:not(.checked)').each(function(i){
 		$(this).after(`
+		<div class="entry-elem align-c activate_steam_key">
+			<i class="fa fa-steam" aria-hidden="true"></i>
+			<div class="donate-text-view"><p>Redeem key on Steam!</p></div>
+		</div>
 		<div class="entry-elem align-c donate_indiegala_helper">
 			<i class="fa fa-coffee" aria-hidden="true"></i>
 			<div class="donate-text-view"><p>Donate to IndieGala Helper!</p></div>
@@ -114,6 +118,7 @@ setInterval(function(){
 			<div class="donate-text-view"><p>Donate to IndieGala Helper!</p></div>
 		</div>
 		`);
+		$(this).prev().append('<div class="donate-text-view"><p>Redeem key on Steam!</p></div>').addClass('activate_steam_key');
 		$(this).addClass('checked');
 	});
 }, 500);
@@ -125,13 +130,40 @@ $(document).on('click','.donate_indiegala_helper',function(){
 	data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
 	data.product_key = $('input', el).val();
 	data.user = settings.steam_id;
-	$.post('https://indiegala.redsparr0w.com/donate',data,function(data, success){
+	$.post('https://indiegala.redsparr0w.com/donate',data,function(result, success){
 		if(success == 'success')
 			el.remove();
 
-		notifyMe(data.msg);
+		notifyMe(result.msg) || alert(result.msg);
 	});
 });
+
+// Activate key on steam
+$(document).on('click','.activate_steam_key',function(){
+	let data = {};
+	let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
+	data.product_key = $('input', el).val();
+	if(!local_settings.steam_sessionid){
+		notifyMe('You must be signed into the steam website to use this feature.');
+		return;
+	}
+	data.sessionid = local_settings.steam_sessionid;
+	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, function(result){
+		if(typeof result == 'object'){
+			/*gotta fix
+			result_status = int(++result.purchase_result_details-- || 4);
+			notifyMe(activateResultMessage(result_status));
+			if(result_status)
+				el.remove();
+			*/
+		} else {
+      chrome.storage.local.set({steam_sessionid:false});
+			notifyMe('You must be signed into the steam website to use this feature.');
+		}
+	});
+});
+
+
 
 function get_user_level(){
 	$.ajax({
@@ -147,6 +179,43 @@ function get_user_level(){
 			}
 		}
 	});
+}
+
+function activateResultMessage(result){
+	switch (result){
+		case 0:
+			message = 'Your product activation code has successfully been activated.';
+			break;
+		case 14:
+			message = 'The product code you\'ve entered is not valid. Please double check to see if you\'ve mistyped your key. I, L, and 1 can look alike, as can V and Y, and 0 and O.';
+			break;
+		case 15:
+			message = 'The product code you\'ve entered has already been activated by a different Steam account. This code cannot be used again. Please contact the retailer or online seller where the code was purchased for assistance.';
+			break;
+		case 53:
+			message = 'There have been too many recent activation attempts from this account or Internet address. Please wait and try your product code again later.';
+			break;
+		case 13:
+			message = 'Sorry, but this product is not available for purchase in this country. Your product key has not been redeemed.';
+			break;
+		case 9:
+			message = 'This Steam account already owns the product(s) contained in this offer. To access them, visit your library in the Steam client.';
+			break;
+		case 24:
+			message = 'The product code you\'ve entered requires ownership of another product before activation.\n\nIf you are trying to activate an expansion pack or downloadable content, please first activate the original game, then activate this additional content.';
+			break;
+		case 36:
+			message = 'The product code you have entered requires that you first play this game on the PlayStation®3 system before it can be registered.\n\nPlease:\n\n- Start this game on your PlayStation®3 system\n\n- Link your Steam account to your PlayStation®3 Network account\n\n- Connect to Steam while playing this game on the PlayStation®3 system\n\n- Register this product code through Steam.';
+			break;
+		case 50: // User entered wallet code
+			message = 'The code you have entered is from a Steam Gift Card or Steam Wallet Code.  Click <a href="https://store.steampowered.com/account/redeemwalletcode">here</a> to redeem it.';
+			break;
+		case 4:
+		default:
+			message = 'An unexpected error has occurred.  Your product code has not been redeemed.  Please wait 30 minutes and try redeeming the code again.  If the problem persists, please contact <a href="https://help.steampowered.com/en/wizard/HelpWithCDKey">Steam Support</a> for further assistance.';
+			break;
+	}
+	return message;
 }
 
 // Supress confirm message when getting key

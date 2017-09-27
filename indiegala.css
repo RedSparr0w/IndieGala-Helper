@@ -199,8 +199,20 @@ aside.animated-coupon.checked {
 	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 	z-index: 1;
 }
-.donate_indiegala_helper:hover > .donate-text-view{
+.order-button-profile-press.activate_steam_key .donate-text-view {
+  top: 1px;
+  left: 85px;
+}
+.donate_indiegala_helper:hover > .donate-text-view,
+.activate_steam_key:hover > .donate-text-view {
 	display: block;
+}
+.activate_steam_key {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: rgb(52, 152, 219);
+	cursor: pointer;
 }
 i.fa.fa-thumbs-down {
   color: #c0392b;

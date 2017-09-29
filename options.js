@@ -26,30 +26,44 @@ var local_settings = {
   blacklist_users: [],
 	owned_apps: [],
 	owned_apps_last_update: null,
+  steam_loginid: false,
   steam_sessionid: false
 }
 
 // Get user steam sessionid
 try {
   if (/firefox/i.test(navigator.userAgent)){
-    browser.cookies.get({url:"https://store.steampowered.com",name:"sessionid"})
-    .then(cookie => {
-      if (!!cookie){
-        local_settings.steam_sessionid = cookie.value;
-        chrome.storage.local.set({steam_sessionid:cookie.value});
+    browser.cookies.get({url:"https://store.steampowered.com",name:"steamLogin"})
+    .then(steamLogin_cookie => {
+      if (!!steamLogin_cookie){
+        browser.cookies.get({url:"https://store.steampowered.com",name:"sessionid"})
+        .then(cookie => {
+          if (!!cookie){
+            local_settings.steam_sessionid = cookie.value;
+            chrome.storage.local.set({steam_sessionid:cookie.value});
+          }
+        });
+      } else {
+        chrome.storage.local.set({steam_sessionid: false});
       }
     });
   } else {
-  chrome.cookies.get({url:"https://store.steampowered.com",name:"sessionid"}, function(cookie){
-      if (!!cookie){
-        local_settings.steam_sessionid = cookie.value;
-        chrome.storage.local.set({steam_sessionid:cookie.value});
+    chrome.cookies.get({url:"https://store.steampowered.com",name:"steamLogin"}, function(steamLogin_cookie){
+      if (!!steamLogin_cookie){
+        chrome.cookies.get({url:"https://store.steampowered.com",name:"sessionid"}, function(cookie){
+          if (!!cookie){
+            local_settings.steam_sessionid = cookie.value;
+            chrome.storage.local.set({steam_sessionid:cookie.value});
+          }
+        });
+      } else {
+        chrome.storage.local.set({steam_sessionid: false});
       }
     });
   }
 }catch(e){
-  local_settings.steam_sessionid = null;
-  chrome.storage.local.set({steam_sessionid:false});
+  local_settings.steam_sessionid = false;
+  chrome.storage.local.set({steam_sessionid: false});
 }
 
 if (/firefox/i.test(navigator.userAgent)){

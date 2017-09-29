@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added option to always show "Guaranteed" giveaways`;
+	let update_message = `Added ability to activate keys directly from browser`;
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}
@@ -148,14 +148,9 @@ $(document).on('click','.activate_steam_key',function(){
 		return;
 	}
 	data.sessionid = local_settings.steam_sessionid;
-	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, function(result){
-		if(typeof result == 'object'){
-			/*gotta fix
-			result_status = int(++result.purchase_result_details-- || 4);
-			notifyMe(activateResultMessage(result_status));
-			if(result_status)
-				el.remove();
-			*/
+	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, function(result, success){
+		if(success == 'success' && typeof result == 'object'){
+			notifyMe(activateResultMessage(result.hasOwnProperty("purchase_result_details") ? result.purchase_result_details : 4));
 		} else {
       chrome.storage.local.set({steam_sessionid:false});
 			notifyMe('You must be signed into the steam website to use this feature.');
@@ -181,7 +176,8 @@ function get_user_level(){
 	});
 }
 
-function activateResultMessage(result){
+function activateResultMessage(result = 4){
+	let message = '';
 	switch (result){
 		case 0:
 			message = 'Your product activation code has successfully been activated.';
@@ -213,14 +209,13 @@ function activateResultMessage(result){
 		case 4:
 		default:
 			message = 'An unexpected error has occurred.  Your product code has not been redeemed.  Please wait 30 minutes and try redeeming the code again.  If the problem persists, please contact <a href="https://help.steampowered.com/en/wizard/HelpWithCDKey">Steam Support</a> for further assistance.';
-			break;
 	}
 	return message;
 }
 
 // Supress confirm message when getting key
 if (!!settings.suppress_confirm_show_key_dialog){
-	var el = document.createElement('script');
+	let el = document.createElement('script');
 	el.innerHTML = `
 		$("[id*=fetchlink]").on('click', function(){
 			var realConfirm=window.confirm;

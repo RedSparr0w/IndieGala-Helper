@@ -45,4 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-indiegala.zip
+indiegala*.zip
+chrome/*
+firefox/*

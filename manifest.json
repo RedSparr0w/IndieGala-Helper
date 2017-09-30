@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "4.3.1",
+	"version": "4.3.2",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
@@ -50,7 +50,10 @@
 		}
 	],
 	"background": {
-		"scripts": ["index.js"]
+		"scripts": [
+			"index.js",
+			"updates.js"
+		]
 	},
 	"browser_action": {
 		"default_icon": "icon.png"
@@ -58,7 +61,7 @@
 	"permissions": [
 		"https://indiegala.redsparr0w.com/",
 		"https://api.enhancedsteam.com/",
-		"https://store.steampowered.com/",
+		"*://store.steampowered.com/",
     "storage",
 		"cookies",
 		"notifications"

@@ -87,35 +87,32 @@ var myApp = new Framework7({
     router: false
 });
 
-//Framework7 DOM library
-const $$ = Dom7;
-
 /* ===== Color / Themes ===== */
-$$('.color-theme').click(function () {
-    let classList = $$('body')[0].classList;
+$('.color-theme').click(function () {
+    let classList = $('body')[0].classList;
     for (let i = 0; i < classList.length; i++) {
         if (classList[i].indexOf('theme') === 0) classList.remove(classList[i]);
     }
-    classList.add('theme-' + $$(this).attr('data-theme'));
-    settings['theme_color'] = $$(this).attr('data-theme');
+    classList.add('theme-' + $(this).attr('data-theme'));
+    settings['theme_color'] = $(this).attr('data-theme');
 		save_options();
 });
-$$('.layout-theme').click(function () {
-    let classList = $$('body')[0].classList;
+$('.layout-theme').click(function () {
+    let classList = $('body')[0].classList;
     for (let i = 0; i < classList.length; i++) {
         if (classList[i].indexOf('layout-') === 0) classList.remove(classList[i]);
     }
-    classList.add('layout-' + $$(this).attr('data-theme'));
-    settings['theme'] = $$(this).attr('data-theme');
+    classList.add('layout-' + $(this).attr('data-theme'));
+    settings['theme'] = $(this).attr('data-theme');
 		save_options();
 });
 
 /* ===== Panel opened/closed ===== */
-$$('.panel-right').on('open', function () {
-    $$('.statusbar-overlay').addClass('with-panel-right');
+$('.panel-right').on('open', function () {
+    $('.statusbar-overlay').addClass('with-panel-right');
 });
-$$('.panel-right').on('close', function () {
-    $$('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
+$('.panel-right').on('close', function () {
+    $('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
 });
 
 
@@ -255,7 +252,7 @@ function save_options(type = 'sync') {
 
 // Restores select box and checkbox state using the preferences
 function restore_options() {
-   let themeClassList = $$('body')[0].classList;
+   let themeClassList = $('body')[0].classList;
   // Use default value (settings obj) if option not set
   chrome.storage.sync.get(settings, function(setting){
     for (let i = themeClassList.length-1; i >= 0 ; i--){

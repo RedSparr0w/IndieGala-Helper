@@ -201,7 +201,7 @@ $('#restore_blacklist_apps').on("change",function() {
 function remove_blacklist_app(el){
 	let id = $(el).attr('data-id');
 	delete local_settings.blacklist_apps[id];
-	save_options('sync');
+	save_options('local');
   list_blacklisted_apps();
 }
 

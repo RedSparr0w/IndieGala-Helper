@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added ability to activate keys directly from browser, Minor fixes`;
+	let update_message = `Added ability to activate keys directly from browser [BETA], Minor fixes`;
 	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
 	}
@@ -102,7 +102,7 @@ setInterval(function(){
 		$(this).after(`
 		<div class="entry-elem align-c activate_steam_key">
 			<i class="fa fa-steam" aria-hidden="true"></i>
-			<div class="donate-text-view"><p>Redeem key on Steam!</p></div>
+			<div class="donate-text-view"><p>[BETA] Redeem key on Steam!</p></div>
 		</div>
 		<div class="entry-elem align-c donate_indiegala_helper">
 			<i class="fa fa-coffee" aria-hidden="true"></i>
@@ -118,7 +118,7 @@ setInterval(function(){
 			<div class="donate-text-view"><p>Donate to IndieGala Helper!</p></div>
 		</div>
 		`);
-		$(this).prev().append('<div class="donate-text-view"><p>Redeem key on Steam!</p></div>').addClass('activate_steam_key');
+		$(this).prev().append('<div class="donate-text-view"><p>[BETA] Redeem key on Steam!</p></div>').addClass('activate_steam_key');
 		$(this).addClass('checked');
 	});
 }, 500);

@@ -166,9 +166,11 @@ var page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways
 var wait_for_page = setInterval(function(){
-	if($('.tickets-col').length >= 24){
+	if($('.tickets-col').length >= 12){
 		clearInterval(wait_for_page);
 		page_loaded = true;
+		// Remove extra spacing
+		$('.tickets-row .spacer-v-30:not(:first-child)').remove()
 		// Remove Indiegalas Placeholder Giveaways
 		$('.giv-placeholder').remove();
 		// Remove Indiegalas "Owned Games" overlay

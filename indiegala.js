@@ -44,9 +44,9 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added ability to activate keys directly from browser [BETA], Minor fixes`;
-	if(!notifyMe(update_message + '\n- v'+version, 'IndieGala Helper Updated')){
-		alert('IndieGala Helper Updated\n' + update_message + '\n- v'+version);
+	let update_message = `Added ability to activate keys directly from browser [BETA], Minor fixes, Please report any remaining problems on the GitHub.`;
+	if(!notifyMe(update_message + '\n- v' + version, 'IndieGala Helper Updated')){
+		alert('IndieGala Helper Updated\n' + update_message + '\n- v' + version);
 	}
 	//*/
 }

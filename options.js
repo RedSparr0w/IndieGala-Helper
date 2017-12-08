@@ -7,6 +7,7 @@ var settings = {
 	suppress_confirm_show_key_dialog: true,
   auto_enter_giveaways: false,
   hide_high_level_giveaways: true,
+  hide_extra_odds: false,
 	hide_soundtracks: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,
@@ -221,6 +222,7 @@ function save_options(type = 'sync') {
 			settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
 			settings.auto_enter_giveaways = document.getElementById('auto_enter_giveaways').checked;
 			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
+			settings.hide_extra_odds = document.getElementById('hide_extra_odds').checked;
 			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
 			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
 			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
@@ -267,6 +269,7 @@ function restore_options() {
     document.getElementById('suppress_confirm_show_key_dialog').checked = setting.suppress_confirm_show_key_dialog;
     document.getElementById('auto_enter_giveaways').checked = setting.auto_enter_giveaways;
     document.getElementById('hide_high_level_giveaways').checked = setting.hide_high_level_giveaways;
+    document.getElementById('hide_extra_odds').checked = setting.hide_extra_odds;
     document.getElementById('hide_soundtracks').checked = setting.hide_soundtracks;
     document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
     document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;

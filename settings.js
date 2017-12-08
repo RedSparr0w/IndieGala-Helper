@@ -7,6 +7,7 @@ var settings = {
 	suppress_confirm_show_key_dialog: true,
   auto_enter_giveaways: false,
   hide_high_level_giveaways: true,
+  hide_extra_odds: false,
 	hide_soundtracks: true,
   hide_owned_games: true,
   hide_entered_giveaways: true,

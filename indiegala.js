@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added ability to activate keys directly from browser [BETA], Minor fixes, Please report any remaining problems on the GitHub.`;
+	let update_message = `Added new option to hide "Extra Odds" giveaways.\nBackwards page fix coming soon.`;
 	if(!notifyMe(update_message + '\n- v' + version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v' + version);
 	}

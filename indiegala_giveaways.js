@@ -42,6 +42,7 @@ function showOwnedGames(){
 		let giveaway_level = Number(($('.type-level-cont', this).text().match('[0-9]+') || [0])[0]);
 		let giveaway_participants = Number(($('.box_pad_5', this).text().match(/([0-9]+) participants/i) || [0,0])[1]);
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
+		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [null])[0]
 
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
@@ -62,6 +63,11 @@ function showOwnedGames(){
 			}else{
 				$(this).addClass("higher-level");
 			}
+		}
+		// Remove if "extra odds"
+		if (!!settings.hide_extra_odds && !!giveaway_extra_odds){
+				$(this).remove();
+				return;
 		}
 		// Remove if above defined price
 		if (!do_not_remove && !!settings.hide_above_price && giveaway_price > settings.hide_above_price){

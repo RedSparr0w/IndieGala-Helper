@@ -107,7 +107,7 @@ setInterval(function(){
 // Load next page via ajax
 function nextPage(){
 		loading_page=true;
-		var url_address = $('a.prev-next').eq(2).attr('href');
+		var url_address = $('a.prev-next').eq(5).attr('href');
 		// If last page or undefined url return
 		if (typeof url_address == "undefined" || url_address == location.pathname){
 			$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });

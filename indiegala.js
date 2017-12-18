@@ -44,7 +44,7 @@ if (localStorage.getItem("version")===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Added new option to hide "Extra Odds" giveaways.\nBackwards page fix coming soon.`;
+	let update_message = `Backwards page loading fixed!`;
 	if(!notifyMe(update_message + '\n- v' + version, 'IndieGala Helper Updated')){
 		alert('IndieGala Helper Updated\n' + update_message + '\n- v' + version);
 	}

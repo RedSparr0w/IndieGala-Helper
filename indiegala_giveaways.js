@@ -38,11 +38,11 @@ function showOwnedGames(){
 		let app_image = $('img', this);
 		let app_name = app_image.attr('alt');
 		let do_not_remove = false;
-		let giveaway_guaranteed = ($('.type-level-cont', this).text().match(/((not\s)?guaranteed)/i) || [null])[0] == "guaranteed";
+		let giveaway_guaranteed = ($('.type-level-cont', this).text().match(/((not\s)?guaranteed)/i) || [0])[0] == "guaranteed";
 		let giveaway_level = Number(($('.type-level-cont', this).text().match('[0-9]+') || [0])[0]);
 		let giveaway_participants = Number(($('.box_pad_5', this).text().match(/([0-9]+) participants/i) || [0,0])[1]);
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
-		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [null])[0]
+		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [0])[0]
 
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }
@@ -50,63 +50,40 @@ function showOwnedGames(){
 		if (!!settings.always_show_guaranteed && !!giveaway_guaranteed){
 			do_not_remove = true;
 		}
-		// Remove if "not guaranteed"
-		if (!!settings.hide_not_guaranteed && !giveaway_guaranteed){
-				$(this).remove();
-				return;
+		
+		if ( !do_not_remove && (
+          typeof local_settings.blacklist_apps[app_id] != "undefined" // Remove If Blacklisted
+          || !!settings.hide_not_guaranteed && !giveaway_guaranteed // Remove if "not guaranteed"
+          || !!settings.hide_high_level_giveaways && giveaway_level > settings.current_level // Remove if above users level
+          || !!settings.hide_extra_odds && !!giveaway_extra_odds // Remove if "extra odds"
+          || !!settings.hide_above_price && giveaway_price > settings.hide_above_price // Remove if above defined price
+          || !!settings.hide_above_participants && giveaway_participants > settings.hide_above_participants // Remove if above defined participants
+          || !!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) // Remove If Soundtrack
+          || !!settings.hide_owned_games && !!($.inArray(app_id, local_settings.owned_apps) + 1) // Remove if owned
+        )
+      ){
+      $(this).remove();
+      return;
 		}
-		// Remove if above users level
+
+		// Add class if above users level
 		if (giveaway_level > settings.current_level){
-			if(!do_not_remove && !!settings.hide_high_level_giveaways){
-				$(this).remove();
-				return;
-			}else{
-				$(this).addClass("higher-level");
-			}
+      $(this).addClass("higher-level");
 		}
-		// Remove if "extra odds"
-		if (!!settings.hide_extra_odds && !!giveaway_extra_odds){
-				$(this).remove();
-				return;
-		}
-		// Remove if above defined price
-		if (!do_not_remove && !!settings.hide_above_price && giveaway_price > settings.hide_above_price){
-			$(this).remove();
-			return;
-		}
-		// Remove if above defined participants
-		if (!do_not_remove && !!settings.hide_above_participants && giveaway_participants > settings.hide_above_participants){
-			$(this).remove();
-			return;
-		}
-		// Remove If Soundtrack
-		if (!do_not_remove && !!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf("soundtrack") + 1) ){
-			$(this).remove();
-			return;
-		}
-		// Remove If Blacklisted
-		if (typeof local_settings.blacklist_apps[app_id] != "undefined"){
-			$(this).remove();
-			return;
-		}
-		// Remove/Display If Owned
+
+		// Add class If Owned
 		if ( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			if (!do_not_remove && !!settings.hide_owned_games){
-				$(this).remove();
-				return;
-			}else{
-				$(this).addClass("owned");
-			}
+      $(this).addClass("owned");
 		}
+
 		// Add link to steam store page
 		$(".info-row", this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
-		// Show app image
-		app_image.attr('src', app_image.attr('data-src'));
-	});
 
-	$('img').on('error', function(){
-		$(this).attr('src','//i.imgur.com/eMShBmW.png');
-	});
+		// Show app image
+		app_image.on('error', function(){
+      $(this).attr('src','//i.imgur.com/eMShBmW.png');
+    }).attr('src', app_image.attr('data-src'));
+  });
 
 	// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
 	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=false;");
@@ -114,13 +91,8 @@ function showOwnedGames(){
 	// Add button to add to blacklist
 	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
 
-	//If less than 2 apps on page & inifiniteScroll then load next page
-	if (!!settings.infinite_scroll) {
-		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
-	} else {
-		$('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn();
-		$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
-	}
+	// If less than 4 apps on page & inifiniteScroll is enabled then load next page
+  $('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
 }
 
 // Auto enter giveaways

@@ -216,39 +216,39 @@ function remove_blacklist_app(el){
 var savedTimeout;
 function save_options(type = 'sync') {
 	switch(type){
-	case 'sync':
-		settings.steam_id = document.getElementById('steam_id').value;
-		settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
-		settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
-		settings.auto_enter_giveaways = document.getElementById('auto_enter_giveaways').checked;
-		settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
-		settings.hide_extra_odds = document.getElementById('hide_extra_odds').checked;
-		settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
-		settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
-		settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
-		settings.hide_not_guaranteed = document.getElementById('hide_not_guaranteed').checked;
-		settings.always_show_guaranteed = document.getElementById('always_show_guaranteed').checked;
-		settings.hide_above_price = Number(document.getElementById('hide_above_price').value);
-		settings.hide_above_participants = Number(document.getElementById('hide_above_participants').value);
-		settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
-		settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
-		settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
-		settings.new_giveaway_level = Number(document.getElementById('new_giveaway_level').value);
+		case 'sync':
+			settings.steam_id = document.getElementById('steam_id').value;
+			settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
+			settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
+			settings.auto_enter_giveaways = document.getElementById('auto_enter_giveaways').checked;
+			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
+			settings.hide_extra_odds = document.getElementById('hide_extra_odds').checked;
+			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
+			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
+			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
+			settings.hide_not_guaranteed = document.getElementById('hide_not_guaranteed').checked;
+			settings.always_show_guaranteed = document.getElementById('always_show_guaranteed').checked;
+			settings.hide_above_price = Number(document.getElementById('hide_above_price').value);
+			settings.hide_above_participants = Number(document.getElementById('hide_above_participants').value);
+			settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
+			settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
+			settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
+			settings.new_giveaway_level = Number(document.getElementById('new_giveaway_level').value);
 
-		chrome.storage.sync.set(settings, function() {
-			$('#save').html('Saved!');
-			try {
-				clearTimeout(savedTimeout);
-			}finally{
-				savedTimeout = setTimeout(function(){
-					$('#save').html('Save');
-				}, 2000);
-			}
-		});
-		break;
-	case 'local':
-		chrome.storage.local.set(local_settings);
-		break;
+			chrome.storage.sync.set(settings, function() {
+				$('#save').html('Saved!');
+				try {
+					clearTimeout(savedTimeout);
+				}finally{
+					savedTimeout = setTimeout(function(){
+						$('#save').html('Save');
+					}, 2000);
+				}
+			});
+			break;
+		case 'local':
+			chrome.storage.local.set(local_settings);
+			break;
 	}
 }
 

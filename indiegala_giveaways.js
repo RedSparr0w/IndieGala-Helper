@@ -184,24 +184,24 @@ function handleCouponError(el, status){
 	var clipTicket 			= true;
 	var errorMsg;
 	switch(status){
-	case 'duplicate':
-		errorMsg = 'Duplicate entry. Please choose another giveaway.';
-		break;
-	case 'insufficient_credit':
-		errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.';
-		break;
-	case 'unauthorized':
-		errorMsg = 'You are not authorized access for this giveaway.';
-		break;
-	case 'not_logged':
-		errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
-		break;
-	case 'not_available':
-		errorMsg = 'Sorry but this giveaway is no longer available.';
-		break;
-	default:
-		clipTicket = false;
-		errorMsg = `Error: "${status}". Try again in a few minutes.`;
+		case 'duplicate':
+			errorMsg = 'Duplicate entry. Please choose another giveaway.';
+			break;
+		case 'insufficient_credit':
+			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.';
+			break;
+		case 'unauthorized':
+			errorMsg = 'You are not authorized access for this giveaway.';
+			break;
+		case 'not_logged':
+			errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
+			break;
+		case 'not_available':
+			errorMsg = 'Sorry but this giveaway is no longer available.';
+			break;
+		default:
+			clipTicket = false;
+			errorMsg = `Error: "${status}". Try again in a few minutes.`;
 	}
 	$('.warning-text span', parentCont).text(errorMsg);
 	warningCover.toggle('clip', function(){

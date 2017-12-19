@@ -32,24 +32,24 @@ var local_settings = {
 
 function refreshSettings(type = 'sync'){
 	switch(type){
-	case 'sync':
-		chrome.storage.sync.get(settings, function(setting) {
-			settings = setting;
-		});
-		break;
-	case 'local':
-		chrome.storage.local.get(local_settings, function(setting) {
-			local_settings = setting;
-		});
-		break;
-	case 'all':
-		chrome.storage.sync.get(settings, function(setting) {
-			settings = setting;
-		});
-		chrome.storage.local.get(local_settings, function(setting) {
-			local_settings = setting;
-		});
-		break;
+		case 'sync':
+			chrome.storage.sync.get(settings, function(setting) {
+				settings = setting;
+			});
+			break;
+		case 'local':
+			chrome.storage.local.get(local_settings, function(setting) {
+				local_settings = setting;
+			});
+			break;
+		case 'all':
+			chrome.storage.sync.get(settings, function(setting) {
+				settings = setting;
+			});
+			chrome.storage.local.get(local_settings, function(setting) {
+				local_settings = setting;
+			});
+			break;
 	}
 }
 

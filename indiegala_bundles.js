@@ -10,15 +10,15 @@ function showOwnedGames(){
 		return;
 	}
 	// Once games loaded to page get app ids
-	$('.carousel-game-item').each(function(i){
+	$('.carousel-game-item').each(function(){
 		let apps_total_cards_value = 0;
 		let app_id = Number($(this).attr('rel'));
-		
+
 		// Mark games as owned
 		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
 			$(`[src$='${app_id}.jpg']`).parents('.bundle-item-container').parent().addClass('owned');
 		}
-		
+
 		// Get card values
 		bundleApps.push(app_id);
 		$.ajax({
@@ -32,7 +32,7 @@ function showOwnedGames(){
 						apps_total_cards_value += Number(value.price);
 					}
 				});
-				
+
 				// Divide the total by 2 as you get half the total cards as free drops
 				let discount = Number((apps_total_cards_value/2).toFixed(2));
 				$(`[src$='${app_id}.jpg']`).parents('.bundle-item-padding').find('span[class^=\'trading-\']').append(` ($${discount.toFixed(2)})`);

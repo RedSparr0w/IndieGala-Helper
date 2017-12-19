@@ -6,7 +6,9 @@
     "globals": {
         "$": false,
         "chrome": false,
-        "browser": false
+        "browser": false,
+        "settings": true,
+        "local_settings": true
     },
     "extends": "eslint:recommended",
     "rules": {

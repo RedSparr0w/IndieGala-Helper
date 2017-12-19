@@ -179,9 +179,9 @@ $('#restore_blacklist_apps').on('change',function() {
 
 	fr.onload = function(e) {
 		try{
-			hiddenApps = JSON.parse(e.target.result);
-		}catch(e){
-			console.error(e);
+			let hiddenApps = JSON.parse(e.target.result);
+		}catch(err){
+			console.error(err);
 			alert('Something went wrong!\nPlease check you uploaded a valid .json file');
 			return;
 		}

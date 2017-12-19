@@ -6,7 +6,7 @@ function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.co
 	return new Promise((resolve, reject) => {
 		Notification.requestPermission((permission)=>{//ask user for permission to create notifications
 			if (permission === 'granted') {//if permission granted create notification
-				notification = new Notification(title,{body:body,icon:icon});
+				let notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
 					notification.onclick = function(){ this.close(); };
 				}
@@ -85,7 +85,7 @@ $(document).on('click','input.keys , .serial-won input',function(){
 
 // Add donate key button
 setInterval(function(){
-	$('.serial-won input:not(.checked)').each(function(i){
+	$('.serial-won input:not(.checked)').each(function(){
 		$(this).after(`
 		<div class="entry-elem align-c activate_steam_key">
 			<i class="fa fa-steam" aria-hidden="true"></i>
@@ -98,7 +98,7 @@ setInterval(function(){
 		`);
 		$(this).addClass('checked');
 	});
-	$('input.keys:not(.checked)').each(function(i){
+	$('input.keys:not(.checked)').each(function(){
 		$(this).after(`
 		<div class="entry-elem align-c donate_indiegala_helper">
 			<i class="fa fa-coffee" aria-hidden="true"></i>
@@ -111,17 +111,17 @@ setInterval(function(){
 }, 500);
 
 // Send key to redsparr0w on donate key click
-$(document).on('click','.donate_indiegala_helper',function(){
+$(document).on('click', '.donate_indiegala_helper', function(){
 	let data = {};
 	let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
 	data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
 	data.product_key = $('input', el).val();
 	data.user = settings.steam_id;
-	$.post('https://indiegala.redsparr0w.com/donate',data,function(result, success){
+	$.post('https://indiegala.redsparr0w.com/donate', data, (result, success)=>{
 		if(success == 'success')
 			el.remove();
 
-		notifyMe(result.msg).catch(()=>{ alert(result.msg); };
+		notifyMe(result.msg).catch(()=>{ alert(result.msg); });
 	});
 });
 

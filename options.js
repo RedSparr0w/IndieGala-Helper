@@ -244,6 +244,11 @@ function save_options(type = 'sync') {
 
 // Restores select box and checkbox state using the preferences
 function restore_options() {
+	restore_sync_options();
+	restore_local_options();
+}
+
+function restore_sync_options(){
 	let themeClassList = $('body')[0].classList;
 	// Use default value (settings obj) if option not set
 	chrome.storage.sync.get(settings, (setting)=>{
@@ -275,6 +280,9 @@ function restore_options() {
 			inputs[i].addEventListener('change', ()=>{ save_options('sync'); });
 		}
 	});
+}
+
+function restore_local_options(){
 	chrome.storage.local.get(local_settings, (setting)=>{
 		local_settings = setting;
 		// Check Owned Apps

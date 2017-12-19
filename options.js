@@ -26,7 +26,7 @@ var local_settings = {
 	blacklist_apps: {},
 	blacklist_users: [],
 	owned_apps: [],
-	owned_apps_last_update: null,
+	owned_apps_next_update: null,
 	steam_loginid: false,
 	steam_sessionid: false
 };
@@ -119,8 +119,8 @@ $('.panel-right').on('close', ()=>{
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
-	//check if we have a steamID & see how long ago we checked (24 hours)
-	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) < (new Date().getTime() - (24 * 60 * 60 * 1000))) ){
+	//check if we have a steamID & check if it has been 24 hours since last update
+	if (!!force_update || settings.steam_id.length == 17 && +local_settings.owned_apps_next_update < +new Date().getTime() ){
 		$.ajax({
 			dataType:'json',
 			url:`https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=${settings.steam_id}&include_appinfo=0&include_played_free_games=1`,
@@ -132,14 +132,14 @@ function getOwnedGames(force_update = false){
 				});
 				// Set owned apps
 				local_settings.owned_apps = ownedApps;
-				// Set current time as last updated time
-				local_settings.owned_apps_last_update = new Date().getTime();
+				// Set current time + 24 hours as next updated time
+				local_settings.owned_apps_next_update = +new Date().getTime() + (24 * 60 * 60 * 1000);
 				save_options('local');
 				myApp.alert(`Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
 			},
 			error: (err)=>{
-				// Don't check for atleast another 30 minutes - Steam may be down
-				local_settings.owned_apps_last_update = Number(local_settings.owned_apps_last_update) + (30 * 60 * 1000);
+				// Don't check for another 30 minutes - Steam may be down
+				local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
 				save_options('local');
 				myApp.alert('Something went wrong when updating your owned games list.');
 				console.error(`Owned Games Update Error: ${err}`);

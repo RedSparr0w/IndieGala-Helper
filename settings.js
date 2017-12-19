@@ -26,7 +26,8 @@ var local_settings = {
 	blacklist_apps: {},
 	blacklist_users: [],
 	owned_apps: [],
-	owned_apps_last_update: null,
+	owned_apps_next_update: null,
+	steam_loginid: false,
 	steam_sessionid: false
 };
 

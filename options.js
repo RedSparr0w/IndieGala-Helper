@@ -214,7 +214,11 @@ function remove_blacklist_app(el){
 var savedTimeout;
 function save_options(type = 'sync') {
 	switch(type){
+		case 'local':
+			chrome.storage.local.set(local_settings);
+			break;
 		case 'sync':
+		default:
 			$('input, textarea', '#Tab_Options').each((i, el)=>{
 				let id = $(el).attr('id');
 				switch($(el).attr('type')){
@@ -237,10 +241,6 @@ function save_options(type = 'sync') {
 					savedTimeout = setTimeout( ()=>{ $('#save').html('Save'); }, 2000);
 				}
 			});
-			break;
-		case 'local':
-			chrome.storage.local.set(local_settings);
-			break;
 	}
 }
 

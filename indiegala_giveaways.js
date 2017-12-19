@@ -37,20 +37,13 @@ function showOwnedGames(){
 		let app_id = Number($('.giveaway-game-id', this).val()) || 0;
 		let app_image = $('img', this);
 		let app_name = app_image.attr('alt');
-		let do_not_remove = false;
 		let giveaway_guaranteed = ($('.type-level-cont', this).text().match(/((not\s)?guaranteed)/i) || [0])[0] == "guaranteed";
 		let giveaway_level = Number(($('.type-level-cont', this).text().match('[0-9]+') || [0])[0]);
 		let giveaway_participants = Number(($('.box_pad_5', this).text().match(/([0-9]+) participants/i) || [0,0])[1]);
 		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
-		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [0])[0]
+		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [0])[0];
+		let do_not_remove = !!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
 
-		// Check if app_id is valid
-		if (isNaN(app_id)){ app_id = 0; }
-		// Keep if guaranteed
-		if (!!settings.always_show_guaranteed && !!giveaway_guaranteed){
-			do_not_remove = true;
-		}
-		
 		if ( !do_not_remove && (
           typeof local_settings.blacklist_apps[app_id] != "undefined" // Remove If Blacklisted
           || !!settings.hide_not_guaranteed && !giveaway_guaranteed // Remove if "not guaranteed"
@@ -79,17 +72,17 @@ function showOwnedGames(){
 		// Add link to steam store page
 		$(".info-row", this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
 
+		// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
+		$('.animated-coupon', this).attr("onclick","ajaxNewEntrySemaphore=false;");
+
+		// Add button to add to blacklist
+		$('.ticket-left', this).prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
+
 		// Show app image
 		app_image.on('error', function(){
       $(this).attr('src','//i.imgur.com/eMShBmW.png');
     }).attr('src', app_image.attr('data-src'));
   });
-
-	// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
-	$('.animated-coupon').not('.checked').addClass('checked').attr("onclick","ajaxNewEntrySemaphore=false;");
-
-	// Add button to add to blacklist
-	$('.ticket-left').not('.checked').addClass('checked').prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
 
 	// If less than 4 apps on page & inifiniteScroll is enabled then load next page
   $('.tickets-col').not(".checked").addClass("checked").not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});

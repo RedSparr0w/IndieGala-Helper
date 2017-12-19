@@ -34,14 +34,14 @@ var local_settings = {
 // Get user steam sessionid
 try {
 	if (/firefox/i.test(navigator.userAgent)){
-		browser.cookies.get({url:'https://store.steampowered.com',name:'steamLogin'})
+		browser.cookies.get({url:'https://store.steampowered.com', name:'steamLogin'})
 			.then(steamLogin_cookie => {
 				if (!!steamLogin_cookie){
-					browser.cookies.get({url:'https://store.steampowered.com',name:'sessionid'})
+					browser.cookies.get({url:'https://store.steampowered.com', name:'sessionid'})
 						.then(cookie => {
 							if (!!cookie){
 								local_settings.steam_sessionid = cookie.value;
-								chrome.storage.local.set({steam_sessionid:cookie.value});
+								chrome.storage.local.set({steam_sessionid: cookie.value});
 							}
 						});
 				} else {
@@ -119,7 +119,8 @@ $('.panel-right').on('close', function () {
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
-	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) < (new Date().getTime() - (24 * 60 * 60 * 1000))) ){//check if we have a steamID & see how long ago we checked (24 hours)
+	//check if we have a steamID & see how long ago we checked (24 hours)
+	if (!!force_update || settings.steam_id.length == 17 && (!local_settings.owned_apps_last_update || Number(local_settings.owned_apps_last_update) < (new Date().getTime() - (24 * 60 * 60 * 1000))) ){
 		$.ajax({
 			dataType:'json',
 			url:`https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=${settings.steam_id}&include_appinfo=0&include_played_free_games=1`,
@@ -140,12 +141,8 @@ function getOwnedGames(force_update = false){
 				// Don't check for atleast another 30 minutes - Steam may be down
 				local_settings.owned_apps_last_update = Number(local_settings.owned_apps_last_update) + (30 * 60 * 1000);
 				save_options('local');
-				myApp.alert('Something went wrong when updating your owned games list, Your IP may be blocked by Cloudflare, You could try using a VPN to get around this.');
-				try{
-					console.error(`Owned Games Update Error: ${e}`);
-				}catch(err){
-					console.error(err);
-				}
+				myApp.alert('Something went wrong when updating your owned games list.');
+				console.error(`Owned Games Update Error: ${err}`);
 			}
 		});
 	}
@@ -236,9 +233,7 @@ function save_options(type = 'sync') {
 				try {
 					clearTimeout(savedTimeout);
 				} finally {
-					savedTimeout = setTimeout(function(){
-						$('#save').html('Save');
-					}, 2000);
+					savedTimeout = setTimeout( ()=>{ $('#save').html('Save'); }, 2000);
 				}
 			});
 			break;
@@ -273,33 +268,23 @@ function restore_options() {
 
 		/** Events for after options are restored **/
 		// Save options when save button clicked
-		document.getElementById('save').addEventListener('click', function(){
-			save_options('sync');
-		});
+		document.getElementById('save').addEventListener('click', ()=>{ save_options('sync'); });
 		// Listen to changes in inputs/textarea and update settings
-		document.getElementsByTagName('textarea')[0].addEventListener('change', function(){
-			save_options('sync');
-		});
+		document.getElementsByTagName('textarea')[0].addEventListener('change', ()=>{ save_options('sync'); });
 		var inputs = document.getElementsByTagName('input');
 		for (i = 0; i < inputs.length; i++){
-			inputs[i].addEventListener('change', function(){
-				save_options('sync');
-			});
+			inputs[i].addEventListener('change', ()=>{ save_options('sync'); });
 		}
 	});
 	chrome.storage.local.get(local_settings, function(setting){
-		// Check Owned Apps
 		local_settings = setting;
+		// Check Owned Apps
 		getOwnedGames();
-		document.getElementById('refresh_owned').addEventListener('click', function(){
-			getOwnedGames(true);
-		});
+		document.getElementById('refresh_owned').addEventListener('click', ()=>{ getOwnedGames(true); });
 
 		// Blacklist stuff
 		list_blacklisted_apps();
-		$(document).on('click', '.remove', function(){
-			remove_blacklist_app(this);
-		});
+		$(document).on('click', '.remove', function(){ remove_blacklist_app(this); }); // Must be function() for `this`
 	});
 }
 

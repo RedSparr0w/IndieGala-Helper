@@ -4,15 +4,15 @@ const version = chrome.runtime.getManifest().version;
 // Create Notifications
 function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg',closeOnClick=true) {//set title and icon if not included
 	let notification = false;
-	if (!("Notification" in window)) {//check if notifications supported
+	if (!('Notification' in window)) {//check if notifications supported
 		return notification;
 	}
 	else if (Notification.permission === 'granted') {//check if notifications permission granted
 		notification = new Notification(title,{body:body,icon:icon});
 		if (!!closeOnClick){
 			notification.onclick = function(){
-				this.close()
-			}
+				this.close();
+			};
 		}
 		return notification;
 	}
@@ -22,8 +22,8 @@ function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/
 				notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
 					notification.onclick = function(){
-						this.close()
-					}
+						this.close();
+					};
 				}
 				return notification;
 			}
@@ -32,21 +32,21 @@ function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/
 }
 
 // If version not set, assume new user, else assume updated
-if (localStorage.getItem("version")===null){
-	localStorage.setItem("version",version);
+if (localStorage.getItem('version')===null){
+	localStorage.setItem('version',version);
 	//* show options modal when notification clicked *
 	$(window).load(function(){
-		notifyMe("Click here to setup IndieGala Helper!").onclick = function(){
+		notifyMe('Click here to setup IndieGala Helper!').onclick = function(){
 			$('#OpenIndieGalaHelper').click();
-		}
+		};
 	});
 	//*/
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = `Backwards page loading fixed!`;
-	if(!notifyMe(update_message + '\n- v' + version, 'IndieGala Helper Updated')){
-		alert('IndieGala Helper Updated\n' + update_message + '\n- v' + version);
+	let update_message = 'Backwards page loading fixed!';
+	if(!notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated')){
+		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	}
 	//*/
 }
@@ -74,10 +74,10 @@ function markAsOwned(e){
 	var app_id = el.find('.giveaway-game-id').val();
 	var app_name = el.find('img').attr('alt');
 	// if not a string OR less than 1 char long then do nothing (avoid nulls)
-	if (typeof app_id !== "string" || app_id.length < 1){
+	if (typeof app_id !== 'string' || app_id.length < 1){
 		return;
 	}
-	$('input[value="' + app_id + '"]').parents('.tickets-col').remove();
+	$(`input[value="${app_id}"]`).parents('.tickets-col').remove();
 	local_settings.blacklist_apps[app_id] = app_name;
 	chrome.storage.local.set(local_settings);
 }
@@ -89,7 +89,7 @@ $(document).on('click','input.keys , .serial-won input',function(){
 		document.execCommand('copy');
 		// Check if "show steam activate window" is ticked
 		if( settings.show_steam_activate_window ){
-				window.location.href = "steam://open/activateproduct";
+			window.location.href = 'steam://open/activateproduct';
 		}
 	}catch(e){
 		return;
@@ -150,9 +150,9 @@ $(document).on('click','.activate_steam_key',function(){
 	data.sessionid = local_settings.steam_sessionid;
 	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, function(result, success){
 		if(success == 'success' && typeof result == 'object'){
-			notifyMe(activateResultMessage(result.hasOwnProperty("purchase_result_details") ? result.purchase_result_details : 4));
+			notifyMe(activateResultMessage(result.hasOwnProperty('purchase_result_details') ? result.purchase_result_details : 4));
 		} else {
-      chrome.storage.local.set({steam_sessionid:false});
+			chrome.storage.local.set({steam_sessionid:false});
 			notifyMe('You must be signed into the steam website to use this feature.');
 		}
 	});
@@ -179,36 +179,36 @@ function get_user_level(){
 function activateResultMessage(result = 4){
 	let message = '';
 	switch (result){
-		case 0:
-			message = 'Your product activation code has successfully been activated.';
-			break;
-		case 14:
-			message = 'The product code you\'ve entered is not valid. Please double check to see if you\'ve mistyped your key. I, L, and 1 can look alike, as can V and Y, and 0 and O.';
-			break;
-		case 15:
-			message = 'The product code you\'ve entered has already been activated by a different Steam account. This code cannot be used again. Please contact the retailer or online seller where the code was purchased for assistance.';
-			break;
-		case 53:
-			message = 'There have been too many recent activation attempts from this account or Internet address. Please wait and try your product code again later.';
-			break;
-		case 13:
-			message = 'Sorry, but this product is not available for purchase in this country. Your product key has not been redeemed.';
-			break;
-		case 9:
-			message = 'This Steam account already owns the product(s) contained in this offer. To access them, visit your library in the Steam client.';
-			break;
-		case 24:
-			message = 'The product code you\'ve entered requires ownership of another product before activation.\n\nIf you are trying to activate an expansion pack or downloadable content, please first activate the original game, then activate this additional content.';
-			break;
-		case 36:
-			message = 'The product code you have entered requires that you first play this game on the PlayStation®3 system before it can be registered.\n\nPlease:\n\n- Start this game on your PlayStation®3 system\n\n- Link your Steam account to your PlayStation®3 Network account\n\n- Connect to Steam while playing this game on the PlayStation®3 system\n\n- Register this product code through Steam.';
-			break;
-		case 50: // User entered wallet code
-			message = 'The code you have entered is from a Steam Gift Card or Steam Wallet Code.  Click <a href="https://store.steampowered.com/account/redeemwalletcode">here</a> to redeem it.';
-			break;
-		case 4:
-		default:
-			message = 'An unexpected error has occurred.  Your product code has not been redeemed.  Please wait 30 minutes and try redeeming the code again.  If the problem persists, please contact <a href="https://help.steampowered.com/en/wizard/HelpWithCDKey">Steam Support</a> for further assistance.';
+	case 0:
+		message = 'Your product activation code has successfully been activated.';
+		break;
+	case 14:
+		message = 'The product code you\'ve entered is not valid. Please double check to see if you\'ve mistyped your key. I, L, and 1 can look alike, as can V and Y, and 0 and O.';
+		break;
+	case 15:
+		message = 'The product code you\'ve entered has already been activated by a different Steam account. This code cannot be used again. Please contact the retailer or online seller where the code was purchased for assistance.';
+		break;
+	case 53:
+		message = 'There have been too many recent activation attempts from this account or Internet address. Please wait and try your product code again later.';
+		break;
+	case 13:
+		message = 'Sorry, but this product is not available for purchase in this country. Your product key has not been redeemed.';
+		break;
+	case 9:
+		message = 'This Steam account already owns the product(s) contained in this offer. To access them, visit your library in the Steam client.';
+		break;
+	case 24:
+		message = 'The product code you\'ve entered requires ownership of another product before activation.\n\nIf you are trying to activate an expansion pack or downloadable content, please first activate the original game, then activate this additional content.';
+		break;
+	case 36:
+		message = 'The product code you have entered requires that you first play this game on the PlayStation®3 system before it can be registered.\n\nPlease:\n\n- Start this game on your PlayStation®3 system\n\n- Link your Steam account to your PlayStation®3 Network account\n\n- Connect to Steam while playing this game on the PlayStation®3 system\n\n- Register this product code through Steam.';
+		break;
+	case 50: // User entered wallet code
+		message = 'The code you have entered is from a Steam Gift Card or Steam Wallet Code.  Click <a href="https://store.steampowered.com/account/redeemwalletcode">here</a> to redeem it.';
+		break;
+	case 4:
+	default:
+		message = 'An unexpected error has occurred.  Your product code has not been redeemed.  Please wait 30 minutes and try redeeming the code again.  If the problem persists, please contact <a href="https://help.steampowered.com/en/wizard/HelpWithCDKey">Steam Support</a> for further assistance.';
 	}
 	return message;
 }

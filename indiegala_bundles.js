@@ -16,26 +16,26 @@ function showOwnedGames(){
 		
 		// Mark games as owned
 		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			$(`[src$='${app_id}.jpg']`).parents(".bundle-item-container").parent().addClass("owned");
+			$(`[src$='${app_id}.jpg']`).parents('.bundle-item-container').parent().addClass('owned');
 		}
 		
 		// Get card values
 		bundleApps.push(app_id);
 		$.ajax({
-			url: "https://api.enhancedsteam.com/market_data/card_prices/?appid="+app_id,
+			url: `https://api.enhancedsteam.com/market_data/card_prices/?appid=${app_id}`,
 			success: function(result){
-				if (typeof result !== "object"){
+				if (typeof result !== 'object'){
 					return;
 				}
 				$.each(result,function(index,value){
-					if (value.game.indexOf("Foil") <= 0) {
+					if (value.game.indexOf('Foil') <= 0) {
 						apps_total_cards_value += Number(value.price);
 					}
 				});
 				
 				// Divide the total by 2 as you get half the total cards as free drops
 				let discount = Number((apps_total_cards_value/2).toFixed(2));
-				$(`[src$='${app_id}.jpg']`).parents(".bundle-item-padding").find("span[class^='trading-']").append(' ($'+discount.toFixed(2)+")");
+				$(`[src$='${app_id}.jpg']`).parents('.bundle-item-padding').find('span[class^=\'trading-\']').append(` ($${discount.toFixed(2)})`);
 			}
 		});
 	});

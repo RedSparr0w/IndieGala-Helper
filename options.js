@@ -176,14 +176,15 @@ $('#restore_blacklist_apps').on('change', ()=>{
 	var fr = new FileReader();
 
 	fr.onload = function(e) {
+		let hiddenApps;
 		try{
-			let hiddenApps = JSON.parse(e.target.result);
+			hiddenApps = JSON.parse(e.target.result);
 		}catch(err){
 			console.error(err);
 			alert('Something went wrong!\nPlease check you uploaded a valid .json file');
 			return;
 		}
-		console.log(hiddenApps);
+
 		if (hiddenApps.constructor === Array){
 			alert('You cannot use the old backup file,\nThe structure has changed,\nSorry for this inconvenience.\n- IndieGala Helper');
 			return;
@@ -222,24 +223,21 @@ function save_options(type = 'sync') {
 			$('input, textarea', '#Tab_Options').each((i, el)=>{
 				let id = $(el).attr('id');
 				switch($(el).attr('type')){
-	        case 'checkbox':
+					case 'checkbox':
 						settings[id] = document.getElementById(id).checked;
 						break;
-	        case 'number':
+					case 'number':
 						settings[id] = Number(document.getElementById(id).value);
 						break;
-	        default:
+					default:
 						settings[id] = document.getElementById(id).value;
 				}
 			});
 
 			chrome.storage.sync.set(settings, ()=>{
 				$('#save').html('Saved!');
-				try {
-					clearTimeout(savedTimeout);
-				} finally {
-					savedTimeout = setTimeout( ()=>{ $('#save').html('Save'); }, 2000);
-				}
+				clearTimeout(savedTimeout);
+				savedTimeout = setTimeout( ()=>{ $('#save').html('Save'); }, 2000);
 			});
 	}
 }
@@ -273,7 +271,7 @@ function restore_options() {
 		// Listen to changes in inputs/textarea and update settings
 		document.getElementsByTagName('textarea')[0].addEventListener('change', ()=>{ save_options('sync'); });
 		var inputs = document.getElementsByTagName('input');
-		for (i = 0; i < inputs.length; i++){
+		for (let i = 0; i < inputs.length; i++){
 			inputs[i].addEventListener('change', ()=>{ save_options('sync'); });
 		}
 	});

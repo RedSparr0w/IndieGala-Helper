@@ -67,6 +67,7 @@ try {
 	chrome.storage.local.set({steam_sessionid: false});
 }
 
+// Firefox fix for something, will figure it out at somepoint..
 if (/firefox/i.test(navigator.userAgent)){
 	window.oldGetComputedStyle = window.getComputedStyle;
 	window.getComputedStyle = (element, pseudoElt)=>{
@@ -141,7 +142,7 @@ function getOwnedGames(force_update = false){
 				// Don't check for another 30 minutes - Steam may be down
 				local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
 				save_options('local');
-				myApp.alert('Something went wrong when updating your owned games list.');
+				myApp.alert(`Something went wrong when updating your owned games list.<br/><hr/><code>${err}</code>`);
 				console.error(`Owned Games Update Error: ${err}`);
 			}
 		});

@@ -2,52 +2,39 @@
 const version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(body,title='IndieGala Helper',icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg',closeOnClick=true) {//set title and icon if not included
-	let notification = false;
-	if (!('Notification' in window)) {//check if notifications supported
-		return notification;
-	}
-	else if (Notification.permission === 'granted') {//check if notifications permission granted
-		notification = new Notification(title,{body:body,icon:icon});
-		if (!!closeOnClick){
-			notification.onclick = function(){
-				this.close();
-			};
-		}
-		return notification;
-	}
-	else if (Notification.permission !== 'denied') {//check that permissions are not denied
-		Notification.requestPermission(function (permission) {//ask user for permission to create notifications
+function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true) {//set title and icon if not included
+	return new Promise((resolve, reject) => {
+		Notification.requestPermission((permission)=>{//ask user for permission to create notifications
 			if (permission === 'granted') {//if permission granted create notification
 				notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
-					notification.onclick = function(){
-						this.close();
-					};
+					notification.onclick = function(){ this.close(); };
 				}
-				return notification;
+				resolve(notification);
+			} else {
+				reject('permission denied');
 			}
 		});
-	}
+	});
 }
 
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem('version')===null){
-	localStorage.setItem('version',version);
+	localStorage.setItem('version', version);
 	//* show options modal when notification clicked *
 	$(window).load(function(){
-		notifyMe('Click here to setup IndieGala Helper!').onclick = function(){
-			$('#OpenIndieGalaHelper').click();
-		};
+		notifyMe('Click here to setup IndieGala Helper!').then((notification)=>{
+			notification.onclick = ()=>{ $('#OpenIndieGalaHelper').click();	};
+		});
 	});
 	//*/
 } else if (localStorage.getItem('version') != version){
-	localStorage.setItem('version',version);
+	localStorage.setItem('version', version);
 	/* Display notification relaying update */
 	let update_message = 'Minor Improvements';
-	if(!notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated')){
+	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(()=>{
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
-	}
+	});
 	//*/
 }
 
@@ -134,7 +121,7 @@ $(document).on('click','.donate_indiegala_helper',function(){
 		if(success == 'success')
 			el.remove();
 
-		notifyMe(result.msg) || alert(result.msg);
+		notifyMe(result.msg).catch(()=>{ alert(result.msg); };
 	});
 });
 

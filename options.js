@@ -217,29 +217,25 @@ var savedTimeout;
 function save_options(type = 'sync') {
 	switch(type){
 		case 'sync':
-			settings.steam_id = document.getElementById('steam_id').value;
-			settings.show_steam_activate_window = document.getElementById('show_steam_activate_window').checked;
-			settings.suppress_confirm_show_key_dialog = document.getElementById('suppress_confirm_show_key_dialog').checked;
-			settings.auto_enter_giveaways = document.getElementById('auto_enter_giveaways').checked;
-			settings.hide_high_level_giveaways = document.getElementById('hide_high_level_giveaways').checked;
-			settings.hide_extra_odds = document.getElementById('hide_extra_odds').checked;
-			settings.hide_soundtracks = document.getElementById('hide_soundtracks').checked;
-			settings.hide_owned_games = document.getElementById('hide_owned_games').checked;
-			settings.hide_entered_giveaways = document.getElementById('hide_entered_giveaways').checked;
-			settings.hide_not_guaranteed = document.getElementById('hide_not_guaranteed').checked;
-			settings.always_show_guaranteed = document.getElementById('always_show_guaranteed').checked;
-			settings.hide_above_price = Number(document.getElementById('hide_above_price').value);
-			settings.hide_above_participants = Number(document.getElementById('hide_above_participants').value);
-			settings.infinite_scroll = document.getElementById('infinite_scroll').checked;
-			settings.new_giveaway_message = document.getElementById('new_giveaway_message').value;
-			settings.new_giveaway_duration = Number(document.getElementById('new_giveaway_duration').value);
-			settings.new_giveaway_level = Number(document.getElementById('new_giveaway_level').value);
+			$('input, textarea', '#Tab_Options').each((i, el)=>{
+				let id = $(el).attr('id');
+				switch($(el).attr('type')){
+	        case 'checkbox':
+						settings[id] = document.getElementById(id).checked;
+						break;
+	        case 'number':
+						settings[id] = Number(document.getElementById(id).value);
+						break;
+	        default:
+						settings[id] = document.getElementById(id).value;
+				}
+			});
 
 			chrome.storage.sync.set(settings, function() {
 				$('#save').html('Saved!');
 				try {
 					clearTimeout(savedTimeout);
-				}finally{
+				} finally {
 					savedTimeout = setTimeout(function(){
 						$('#save').html('Save');
 					}, 2000);
@@ -262,25 +258,18 @@ function restore_options() {
 			if (themeClassList[i].indexOf('theme') === 0) themeClassList.remove(themeClassList[i]);
 		}
 		settings = setting;
-		themeClassList.add(`layout-${setting.theme}`);
-		themeClassList.add(`theme-${setting.theme_color}`);
-		document.getElementById('steam_id').value = setting.steam_id;
-		document.getElementById('show_steam_activate_window').checked = setting.show_steam_activate_window;
-		document.getElementById('suppress_confirm_show_key_dialog').checked = setting.suppress_confirm_show_key_dialog;
-		document.getElementById('auto_enter_giveaways').checked = setting.auto_enter_giveaways;
-		document.getElementById('hide_high_level_giveaways').checked = setting.hide_high_level_giveaways;
-		document.getElementById('hide_extra_odds').checked = setting.hide_extra_odds;
-		document.getElementById('hide_soundtracks').checked = setting.hide_soundtracks;
-		document.getElementById('hide_owned_games').checked = setting.hide_owned_games;
-		document.getElementById('hide_entered_giveaways').checked = setting.hide_entered_giveaways;
-		document.getElementById('hide_not_guaranteed').checked = setting.hide_not_guaranteed;
-		document.getElementById('always_show_guaranteed').checked = setting.always_show_guaranteed;
-		document.getElementById('hide_above_price').value = setting.hide_above_price;
-		document.getElementById('hide_above_participants').value = setting.hide_above_participants;
-		document.getElementById('infinite_scroll').checked = setting.infinite_scroll;
-		document.getElementById('new_giveaway_message').value = setting.new_giveaway_message;
-		document.getElementById('new_giveaway_duration').value = setting.new_giveaway_duration;
-		document.getElementById('new_giveaway_level').value = setting.new_giveaway_level;
+		themeClassList.add(`layout-${settings.theme}`);
+		themeClassList.add(`theme-${settings.theme_color}`);
+		$('input, textarea', '#Tab_Options').each((i, el)=>{
+			let id = $(el).attr('id');
+			switch($(el).attr('type')){
+				case 'checkbox':
+					document.getElementById(id).checked = settings[id];
+					break;
+				default:
+					document.getElementById(id).value = settings[id];
+			}
+		});
 
 		/** Events for after options are restored **/
 		// Save options when save button clicked

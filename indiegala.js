@@ -44,7 +44,7 @@ if (localStorage.getItem('version')===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version',version);
 	/* Display notification relaying update */
-	let update_message = 'Backwards page loading fixed!';
+	let update_message = 'Minor Improvements';
 	if(!notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated')){
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	}

@@ -22,7 +22,7 @@ function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.co
 if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 	//* show options modal when notification clicked *
-	$(window).load(function(){
+	$(window).load(() => {
 		notifyMe('Click here to setup IndieGala Helper!').then((notification)=>{
 			notification.onclick = ()=>{ $('#OpenIndieGalaHelper').click();	};
 		});
@@ -51,7 +51,7 @@ $('#log-in-status-cont').after(`
 	</div>
 	`);
 
-$('#OpenIndieGalaHelper').on('click', function(){
+$('#OpenIndieGalaHelper').on('click', () => {
 	$('#IGH_iframe').attr('src', '').attr('src', chrome.runtime.getURL('options.html'));
 });
 
@@ -84,7 +84,7 @@ $(document).on('click','input.keys , .serial-won input',function(){
 });
 
 // Add donate key button
-setInterval(function(){
+setInterval(() => {
 	$('.serial-won input:not(.checked)').each(function(){
 		$(this).after(`
 		<div class="entry-elem align-c activate_steam_key">
@@ -135,7 +135,7 @@ $(document).on('click','.activate_steam_key',function(){
 		return;
 	}
 	data.sessionid = local_settings.steam_sessionid;
-	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, function(result, success){
+	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, (result, success) => {
 		if(success == 'success' && typeof result == 'object'){
 			notifyMe(activateResultMessage(result.hasOwnProperty('purchase_result_details') ? result.purchase_result_details : 4));
 		} else {

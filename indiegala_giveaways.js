@@ -85,11 +85,11 @@ function showOwnedGames(){
 	});
 
 	// If less than 4 apps on page & inifiniteScroll is enabled then load next page
-	$('.tickets-col').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(function(){loading_page=false;});
+	$('.tickets-col').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
 
 // Auto enter giveaways
-setInterval(function(){
+setInterval(() => {
 	if (!!page_loaded && !!settings.auto_enter_giveaways){
 		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
 			$('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
@@ -103,7 +103,7 @@ function nextPage(){
 	var url_address = $('a.prev-next').eq(5).attr('href');
 	// If last page or undefined url return
 	if (typeof url_address == 'undefined' || url_address == location.pathname){
-		$('#indiegala-helper-pageloading').slideUp( function(){ loading_page=false; });
+		$('#indiegala-helper-pageloading').slideUp( () => { loading_page=false; });
 		return;
 	}
 
@@ -136,7 +136,7 @@ var loading_page = true;
 var page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways
-var wait_for_page = setInterval(function(){
+var wait_for_page = setInterval(() => {
 	if($('.tickets-col').length >= 12){
 		clearInterval(wait_for_page);
 		page_loaded = true;
@@ -173,7 +173,7 @@ if (!!settings.infinite_scroll){
 }
 
 // Add apps to hidden apps list
-$(document).on('click','.mark-as-owned',function(e){markAsOwned(e.target);/*showOwnedGames();*/});
+$(document).on('click','.mark-as-owned',(e) => {markAsOwned(e.target);/*showOwnedGames();*/});
 // Enter Giveaways without opening new tabs via ajax
 $(document).on('click','.animated-coupon',function(){handleCoupons(this);});
 
@@ -204,11 +204,11 @@ function handleCouponError(el, status){
 			errorMsg = `Error: "${status}". Try again in a few minutes.`;
 	}
 	$('.warning-text span', parentCont).text(errorMsg);
-	warningCover.toggle('clip', function(){
-		setTimeout( function(){ warningCover.toggle('clip'); }, 4000);
+	warningCover.toggle('clip', () => {
+		setTimeout( () => { warningCover.toggle('clip'); }, 4000);
 		if (clipTicket === true){
 			el.css('right','-50px').css('opacity','0');
-			setTimeout(function(){
+			setTimeout(() => {
 				el.remove();
 			}, 500);
 		}
@@ -224,7 +224,7 @@ function handleCoupons(e){
 	if ( coupon.hasClass( 'low-coins' ) ){
 		handleCouponError(coupon, 'insufficient_credit');
 		coupon.css('right','-50px').css('opacity','0');
-		setTimeout(function(){
+		setTimeout(() => {
 			coupon.remove();
 		}, 500);
 		return false;
@@ -247,7 +247,7 @@ function handleCoupons(e){
 					$( '.coins-amount strong' ).text( data['new_amount'] );
 					$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
 					coupon.css('right','-50px').css('opacity','0');
-					setTimeout(function(){
+					setTimeout(() => {
 						coupon.remove();
 					}, 500);
 				}else{

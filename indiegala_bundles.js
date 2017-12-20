@@ -4,7 +4,7 @@ var bundleApps = [];
 function showOwnedGames(){
 	// Wait for page to load games
 	if ($('.carousel-game-item').length <= 0){
-		setTimeout(function(){
+		setTimeout(()=>{
 			showOwnedGames();
 		},1000);
 		return;
@@ -27,7 +27,7 @@ function showOwnedGames(){
 				if (typeof result !== 'object'){
 					return;
 				}
-				$.each(result,function(index,value){
+				$.each(result, (index, value)=>{
 					if (value.game.indexOf('Foil') <= 0) {
 						apps_total_cards_value += Number(value.price);
 					}

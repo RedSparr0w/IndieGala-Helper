@@ -142,8 +142,8 @@ function getOwnedGames(force_update = false){
 				// Don't check for another 30 minutes - Steam may be down
 				local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
 				save_options('local');
-				myApp.alert(`Something went wrong when updating your owned games list.<br/><hr/><code>${err}</code>`);
-				console.error(`Owned Games Update Error: ${err}`);
+				myApp.alert(`Something went wrong when updating your owned games list.<br/><hr/><code style="word-wrap: break-word;">${JSON.stringify(err)}</code>`);
+				console.error('Owned Games Update Error:', err);
 			}
 		});
 	}

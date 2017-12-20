@@ -12,6 +12,8 @@
     },
     "extends": "eslint:recommended",
     "rules": {
+        "space-before-blocks": ["error", "never"],
+        "space-before-function-paren": ["error", "never"],
         "prefer-arrow-callback": "warn",
         "no-console": "warn",
         "indent": [

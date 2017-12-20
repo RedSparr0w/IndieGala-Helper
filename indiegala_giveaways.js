@@ -9,8 +9,8 @@ function getGalaSilver(){
 		},
 		cache: false,
 		dataType: 'json',
-		success: function(data) {
-			if (data.status === 'ok') {
+		success: function(data){
+			if (data.status === 'ok'){
 				$('#indiegala-helper-coins strong').text(data.silver_coins_tot);
 			} else {
 				$('#indiegala-helper-coins').text(data.status.replace('_', ' '));
@@ -113,7 +113,7 @@ function nextPage(){
 	var settings = {
 		dataType: 'json',
 		processData: false,
-		success: function(data) {
+		success: function(data){
 			if (!data.content){
 				nextPage();
 				return;
@@ -157,7 +157,7 @@ var wait_for_page = setInterval(() => {
 
 // If infinite scroll is checked then listen to scroll event and load more pages as needed
 if (!!settings.infinite_scroll){
-	$(window).scroll(function() {
+	$(window).scroll(function(){
 		if (loading_page===false){
 			var hT = $('.page-nav').eq(1).offset().top,
 				hH = $('.page-nav').eq(1).outerHeight(),

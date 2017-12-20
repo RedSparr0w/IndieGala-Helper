@@ -72,7 +72,7 @@ if (/firefox/i.test(navigator.userAgent)){
 	window.oldGetComputedStyle = window.getComputedStyle;
 	window.getComputedStyle = (element, pseudoElt)=>{
 		var t = window.oldGetComputedStyle(element, pseudoElt);
-		if (t === null) {
+		if (t === null){
 			return {
 				getPropertyValue:  ()=>{}
 			};
@@ -90,18 +90,18 @@ var myApp = new Framework7({
 });
 
 /* ===== Color / Themes ===== */
-$('.color-theme').click(function () {
+$('.color-theme').click(function(){
 	let classList = $('body')[0].classList;
-	for (let i = 0; i < classList.length; i++) {
+	for (let i = 0; i < classList.length; i++){
 		if (classList[i].indexOf('theme') === 0) classList.remove(classList[i]);
 	}
 	classList.add(`theme-${$(this).attr('data-theme')}`);
 	settings['theme_color'] = $(this).attr('data-theme');
 	save_options();
 });
-$('.layout-theme').click(function () {
+$('.layout-theme').click(function(){
 	let classList = $('body')[0].classList;
-	for (let i = 0; i < classList.length; i++) {
+	for (let i = 0; i < classList.length; i++){
 		if (classList[i].indexOf('layout-') === 0) classList.remove(classList[i]);
 	}
 	classList.add(`layout-${$(this).attr('data-theme')}`);
@@ -169,13 +169,13 @@ function list_blacklisted_apps(){
 
 $('#restore_blacklist_apps').on('change', ()=>{
 	var files = document.getElementById('restore_blacklist_apps').files;
-	if (files.length <= 0) {
+	if (files.length <= 0){
 		return false;
 	}
 
 	var fr = new FileReader();
 
-	fr.onload = function(e) {
+	fr.onload = function(e){
 		let hiddenApps;
 		try{
 			hiddenApps = JSON.parse(e.target.result);
@@ -213,7 +213,7 @@ function remove_blacklist_app(el){
 
 // Saves options to chrome.storage.sync.
 var savedTimeout;
-function save_options(type = 'sync') {
+function save_options(type = 'sync'){
 	switch(type){
 		case 'local':
 			chrome.storage.local.set(local_settings);
@@ -243,7 +243,7 @@ function save_options(type = 'sync') {
 }
 
 // Restores select box and checkbox state using the preferences
-function restore_options() {
+function restore_options(){
 	restore_sync_options();
 	restore_local_options();
 }

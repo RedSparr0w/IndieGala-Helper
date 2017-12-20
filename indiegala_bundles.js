@@ -28,7 +28,7 @@ function showOwnedGames(){
 					return;
 				}
 				$.each(result, (index, value)=>{
-					if (value.game.indexOf('Foil') <= 0) {
+					if (value.game.indexOf('Foil') <= 0){
 						apps_total_cards_value += Number(value.price);
 					}
 				});

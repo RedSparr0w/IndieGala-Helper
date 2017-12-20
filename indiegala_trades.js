@@ -51,7 +51,7 @@ $(document).on('click','.page-link-cont',(e) => {
 	});
 	// Load new giveaways
 	$('.trades-main-page .row.no-padding').load(`${e.target.href} .trade-cont`,(response, status, xhr) => {
-		if ( status == 'error' || xhr.status!==200) {
+		if ( status == 'error' || xhr.status!==200){
 			location.replace(e.target.href);
 		}
 		showOwnedGames();
@@ -61,7 +61,7 @@ $(document).on('click','.page-link-cont',(e) => {
 	});
 	// Load new page nav
 	$('.page-nav .row .col-xs-12').load(`${e.target.href} .page-link-cont`,(response, status, xhr) => {
-		if ( status == 'error' || xhr.status!==200) {
+		if ( status == 'error' || xhr.status!==200){
 			location.replace(e.target.href);
 		}else{
 			history.replaceState('data', '', e.target.href);

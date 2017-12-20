@@ -2,10 +2,10 @@
 const version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true) {//set title and icon if not included
+function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
 		Notification.requestPermission((permission)=>{//ask user for permission to create notifications
-			if (permission === 'granted') {//if permission granted create notification
+			if (permission === 'granted'){//if permission granted create notification
 				let notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
 					notification.onclick = function(){ this.close(); };

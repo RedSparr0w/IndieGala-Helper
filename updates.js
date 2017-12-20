@@ -6,7 +6,7 @@ function checkVersion(check_version, above = false){
 	check_version = check_version.split('.').map(Number);
 	while (old_version.length < check_version.length) old_version.push(0);
 	while (check_version.length < old_version.length) check_version.push(0);
-	for (var i = 0; i < check_version.length; ++i) {
+	for (var i = 0; i < check_version.length; ++i){
 		if (old_version[i] == check_version[i])
 			continue;
 		return above ? old_version[i] > check_version[i] : old_version[i] < check_version[i];

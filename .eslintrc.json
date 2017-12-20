@@ -23,20 +23,14 @@
               "SwitchCase": 1
             }
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "linebreak-style": ["error", "windows"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
         "no-extra-boolean-cast": "off",
         "camelcase": "off",
-        "prefer-template": "warn"
+        "prefer-template": "warn",
+        "no-trailing-spaces": "error",
+        "eol-last": "error",
+        "no-unused-vars": ["error", {"args": "none"}]
     }
 }

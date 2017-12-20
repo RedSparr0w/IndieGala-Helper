@@ -92,7 +92,6 @@ var myApp = new Framework7({
 /* ===== Color / Themes ===== */
 $('.layout-theme, .theme-color').click(function(){
 	let type = $(this).hasClass('theme-color') ? 'theme' : 'layout';
-	console.log(type);
 	let classList = $('body')[0].classList;
 	for (let i = 0; i < classList.length; i++){
 		if (classList[i].indexOf(`${type}-`) === 0) classList.remove(classList[i]);

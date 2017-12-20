@@ -112,7 +112,7 @@ function nextPage(){
 	var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
 	var settings = {
 		dataType: 'json',
-		processData:false,
+		processData: false,
 		success: function(data) {
 			if (!data.content){
 				nextPage();
@@ -124,9 +124,7 @@ function nextPage(){
 			history.replaceState('data', '', `https://www.indiegala.com${url_address}`);
 			showOwnedGames();
 		},
-		error: function() {
-			nextPage();
-		}
+		error: () => { nextPage(); }
 	};
 	$.ajax(url,settings);
 }

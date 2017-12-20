@@ -274,11 +274,7 @@ function restore_sync_options(){
 		// Save options when save button clicked
 		document.getElementById('save').addEventListener('click', ()=>{ save_options('sync'); });
 		// Listen to changes in inputs/textarea and update settings
-		document.getElementsByTagName('textarea')[0].addEventListener('change', ()=>{ save_options('sync'); });
-		var inputs = document.getElementsByTagName('input');
-		for (let i = 0; i < inputs.length; i++){
-			inputs[i].addEventListener('change', ()=>{ save_options('sync'); });
-		}
+		$('input, textarea', '#Tab_Options').on('change', ()=>{ save_options('sync'); });
 	});
 }
 

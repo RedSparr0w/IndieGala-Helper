@@ -183,7 +183,7 @@ $('#restore_blacklist_apps').on('change', () => {
 		}
 		local_settings.blacklist_apps = hiddenApps;
 		list_blacklisted_apps();
-		save_options('sync');
+		save_options('local');
 		document.getElementById('restore_blacklist_apps').value = '';
 	};
 

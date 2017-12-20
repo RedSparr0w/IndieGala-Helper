@@ -12,6 +12,8 @@
     },
     "extends": "eslint:recommended",
     "rules": {
+        "prefer-arrow-callback": "warn",
+        "no-console": "warn",
         "indent": [
             "error",
             "tab",

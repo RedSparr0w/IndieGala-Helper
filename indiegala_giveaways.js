@@ -33,7 +33,7 @@ function showOwnedGames(){
 		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
 	}
 
-	$('.tickets-col:not(.checked)').each(function(i){
+	$('.tickets-col:not(.checked)').each(function(){
 		let app_id = Number($('.giveaway-game-id', this).val()) || 0;
 		let app_image = $('img', this);
 		let app_name = app_image.attr('alt');

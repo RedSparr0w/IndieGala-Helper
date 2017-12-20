@@ -15,8 +15,8 @@ function checkVersion(check_version, above = false){
 }
 
 if (checkVersion('4.0.0', false)){
-	chrome.storage.sync.get({blacklist_apps: {}}, function(blacklist) {
-		chrome.storage.local.set(blacklist, function() {
+	chrome.storage.sync.get({blacklist_apps: {}}, (blacklist)=>{
+		chrome.storage.local.set(blacklist, ()=>{
 			chrome.storage.sync.remove('blacklist_apps');
 		});
 	});

@@ -135,7 +135,7 @@ var page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways
 var wait_for_page = setInterval(() => {
-	if($('.tickets-col').length >= 12){
+	if($('.tickets-col').length >= 1){
 		clearInterval(wait_for_page);
 		page_loaded = true;
 		// Remove extra spacing

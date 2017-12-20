@@ -49,9 +49,9 @@ try {
 				}
 			});
 	} else {
-		chrome.cookies.get({url:'https://store.steampowered.com', name:'steamLogin'}, (steamLogin_cookie)=>{
+		chrome.cookies.get({url:'https://store.steampowered.com', name:'steamLogin'}, (steamLogin_cookie) => {
 			if (!!steamLogin_cookie){
-				chrome.cookies.get({url:'https://store.steampowered.com', name:'sessionid'}, (cookie)=>{
+				chrome.cookies.get({url:'https://store.steampowered.com', name:'sessionid'}, (cookie) => {
 					if (!!cookie){
 						local_settings.steam_sessionid = cookie.value;
 						chrome.storage.local.set({steam_sessionid: cookie.value});
@@ -70,11 +70,11 @@ try {
 // Firefox fix for something, will figure it out at somepoint..
 if (/firefox/i.test(navigator.userAgent)){
 	window.oldGetComputedStyle = window.getComputedStyle;
-	window.getComputedStyle = (element, pseudoElt)=>{
+	window.getComputedStyle = (element, pseudoElt) => {
 		var t = window.oldGetComputedStyle(element, pseudoElt);
 		if (t === null){
 			return {
-				getPropertyValue:  ()=>{}
+				getPropertyValue:  () => {}
 			};
 		} else{
 			return t;
@@ -102,10 +102,10 @@ $('.layout-theme, .theme-color').click(function(){
 });
 
 /* ===== Panel opened/closed ===== */
-$('.panel-right').on('open', ()=>{
+$('.panel-right').on('open', () => {
 	$('.statusbar-overlay').addClass('with-panel-right');
 });
-$('.panel-right').on('close', ()=>{
+$('.panel-right').on('close', () => {
 	$('.statusbar-overlay').removeClass('with-panel-left with-panel-right');
 });
 
@@ -117,10 +117,10 @@ function getOwnedGames(force_update = false){
 		$.ajax({
 			dataType:'json',
 			url:`https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=${settings.steam_id}&include_appinfo=0&include_played_free_games=1`,
-			success: (res)=>{
+			success: (res) => {
 				let ownedApps = [];
 				let myApps = res.response.games;
-				$.each(myApps, (i,v)=>{
+				$.each(myApps, (i,v) => {
 					ownedApps.push(v.appid);
 				});
 				// Set owned apps
@@ -130,7 +130,7 @@ function getOwnedGames(force_update = false){
 				save_options('local');
 				myApp.alert(`Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
 			},
-			error: (err)=>{
+			error: (err) => {
 				// Don't check for another 30 minutes - Steam may be down
 				local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
 				save_options('local');
@@ -144,7 +144,7 @@ function getOwnedGames(force_update = false){
 
 function list_blacklisted_apps(){
 	$('#app_blacklist').html('');
-	$.each(local_settings.blacklist_apps, (app_id, app_name)=>{
+	$.each(local_settings.blacklist_apps, (app_id, app_name) => {
 		$('#app_blacklist').append(`
 									<li>
 										<div class="item-content">
@@ -159,7 +159,7 @@ function list_blacklisted_apps(){
 	$('#backup_blacklist_apps').attr('href', DLStr).attr('download', 'IGH Blacklist_Apps_Backup.json');
 }
 
-$('#restore_blacklist_apps').on('change', ()=>{
+$('#restore_blacklist_apps').on('change', () => {
 	var files = document.getElementById('restore_blacklist_apps').files;
 	if (files.length <= 0){
 		return false;
@@ -212,7 +212,7 @@ function save_options(type = 'sync'){
 			break;
 		case 'sync':
 		default:
-			$('input, textarea', '#Tab_Options').each((i, el)=>{
+			$('input, textarea', '#Tab_Options').each((i, el) => {
 				let id = $(el).attr('id');
 				switch($(el).attr('type')){
 					case 'checkbox':
@@ -226,10 +226,10 @@ function save_options(type = 'sync'){
 				}
 			});
 
-			chrome.storage.sync.set(settings, ()=>{
+			chrome.storage.sync.set(settings, () => {
 				$('#save').html('Saved!');
 				clearTimeout(savedTimeout);
-				savedTimeout = setTimeout( ()=>{ $('#save').html('Save'); }, 2000);
+				savedTimeout = setTimeout( () => { $('#save').html('Save'); }, 2000);
 			});
 	}
 }
@@ -243,14 +243,14 @@ function restore_options(){
 function restore_sync_options(){
 	let themeClassList = $('body')[0].classList;
 	// Use default value (settings obj) if option not set
-	chrome.storage.sync.get(settings, (setting)=>{
+	chrome.storage.sync.get(settings, (setting) => {
 		for (let i = themeClassList.length-1; i >= 0 ; i--){
 			if (themeClassList[i].indexOf('layout-') === 0 || themeClassList[i].indexOf('theme-') === 0) themeClassList.remove(themeClassList[i]);
 		}
 		settings = setting;
 		themeClassList.add(`layout-${settings.layout}`);
 		themeClassList.add(`theme-${settings.theme}`);
-		$('input, textarea', '#Tab_Options').each((i, el)=>{
+		$('input, textarea', '#Tab_Options').each((i, el) => {
 			let id = $(el).attr('id');
 			switch($(el).attr('type')){
 				case 'checkbox':
@@ -263,18 +263,18 @@ function restore_sync_options(){
 
 		/** Events for after options are restored **/
 		// Save options when save button clicked
-		document.getElementById('save').addEventListener('click', ()=>{ save_options('sync'); });
+		document.getElementById('save').addEventListener('click', () => { save_options('sync'); });
 		// Listen to changes in inputs/textarea and update settings
-		$('input, textarea', '#Tab_Options').on('change', ()=>{ save_options('sync'); });
+		$('input, textarea', '#Tab_Options').on('change', () => { save_options('sync'); });
 	});
 }
 
 function restore_local_options(){
-	chrome.storage.local.get(local_settings, (setting)=>{
+	chrome.storage.local.get(local_settings, (setting) => {
 		local_settings = setting;
 		// Check Owned Apps
 		getOwnedGames();
-		document.getElementById('refresh_owned').addEventListener('click', ()=>{ getOwnedGames(true); });
+		document.getElementById('refresh_owned').addEventListener('click', () => { getOwnedGames(true); });
 
 		// Blacklist stuff
 		list_blacklisted_apps();

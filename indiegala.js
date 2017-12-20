@@ -4,7 +4,7 @@ const version = chrome.runtime.getManifest().version;
 // Create Notifications
 function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
-		Notification.requestPermission((permission)=>{//ask user for permission to create notifications
+		Notification.requestPermission((permission) => {//ask user for permission to create notifications
 			if (permission === 'granted'){//if permission granted create notification
 				let notification = new Notification(title,{body:body,icon:icon});
 				if (!!closeOnClick){
@@ -23,8 +23,8 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 	//* show options modal when notification clicked *
 	$(window).load(() => {
-		notifyMe('Click here to setup IndieGala Helper!').then((notification)=>{
-			notification.onclick = ()=>{ $('#OpenIndieGalaHelper').click();	};
+		notifyMe('Click here to setup IndieGala Helper!').then((notification) => {
+			notification.onclick = () => { $('#OpenIndieGalaHelper').click();	};
 		});
 	});
 	//*/
@@ -32,7 +32,7 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 	/* Display notification relaying update */
 	let update_message = 'Minor Improvements';
-	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(()=>{
+	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});
 	//*/
@@ -117,11 +117,11 @@ $(document).on('click', '.donate_indiegala_helper', function(){
 	data.product = !!$('.game-steam-url', el).length ? $('.game-steam-url', el).text() : $('.entry-elem[title]', el).attr('title');
 	data.product_key = $('input', el).val();
 	data.user = settings.steam_id;
-	$.post('https://indiegala.redsparr0w.com/donate', data, (result, success)=>{
+	$.post('https://indiegala.redsparr0w.com/donate', data, (result, success) => {
 		if(success == 'success')
 			el.remove();
 
-		notifyMe(result.msg).catch(()=>{ alert(result.msg); });
+		notifyMe(result.msg).catch(() => { alert(result.msg); });
 	});
 });
 

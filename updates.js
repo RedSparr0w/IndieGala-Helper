@@ -15,16 +15,16 @@ function checkVersion(check_version, above = false){
 }
 
 if (checkVersion('4.0.0', false)){
-	chrome.storage.sync.get({blacklist_apps: {}}, (blacklist)=>{
-		chrome.storage.local.set(blacklist, ()=>{
+	chrome.storage.sync.get({blacklist_apps: {}}, (blacklist) => {
+		chrome.storage.local.set(blacklist, () => {
 			chrome.storage.sync.remove('blacklist_apps');
 		});
 	});
 }
 
 if (checkVersion('4.4.5', false)){
-	chrome.storage.sync.get({theme: 'black', theme_color: 'red'}, (setting)=>{
-		chrome.storage.sync.set({theme: setting.theme_color, layout: setting.theme }, ()=>{
+	chrome.storage.sync.get({theme: 'black', theme_color: 'red'}, (setting) => {
+		chrome.storage.sync.set({theme: setting.theme_color, layout: setting.theme }, () => {
 			chrome.storage.sync.remove('theme_color');
 		});
 	});

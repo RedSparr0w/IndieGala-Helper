@@ -22,5 +22,13 @@ if (checkVersion('4.0.0', false)){
 	});
 }
 
+if (checkVersion('4.4.5', false)){
+	chrome.storage.sync.get({theme: 'black', theme_color: 'red'}, (setting)=>{
+		chrome.storage.sync.set({theme: setting.theme_color, layout: setting.theme }, ()=>{
+			chrome.storage.sync.remove('theme_color');
+		});
+	});
+}
+
 // Leave this at the end so it is set after all the version checks have been completed
 localStorage.setItem('version', version);

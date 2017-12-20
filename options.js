@@ -1,7 +1,7 @@
 // Set Default Settings
 var settings = {
-	theme: 'dark',
-	theme_color: 'red',
+	layout: 'dark',
+	theme: 'red',
 	steam_id: '',
 	show_steam_activate_window: true,
 	suppress_confirm_show_key_dialog: true,
@@ -90,22 +90,15 @@ var myApp = new Framework7({
 });
 
 /* ===== Color / Themes ===== */
-$('.color-theme').click(function(){
+$('.layout-theme, .theme-color').click(function(){
+	let type = $(this).hasClass('theme-color') ? 'theme' : 'layout';
+	console.log(type);
 	let classList = $('body')[0].classList;
 	for (let i = 0; i < classList.length; i++){
-		if (classList[i].indexOf('theme') === 0) classList.remove(classList[i]);
+		if (classList[i].indexOf(`${type}-`) === 0) classList.remove(classList[i]);
 	}
-	classList.add(`theme-${$(this).attr('data-theme')}`);
-	settings['theme_color'] = $(this).attr('data-theme');
-	save_options();
-});
-$('.layout-theme').click(function(){
-	let classList = $('body')[0].classList;
-	for (let i = 0; i < classList.length; i++){
-		if (classList[i].indexOf('layout-') === 0) classList.remove(classList[i]);
-	}
-	classList.add(`layout-${$(this).attr('data-theme')}`);
-	settings['theme'] = $(this).attr('data-theme');
+	classList.add(`${type}-${$(this).attr(`data-${type}`)}`);
+	settings[type] = $(this).attr(`data-${type}`);
 	save_options();
 });
 
@@ -253,12 +246,11 @@ function restore_sync_options(){
 	// Use default value (settings obj) if option not set
 	chrome.storage.sync.get(settings, (setting)=>{
 		for (let i = themeClassList.length-1; i >= 0 ; i--){
-			if (themeClassList[i].indexOf('layout-') === 0) themeClassList.remove(themeClassList[i]);
-			if (themeClassList[i].indexOf('theme') === 0) themeClassList.remove(themeClassList[i]);
+			if (themeClassList[i].indexOf('layout-') === 0 || themeClassList[i].indexOf('theme-') === 0) themeClassList.remove(themeClassList[i]);
 		}
 		settings = setting;
-		themeClassList.add(`layout-${settings.theme}`);
-		themeClassList.add(`theme-${settings.theme_color}`);
+		themeClassList.add(`layout-${settings.layout}`);
+		themeClassList.add(`theme-${settings.theme}`);
 		$('input, textarea', '#Tab_Options').each((i, el)=>{
 			let id = $(el).attr('id');
 			switch($(el).attr('type')){

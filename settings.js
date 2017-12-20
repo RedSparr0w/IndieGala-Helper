@@ -1,7 +1,7 @@
 // Set Default Settings
 var settings = {
-	theme: 'dark',
-	theme_color: 'red',
+	layout: 'dark',
+	theme: 'red',
 	steam_id: '',
 	show_steam_activate_window: true,
 	suppress_confirm_show_key_dialog: true,

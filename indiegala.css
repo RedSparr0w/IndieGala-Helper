@@ -98,6 +98,7 @@
 }
 #indiegala-helper-coins {
   position: fixed;
+  z-index: 100;
   top: 80px;
   right: 0px;
   padding: 10px;

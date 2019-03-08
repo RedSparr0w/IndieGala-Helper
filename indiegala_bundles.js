@@ -19,6 +19,7 @@ function showOwnedGames(){
 
 		// Get card values
 		bundleApps.push(app_id);
+		/*
 		$.ajax({
 			url: `https://api.enhancedsteam.com/market_data/card_prices/?appid=${app_id}`,
 			success: function(result){
@@ -36,6 +37,7 @@ function showOwnedGames(){
 				$(`[src$='${app_id}.jpg']`).parents('.bundle-item-padding').find('span[class^=\'trading-\']').append(` ($${discount.toFixed(2)})`);
 			}
 		});
+		*/
 	});
 }
 showOwnedGames();

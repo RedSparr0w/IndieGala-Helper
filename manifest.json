@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "4.5.2",
+	"version": "4.6.0",
 	"applications": {
 		"gecko": {
 			"id": "indegala-helper@redsparr0w.com"
@@ -14,7 +14,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
-			"js": ["/include/js/jquery-3.2.1.min.js","settings.js"],
+			"js": ["/include/js/jquery-3.3.1.min.js","settings.js"],
 			"css": ["indiegala.css"],
 			"run_at": "document_start"
 		},
@@ -60,9 +60,8 @@
 	},
 	"permissions": [
 		"https://indiegala.redsparr0w.com/",
-		"https://api.enhancedsteam.com/",
 		"*://store.steampowered.com/",
-    "storage",
+		"storage",
 		"cookies",
 		"notifications"
 	],

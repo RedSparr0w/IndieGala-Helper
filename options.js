@@ -116,7 +116,7 @@ function getOwnedGames(force_update = false){
 	if (!!force_update || settings.steam_id.length == 17 && +local_settings.owned_apps_next_update < +new Date().getTime() ){
 		$.ajax({
 			dataType:'json',
-			url:`https://api.enhancedsteam.com/steamapi/GetOwnedGames/?steamid=${settings.steam_id}&include_appinfo=0&include_played_free_games=1`,
+			url:`https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
 			success: (res) => {
 				let ownedApps = [];
 				let myApps = res.response.games;

@@ -31,7 +31,7 @@ if (localStorage.getItem('version')===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	/* Display notification relaying update */
-	let update_message = 'Fix loading of owned games list';
+	let update_message = '[BETA] Steam Key activation updated, should be more reliable';
 	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});
@@ -130,17 +130,11 @@ $(document).on('click','.activate_steam_key',function(){
 	let data = {};
 	let el = !!$(this).parents('.game-key-string').length ? $(this).parents('.game-key-string') : $(this).parents('li');
 	data.product_key = $('input', el).val();
-	if(!local_settings.steam_sessionid){
-		notifyMe('You must be signed into the steam website to use this feature.');
-		return;
-	}
-	data.sessionid = local_settings.steam_sessionid;
 	$.post('https://store.steampowered.com/account/ajaxregisterkey/', data, (result, success) => {
-		if(success == 'success' && typeof result == 'object'){
+		if(success == 'success' && typeof result == 'object' && result.success <= 2){
 			notifyMe(activateResultMessage(result.hasOwnProperty('purchase_result_details') ? result.purchase_result_details : 4));
 		} else {
-			chrome.storage.local.set({steam_sessionid:false});
-			notifyMe('You must be signed into the steam website to use this feature.');
+			window.open(`https://store.steampowered.com/account/registerkey?key=${data.product_key}`);
 		}
 	});
 });
@@ -195,7 +189,7 @@ function activateResultMessage(result = 4){
 			break;
 		case 4:
 		default:
-			message = 'An unexpected error has occurred.  Your product code has not been redeemed.  Please wait 30 minutes and try redeeming the code again.  If the problem persists, please contact <a href="https://help.steampowered.com/en/wizard/HelpWithCDKey">Steam Support</a> for further assistance.';
+			message = 'An unexpected error has occurred, Your product code has not been redeemed, Please wait 30 minutes before trying redeeming the code again.';
 	}
 	return message;
 }

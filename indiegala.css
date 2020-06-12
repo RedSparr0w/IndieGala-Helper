@@ -74,27 +74,18 @@
   color: white;
 }
 /* GIVE AWAYS */
-.giveaways-main-page .page-nav{
-  margin-top: 15px;
-}
-.tickets-col {
+.page-contents-list-cont .items-list-item {
   display:none;
 }
-.price-type-cont.palette-background-7{
-  background:#D67400 !important;
-}
-.tickets-col .main {
-  color: #CC001D;
-}
-.tickets-col .main.unknown {
-  color: #000;
-}
-.tickets-col a.viewOnSteam {
+.items-list-item a.view-on-steam {
   font-family:Arial, sans-serif !important;
   text-shadow:none !important;
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
-.tickets-col a.viewOnSteam:hover {
-  color: #CC001D;
+.items-list-item a.view-on-steam:hover {
+  color: #1b2838;
 }
 #indiegala-helper-coins {
   position: fixed;

@@ -43,14 +43,15 @@ function get_user_level(){
 		dataType:'json',
 		url: 'https://www.indiegala.com/get_user_info',
 		data: {
-			'uniq_param': new Date().getTime()
+			'uniq_param': new Date().getTime(),
+			'show_coins': 'True'
 		},
 		success: function(res){
 			if (!res){
 				return;
 			}
 			if (Number(res.giveaways_user_lever) >= 0){
-				settings.current_level = res.current_level;
+				settings.current_level = +res.giveaways_user_lever;
 				chrome.storage.sync.set(settings);
 			}
 		}

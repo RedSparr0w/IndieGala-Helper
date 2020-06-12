@@ -45,25 +45,35 @@ get_user_level();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
 function showOwnedGames(){
-	// Remove Entered Giveaways
-	if (!!settings.hide_entered_giveaways){
-		// $('.items-list-item.wait').remove();
-	}
 
-	$('.tickets-col:not(.checked)').each(function(){
-		let app_id = Number($('.giveaway-game-id', this).val()) || 0;
-		let app_image = $('img', this);
-		let app_name = app_image.attr('alt');
-		let giveaway_guaranteed = ($('.type-level-cont', this).text().match(/((not\s)?guaranteed)/i) || [0])[0] == 'guaranteed';
-		let giveaway_level = Number(($('.type-level-cont', this).text().match('[0-9]+') || [0])[0]);
-		let giveaway_participants = Number(($('.box_pad_5', this).text().match(/([0-9]+) participants/i) || [0,0])[1]);
-		let giveaway_price = Number($('.ticket-price strong', this).text()) || 0;
-		let giveaway_extra_odds = !!($('.extra-type', this).text().match(/extra odds/i) || [0])[0];
-		let do_not_remove = !!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
+	var temp = [];
+	$('.page-contents-list-cont .items-list-col:not(.checked)').each(function(){
+		let app_image,
+				app_id = 0,
+				app_name = '',
+				giveaway_guaranteed = false,
+				giveaway_entered = false,
+				giveaway_level = 0,
+				giveaway_participants = 0,
+				giveaway_price = 0,
+				giveaway_extra_odds = false;
+		try { app_image = $('img', this)[0];																																									}catch(O_o){}
+		try { app_id = Number(app_image.dataset.imgSrc.match(/apps\/(\d+)\/header/)[1]) || 0;																	}catch(O_o){}
+		try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,''); 																									}catch(O_o){}
+		try { giveaway_guaranteed = !!$('.items-list-item-type-guaranteed', this).length; 																		}catch(O_o){}
+		try { giveaway_entered = !$('.items-list-item-ticket-click', this).length; 																						}catch(O_o){}
+		try { giveaway_level = Number(($('.items-list-item-type span', this).text().match(/\d+/) || [0])[0]); 								}catch(O_o){}
+		try { giveaway_participants = Number(($('.items-list-item-data-right-bottom', this).text().match(/\d+/) || [0])[0]); 	}catch(O_o){}
+		try { giveaway_price = Number($('[data-price]', this)[0].dataset.price) || 0; 																				}catch(O_o){}
+		try { giveaway_extra_odds = /single ticket/i.test($('.items-list-item-type', this).text()); 													}catch(O_o){}
+		const do_not_remove = !!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
+
+		temp.push({app_id, app_name, giveaway_guaranteed, giveaway_level, giveaway_participants, giveaway_price, giveaway_extra_odds});
 
 		if ( !do_not_remove && (
 			typeof local_settings.blacklist_apps[app_id] != 'undefined' // Remove If Blacklisted
           || !!settings.hide_not_guaranteed && !giveaway_guaranteed // Remove if "not guaranteed"
+					|| !!settings.hide_entered_giveaways && giveaway_entered // Remove entered giveaways
           || !!settings.hide_high_level_giveaways && giveaway_level > settings.current_level // Remove if above users level
           || !!settings.hide_extra_odds && !!giveaway_extra_odds // Remove if "extra odds"
           || !!settings.hide_above_price && giveaway_price > settings.hide_above_price // Remove if above defined price
@@ -90,60 +100,67 @@ function showOwnedGames(){
 		$('.info-row', this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
 
 		// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
-		$('.items-list-item-ticket-click', this).attr('onclick','joinGiveawayOrAuctionAJS=false;');
+		// $('.items-list-item-ticket-click', this).attr('onclick','joinGiveawayOrAuctionAJS=false;');
 
 		// Add button to add to blacklist
 		$('.ticket-left', this).prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
 
 		// Show app image
-		app_image.on('error', function(){
-			$(this).attr('src','//i.imgur.com/eMShBmW.png');
-		}).attr('src', app_image.attr('data-src'));
-	});
+		app_image.onerror = function(){
+			this.src = '//i.imgur.com/eMShBmW.png';
+		}
 
+		$('.items-list-item-title a', this).eq(0).before(`<a class="view-on-steam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK" alt="View on Steam"><i class="fa fa-steam" aria-hidden="true"></i></a>`);
+
+	});
+	console.table(temp);
+
+	// TODO: Fix infinite scrolling
 	// If less than 4 apps on page & inifiniteScroll is enabled then load next page
-	$('.tickets-col').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
+	$('.page-contents-list-cont .items-list-item').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
 
+// TODO: Fix auto enter
 // Auto enter giveaways
-setInterval(() => {
-	if (!!page_loaded && !!settings.auto_enter_giveaways){
-		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-			$('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
-		}
-	}
-}, 3000);
+// setInterval(() => {
+// 	if (!!page_loaded && !!settings.auto_enter_giveaways){
+// 		if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+// 			$('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
+// 		}
+// 	}
+// }, 3000);
 
+// TODO: Fix infinite scrolling
 // Load next page via ajax
 function nextPage(){
-	loading_page=true;
-	var url_address = $('a.prev-next').eq(5).attr('href');
-	// If last page or undefined url return
-	if (typeof url_address == 'undefined' || url_address == location.pathname){
-		$('#indiegala-helper-pageloading').slideUp( () => { loading_page=false; });
-		return;
-	}
-
-	$('#indiegala-helper-pageloading').slideDown(250);
-	var url_attr = url_address.split('/');
-	var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
-	var settings = {
-		dataType: 'json',
-		processData: false,
-		success: function(data){
-			if (!data.content){
-				nextPage();
-				return;
-			}
-			data = $.parseHTML(data.content);
-			$('.tickets-row').append($('.tickets-col', data));
-			$('.pagination').parent().html($('.pagination', data));
-			history.replaceState('data', '', `https://www.indiegala.com${url_address}`);
-			showOwnedGames();
-		},
-		error: () => { nextPage(); }
-	};
-	$.ajax(url,settings);
+// 	loading_page=true;
+// 	var url_address = location.pathname.replace(/\d+/, ++location.pathname.match(/\d+/)[0])
+// 	// If last page or undefined url return
+// 	if (typeof url_address == 'undefined' || url_address == location.pathname){
+// 		$('#indiegala-helper-pageloading').slideUp( () => { loading_page=false; });
+// 		return;
+// 	}
+//
+// 	$('#indiegala-helper-pageloading').slideDown(250);
+// 	var url_attr = url_address.split('/');
+// 	var url = `https://www.indiegala.com/giveaways/ajax_data/list?page_param=${url_attr[2]}&order_type_param=${url_attr[3]}&order_value_param=${url_attr[4]}&filter_type_param=${url_attr[5]}&filter_value_param=${url_attr[6]}`;
+// 	var settings = {
+// 		dataType: 'json',
+// 		processData: false,
+// 		success: function(data){
+// 			if (!data.content){
+// 				nextPage();
+// 				return;
+// 			}
+// 			data = $.parseHTML(data.content);
+// 			$('.tickets-row').append($('.tickets-col', data));
+// 			$('.pagination').parent().html($('.pagination', data));
+// 			history.replaceState('data', '', `https://www.indiegala.com${url_address}`);
+// 			showOwnedGames();
+// 		},
+// 		error: () => { nextPage(); }
+// 	};
+// 	$.ajax(url,settings);
 }
 
 // Set loading page as true, will be set to false once "showOwnedGames" is processed

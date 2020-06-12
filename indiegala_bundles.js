@@ -1,3 +1,4 @@
+/* TODO: Fix this
 var bundleApps = [];
 
 // Mark owned games and get values of cards
@@ -19,7 +20,7 @@ function showOwnedGames(){
 
 		// Get card values
 		bundleApps.push(app_id);
-		/*
+		// TODO: Find a new APi for card prices
 		$.ajax({
 			url: `https://api.enhancedsteam.com/market_data/card_prices/?appid=${app_id}`,
 			success: function(result){
@@ -37,7 +38,7 @@ function showOwnedGames(){
 				$(`[src$='${app_id}.jpg']`).parents('.bundle-item-padding').find('span[class^=\'trading-\']').append(` ($${discount.toFixed(2)})`);
 			}
 		});
-		*/
 	});
 }
 showOwnedGames();
+*/

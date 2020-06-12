@@ -38,6 +38,27 @@ if (localStorage.getItem('version')===null){
 	//*/
 }
 
+function get_user_level(){
+	$.ajax({
+		dataType:'json',
+		url: 'https://www.indiegala.com/get_user_info',
+		data: {
+			'uniq_param': new Date().getTime()
+		},
+		success: function(res){
+			if (!res){
+				return;
+			}
+			if (Number(res.giveaways_user_lever) >= 0){
+				settings.current_level = res.current_level;
+				chrome.storage.sync.set(settings);
+			}
+		}
+	});
+}
+
+/* TODO: Fix these functions
+
 // Indiegala Helper Menu
 $('#log-in-status-cont').after(`
 	<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
@@ -139,24 +160,6 @@ $(document).on('click','.activate_steam_key',function(){
 	});
 });
 
-
-
-function get_user_level(){
-	$.ajax({
-		dataType:'json',
-		url:'https://www.indiegala.com/giveaways/get_user_level_and_coins',
-		success: function(res){
-			if (!res){
-				return;
-			}
-			if (Number(res.current_level) >= 0){
-				settings.current_level = res.current_level;
-				chrome.storage.sync.set(settings);
-			}
-		}
-	});
-}
-
 function activateResultMessage(result = 4){
 	let message = '';
 	switch (result){
@@ -207,3 +210,4 @@ if (!!settings.suppress_confirm_show_key_dialog){
 		});`;
 	document.head.appendChild(el);
 }
+/TODO */

@@ -1,36 +1,53 @@
-function getGalaSilver(){
-	$('body').append('<div id="indiegala-helper-coins" class="coins-amount" title="IndieGala Coin Balance"><strong><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
-	$.ajax({
-		type: 'GET',
-		url: 'https://www.indiegala.com/get_user_info',
-		data: {
-			'uniq_param': new Date().getTime(),
-			'show_coins': 'True'
-		},
-		cache: false,
-		dataType: 'json',
-		success: function(data){
-			if (data.status === 'ok'){
-				$('#indiegala-helper-coins strong').text(data.silver_coins_tot);
-			} else {
-				$('#indiegala-helper-coins').text(data.status.replace('_', ' '));
+
+// const xhr = new XMLHttpRequest();
+// xhr.onreadystatechange((data)=>{
+// 		// Error
+// 		$('#indiegala-helper-coins').text('error');
+//
+// 		// Success
+// 		if (data.status === 'ok'){
+// 			$('#indiegala-helper-coins strong').text(data.silver_coins_tot);
+// 		} else {
+// 			$('#indiegala-helper-coins').text(data.status.replace('_', ' '));
+// 		}
+// });
+// xhr.open('GET', 'https://www.indiegala.com/get_user_info');
+// xhr.send();
+
+function updateGalaSilver(amount = undefined){
+	console.log(amount);
+	if (amount == undefined) {
+		$.ajax({
+			type: 'GET',
+			url: 'https://www.indiegala.com/get_user_info',
+			data: {
+				'uniq_param': new Date().getTime(),
+				'show_coins': 'True'
+			},
+			cache: false,
+			dataType: 'json',
+			success: function(data){
+				if (data.status === 'ok'){
+					$('.coins-amount').text(data.silver_coins_tot);
+				} else {
+					$('.coins-amount').text(data.status.replace('_', ' '));
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError){
+				$('.coins-amount').text('error');
 			}
-		},
-		error: function(xhr, ajaxOptions, thrownError){
-			$('#indiegala-helper-coins').text('error');
-		}
-	});
+		});
+	} else {
+		$('.coins-amount').text(amount);
+	}
 }
 get_user_level();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
 function showOwnedGames(){
-	$('.giv-coupon').addClass('animated-coupon');
-	$('.giv-coupon-link').removeAttr('href');
-
 	// Remove Entered Giveaways
 	if (!!settings.hide_entered_giveaways){
-		$('.tickets-col:not(.checked)').not(':has(.animated-coupon)').remove();
+		// $('.items-list-item.wait').remove();
 	}
 
 	$('.tickets-col:not(.checked)').each(function(){
@@ -73,7 +90,7 @@ function showOwnedGames(){
 		$('.info-row', this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
 
 		// Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
-		$('.animated-coupon', this).attr('onclick','ajaxNewEntrySemaphore=false;');
+		$('.items-list-item-ticket-click', this).attr('onclick','joinGiveawayOrAuctionAJS=false;');
 
 		// Add button to add to blacklist
 		$('.ticket-left', this).prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
@@ -120,7 +137,7 @@ function nextPage(){
 			}
 			data = $.parseHTML(data.content);
 			$('.tickets-row').append($('.tickets-col', data));
-			$('.page-nav').parent().html($('.page-nav', data));
+			$('.pagination').parent().html($('.pagination', data));
 			history.replaceState('data', '', `https://www.indiegala.com${url_address}`);
 			showOwnedGames();
 		},
@@ -135,21 +152,21 @@ var page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways
 var wait_for_page = setInterval(() => {
-	if($('.tickets-col').length >= 1){
+	if($('[href^="/giveaways/card"]').length >= 1){
 		clearInterval(wait_for_page);
 		page_loaded = true;
-		// Remove extra spacing
-		$('.tickets-row .spacer-v-30:not(:first-child)').remove();
-		// Remove Indiegalas Placeholder Giveaways
-		$('.giv-placeholder').remove();
-		// Remove Indiegalas "Owned Games" overlay
-		$('.on-steam-library-text').remove();
-		// Show current coin balance
-		getGalaSilver();
-		// Add infinite page loading spinner
-		$('.tickets-row').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
+		// // Remove Indiegalas "Owned Games" overlay
+		// $('.on-steam-library-text').remove();
+
+		// Add coin balance display to side of screen
+		$('body').append('<div id="indiegala-helper-coins" title="IndieGala Coin Balance"><strong class="coins-amount"><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
+		$('#galasilver-amount').addClass('coins-amount');
+		// Update current coin balance
+		updateGalaSilver();
+		// // Add infinite page loading spinner
+		$('.page-contents-list-cont .page-contents-list').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
 		// Show page numbers at top & bottom of page
-		$('.page-nav').parent().clone().insertAfter('.sort-menu');
+		$('.pagination').parent().parent().clone().insertAfter('.page-contents-list-menu');
 		// Show/Remove giveaways based on user settings
 		showOwnedGames();
 	}
@@ -159,8 +176,8 @@ var wait_for_page = setInterval(() => {
 if (!!settings.infinite_scroll){
 	$(window).scroll(function(){
 		if (loading_page===false){
-			var hT = $('.page-nav').eq(1).offset().top,
-				hH = $('.page-nav').eq(1).outerHeight(),
+			var hT = $('.pagination').eq(1).offset().top,
+				hH = $('.pagination').eq(1).outerHeight(),
 				wH = $(window).height(),
 				wS = $(this).scrollTop();
 			if (wS > (hT+hH-wH)){
@@ -172,89 +189,34 @@ if (!!settings.infinite_scroll){
 
 // Add apps to hidden apps list
 $(document).on('click','.mark-as-owned',(e) => {markAsOwned(e.target);/*showOwnedGames();*/});
-// Enter Giveaways without opening new tabs via ajax
-$(document).on('click','.animated-coupon',function(){handleCoupons(this);});
+//$(document).on('click','.items-list-item-ticket-click', (e) => { updateGalaSilver(0); setTimeout(()=>{updateGalaSilver(1)}, 1000); setTimeout(()=>{updateGalaSilver(2)}, 2000); });
 
-// If request to enter giveaway is unsuccessful handle error code
-function handleCouponError(el, status){
-	var parentCont 			= el.parent().parent().parent();
-	var warningCover 		= $( '.warning-cover', parentCont );
-	var clipTicket 			= true;
-	var errorMsg;
-	switch(status){
-		case 'duplicate':
-			errorMsg = 'Duplicate entry. Please choose another giveaway.';
-			break;
-		case 'insufficient_credit':
-			errorMsg = 'Insufficient Indiegala Coins. Please choose a cheaper giveaway.';
-			break;
-		case 'unauthorized':
-			errorMsg = 'You are not authorized access for this giveaway.';
-			break;
-		case 'not_logged':
-			errorMsg = 'You are not logged. Please login or sign to join this giveaway.';
-			break;
-		case 'not_available':
-			errorMsg = 'Sorry but this giveaway is no longer available.';
-			break;
-		default:
-			clipTicket = false;
-			errorMsg = `Error: "${status}". Try again in a few minutes.`;
-	}
-	$('.warning-text span', parentCont).text(errorMsg);
-	warningCover.toggle('clip', () => {
-		setTimeout( () => { warningCover.toggle('clip'); }, 4000);
-		if (clipTicket === true){
-			el.css('right','-50px').css('opacity','0');
-			setTimeout(() => {
-				el.remove();
-			}, 500);
+// Catch ajax calls, update coins on entry
+var open = window.XMLHttpRequest.prototype.open,
+    send = window.XMLHttpRequest.prototype.send,
+    onReadyStateChange;
+
+function openReplacement(method, url, async, user, password) {
+    var syncMode = async !== false ? 'async' : 'sync';
+    return open.apply(this, arguments);
+}
+
+function sendReplacement(data) {
+    if(this.onreadystatechange) this._onreadystatechange = this.onreadystatechange;
+    this.onreadystatechange = onReadyStateChangeReplacement;
+    return send.apply(this, arguments);
+}
+
+function onReadyStateChangeReplacement() {
+		console.log(this);
+    if (this.readyState == 4 && this.responseURL == 'https://www.indiegala.com/giveaways/join') {
+			try {
+				json = JSON.parse(this.responseText);
+				updateGalaSilver(json.silver_tot);
+			}catch(O_o){}
 		}
-	});
+    if(this._onreadystatechange) return this._onreadystatechange.apply(this, arguments);
 }
 
-// Enter Giveaways via ajax function
-function handleCoupons(e){
-	let coupon = $(e);
-
-	coupon.removeClass( 'animated-coupon' );
-
-	if ( coupon.hasClass( 'low-coins' ) ){
-		handleCouponError(coupon, 'insufficient_credit');
-		coupon.css('right','-50px').css('opacity','0');
-		setTimeout(() => {
-			coupon.remove();
-		}, 500);
-		return false;
-	}else{
-		var parentCont 			= coupon.parent().parent().parent();
-		var ticketPrice 		= $( '.ticket-price strong', parentCont ).text();
-		var data_to_send = {};
-		data_to_send['giv_id'] 				= coupon.parent().attr('rel');
-		data_to_send['ticket_price'] 		= ticketPrice;
-
-		$.ajax({
-			type: 'POST',
-			url: 'https://www.indiegala.com/giveaways/new_entry',
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			data: JSON.stringify(data_to_send),
-			context: coupon,
-			success: function(data){
-				if ( data['status'] == 'ok' ){
-					$( '.coins-amount strong' ).text( data['new_amount'] );
-					$( '.extra-data-participants .title strong' ).text( parseInt($( '.extra-data-participants .title strong' ).text())+1 );
-					coupon.css('right','-50px').css('opacity','0');
-					setTimeout(() => {
-						coupon.remove();
-					}, 500);
-				}else{
-					handleCouponError( $( this ), data['status'] );
-				}
-			},
-			error: function(){
-				handleCouponError( $( this ), 'unknown error' );
-			}
-		});
-	}
-}
+window.XMLHttpRequest.prototype.open = openReplacement;
+window.XMLHttpRequest.prototype.send = sendReplacement;

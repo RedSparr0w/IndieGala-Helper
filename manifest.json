@@ -14,7 +14,7 @@
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
-			"js": ["/include/js/jquery-3.3.1.min.js","settings.js"],
+			"js": ["/include/js/jquery-3.5.1.min.js","settings.js"],
 			"css": ["indiegala.css"],
 			"run_at": "document_start"
 		},

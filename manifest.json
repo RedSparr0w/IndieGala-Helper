@@ -1,16 +1,12 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "4.6.3",
-	"applications": {
-		"gecko": {
-			"id": "indegala-helper@redsparr0w.com"
-		}
+	"version": "5.0.4",
+	"options_ui": {
+		"page": "options.html",
+		"chrome_style": true,
+		"open_in_tab": true
 	},
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
-  },
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
@@ -33,15 +29,7 @@
 			"js": ["indiegala_giveaways.js"]
 		},
 		{
-			"matches": ["https://www.indiegala.com/*"],
-			"exclude_matches": [
-				"https://www.indiegala.com/",
-				"https://www.indiegala.com/giveaways*",
-				"https://www.indiegala.com/trades*",
-				"https://www.indiegala.com/forums*",
-				"https://www.indiegala.com/profile*",
-				"https://www.indiegala.com/store*"
-			],
+			"matches": ["https://www.indiegala.com/bundle/*"],
 			"js": ["indiegala_bundles.js"]
 		},
 		{
@@ -65,7 +53,7 @@
 		"cookies",
 		"notifications"
 	],
-  "web_accessible_resources": [
-    "options.html"
-  ]
+	"web_accessible_resources": [
+		"options.html"
+	]
 }

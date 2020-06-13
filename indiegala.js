@@ -2,18 +2,20 @@
 const version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
+function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
-		Notification.requestPermission((permission) => {//ask user for permission to create notifications
-			if (permission === 'granted'){//if permission granted create notification
-				let notification = new Notification(title,{body:body,icon:icon});
-				if (!!closeOnClick){
-					notification.onclick = function(){ this.close(); };
-				}
-				resolve(notification);
-			} else {
-				reject('permission denied');
-			}
+	  chrome.runtime.sendMessage({
+	    type: 'notification',
+	    options: {
+	      title,
+	      message,
+	      iconUrl,
+	      type: 'basic'
+	    }
+	  }, function(success){
+			console.log('success:', success);
+			if (success) resolve(true);
+			else reject('permission denied');
 		});
 	});
 }
@@ -21,26 +23,41 @@ function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.co
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
-	//* show options modal when notification clicked *
-	$(window).load(() => {
-		notifyMe('Click here to setup IndieGala Helper!').then((notification) => {
-			notification.onclick = () => { $('#OpenIndieGalaHelper').click();	};
-		});
-	});
-	//*/
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
-	/* Display notification relaying update */
-	let update_message = '[BETA] Steam Key activation updated, should be more reliable';
-	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(() => {
+	// Display notification relaying update info
+	let update_message = 'Updated to work with new giveaways page layout,\nInfinite scrolling, Silver counter, Hiding apps and Blacklist should be working again.';
+	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});
-	//*/
+}
+
+function get_user_level(){
+	$.ajax({
+		dataType:'json',
+		url: 'https://www.indiegala.com/get_user_info',
+		data: {
+			'uniq_param': new Date().getTime(),
+			'show_coins': 'True'
+		},
+		success: function(res){
+			if (!res){
+				return;
+			}
+			if (Number(res.giveaways_user_lever) >= 0){
+				settings.current_level = +res.giveaways_user_lever;
+				chrome.storage.sync.set(settings);
+			}
+		}
+	});
 }
 
 // Indiegala Helper Menu
-$('#log-in-status-cont').after(`
-	<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
+$('#main-menu-user').after(`<li class="main-menu-link"><a id="OpenIndieGalaHelper" href="#" data-toggle="modal" data-target="#indiegala-helper">IG HELPER</a></li>`);
+// $('#OpenIndieGalaHelper').on('click', () => {
+// 	chrome.runtime.sendMessage({type:'open-options-page'});
+// });
+$('body').append(`
 	<div id="indiegala-helper" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -48,26 +65,24 @@ $('#log-in-status-cont').after(`
 				<iframe id="IGH_iframe" src="${chrome.runtime.getURL('options.html')}" style="height:75vh;width:100%;margin-bottom:-7px;" frameBorder="0"></iframe>
 			</div>
 		</div>
-	</div>
-	`);
+	</div>`);
+
+// Push to hidden apps
+function addToBlacklist(app_id = 0, app_name = ''){
+	// If name or ID too short return
+	if (app_name.length < 1 || app_id < 1){
+		return;
+	}
+	$(`[data-img-src*='/${app_id}/']`).parents('.items-list-col').remove();
+	local_settings.blacklist_apps[app_id] = app_name;
+	chrome.storage.local.set(local_settings);
+}
+
+/* TODO: Fix these functions
 
 $('#OpenIndieGalaHelper').on('click', () => {
 	$('#IGH_iframe').attr('src', '').attr('src', chrome.runtime.getURL('options.html'));
 });
-
-// Push to hidden apps
-function markAsOwned(e){
-	var el = $(e).parents('.tickets-col');
-	var app_id = el.find('.giveaway-game-id').val();
-	var app_name = el.find('img').attr('alt');
-	// if not a string OR less than 1 char long then do nothing (avoid nulls)
-	if (typeof app_id !== 'string' || app_id.length < 1){
-		return;
-	}
-	$(`input[value="${app_id}"]`).parents('.tickets-col').remove();
-	local_settings.blacklist_apps[app_id] = app_name;
-	chrome.storage.local.set(local_settings);
-}
 
 // When game key clicked, select the whole key and copy to clipboard
 $(document).on('click','input.keys , .serial-won input',function(){
@@ -139,24 +154,6 @@ $(document).on('click','.activate_steam_key',function(){
 	});
 });
 
-
-
-function get_user_level(){
-	$.ajax({
-		dataType:'json',
-		url:'https://www.indiegala.com/giveaways/get_user_level_and_coins',
-		success: function(res){
-			if (!res){
-				return;
-			}
-			if (Number(res.current_level) >= 0){
-				settings.current_level = res.current_level;
-				chrome.storage.sync.set(settings);
-			}
-		}
-	});
-}
-
 function activateResultMessage(result = 4){
 	let message = '';
 	switch (result){
@@ -207,3 +204,4 @@ if (!!settings.suppress_confirm_show_key_dialog){
 		});`;
 	document.head.appendChild(el);
 }
+/TODO */

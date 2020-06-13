@@ -28,8 +28,9 @@ function showOwnedGames(){
 		$(this).attr('src','http://i.imgur.com/eMShBmW.png');
 	});
 
+	// TODO: re-enable
 	// Add button to hide specific apps
-	$('.trade_img').not('.checked').addClass('checked').prepend('<span class="mark-as-owned">Hide This Game <i class="fa fa-times"></i></span>');
+	// $('.trade_img').not('.checked').addClass('checked').prepend('<span class="add-to-blacklist">Hide This Game <i class="fa fa-times"></i></span>');
 
 	// Show remaining apps
 	$('.trade-cont').fadeIn();
@@ -68,6 +69,3 @@ $(document).on('click','.page-link-cont',(e) => {
 		}
 	});
 });
-
-// Add app to Hidden apps
-$(document).on('click','.mark-as-owned',(e) => {markAsOwned(e.target);/*showOwnedGames();*/});

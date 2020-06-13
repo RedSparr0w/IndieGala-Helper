@@ -74,27 +74,21 @@
   color: white;
 }
 /* GIVE AWAYS */
-.giveaways-main-page .page-nav{
-  margin-top: 15px;
-}
-.tickets-col {
+.page-contents-list-cont .items-list-col {
   display:none;
 }
-.price-type-cont.palette-background-7{
-  background:#D67400 !important;
+.items-list-item a.view-on-steam {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
-.tickets-col .main {
-  color: #CC001D;
+.items-list-item a.add-to-blacklist {
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
-.tickets-col .main.unknown {
-  color: #000;
-}
-.tickets-col a.viewOnSteam {
-  font-family:Arial, sans-serif !important;
-  text-shadow:none !important;
-}
-.tickets-col a.viewOnSteam:hover {
-  color: #CC001D;
+.items-list-item a.view-on-steam:hover {
+  color: #1b2838;
 }
 #indiegala-helper-coins {
   position: fixed;
@@ -108,33 +102,6 @@
   border: 1px solid #000;
   color:white;
 }
-.ticket-left{
-  overflow: hidden;
-  position: relative;
-}
-.ticket-left .mark-as-owned{
-	left: -105px;
-}
-.ticket-left:hover > .mark-as-owned{
-	left: -83px;
-}
-.mark-as-owned {
-  position: absolute;
-  top: 0px;
-	z-index: 1;
-  color:white;
-  background-color: #A70000;
-  padding: 5px;
-  border-bottom-right-radius: 5px;
-  transition: 0.5s;
-  cursor:pointer !important;
-}
-.mark-as-owned:hover {
-  left: 0px !important;
-}
-aside.animated-coupon.checked {
-	cursor: alias;
-}
 /* TRADES */
 .trade-cont .not-guaranteed-trade{
   background:#D67400 !important;
@@ -145,10 +112,10 @@ aside.animated-coupon.checked {
 .trade_box{
   overflow:hidden;
 }
-.trade_img .mark-as-owned{
+.trade_img .add-to-blacklist{
   left:-120px;
 }
-.trade_img:hover > .mark-as-owned{
+.trade_img:hover > .add-to-blacklist{
   left:-98px;
 }
 .trade-cont.left {

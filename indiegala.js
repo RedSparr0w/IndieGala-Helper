@@ -2,18 +2,20 @@
 const version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
+function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
-		Notification.requestPermission((permission) => {//ask user for permission to create notifications
-			if (permission === 'granted'){//if permission granted create notification
-				let notification = new Notification(title,{body:body,icon:icon});
-				if (!!closeOnClick){
-					notification.onclick = function(){ this.close(); };
-				}
-				resolve(notification);
-			} else {
-				reject('permission denied');
-			}
+	  chrome.runtime.sendMessage({
+	    type: 'notification',
+	    options: {
+	      title,
+	      message,
+	      iconUrl,
+	      type: 'basic'
+	    }
+	  }, function(success){
+			console.log('success:', success);
+			if (success) resolve(true);
+			else reject('permission denied');
 		});
 	});
 }
@@ -21,21 +23,13 @@ function notifyMe(body, title='IndieGala Helper', icon='https://www.indiegala.co
 // If version not set, assume new user, else assume updated
 if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
-	//* show options modal when notification clicked *
-	$(window).load(() => {
-		notifyMe('Click here to setup IndieGala Helper!').then((notification) => {
-			notification.onclick = () => { $('#OpenIndieGalaHelper').click();	};
-		});
-	});
-	//*/
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	/* Display notification relaying update */
 	let update_message = 'Updated to work with new giveaways page layout,\nSome functions will no longer work, but infinite scrolling and silver counter should be working again.\nHiding of some games should also be working';
-	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(() => {
+	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});
-	//*/
 }
 
 function get_user_level(){

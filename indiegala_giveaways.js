@@ -64,7 +64,7 @@ function showOwnedGames(){
     try { giveaway_participants = Number(($('.items-list-item-data-right-bottom', this).text().match(/\d+/) || [0])[0]);   }catch(O_o){}
     try { giveaway_price = Number($('[data-price]', this)[0].dataset.price) || 0;                                          }catch(O_o){}
     try { giveaway_extra_odds = /single ticket/i.test($('.items-list-item-type', this).text());                            }catch(O_o){}
-    const do_not_remove = true;//!!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
+    const do_not_remove = !!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
 
     if ( !do_not_remove && (
       typeof local_settings.blacklist_apps[app_id] != 'undefined' // Remove If Blacklisted

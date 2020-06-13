@@ -92,9 +92,6 @@ function showOwnedGames(){
       $(this).addClass('owned');
     }
 
-    // Add link to steam store page
-    $('.info-row', this).eq(2).html(`<i class="fa fa-steam" aria-hidden="true"></i> <a class="viewOnSteam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK">View on Steam &rarr;</a>`);
-
     // Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
     // $('.items-list-item-ticket-click', this).attr('onclick','joinGiveawayOrAuctionAJS=false;');
 
@@ -107,7 +104,8 @@ function showOwnedGames(){
     }
     app_image.src = app_image.dataset.imgSrc;
 
-    $('.items-list-item-title a', this).eq(0).before(`<a class="view-on-steam" href="http://store.steampowered.com/app/${app_id}" target="_BLANK" alt="View on Steam"><i class="fa fa-steam" aria-hidden="true"></i></a>`);
+    // Add link to steam store page
+    $('.items-list-item-title a', this).eq(0).before(`<a class="view-on-steam" href="https://store.steampowered.com/app/${app_id}" target="_BLANK" alt="View on Steam"><i class="fa fa-steam" aria-hidden="true"></i></a>`);
 
   });
 

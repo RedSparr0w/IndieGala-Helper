@@ -109,7 +109,6 @@ function showOwnedGames(){
 
   });
 
-  // TODO: Fix infinite scrolling
   // If less than 4 apps on page & inifiniteScroll is enabled then load next page
   $('.page-contents-list-cont .items-list-item').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
@@ -124,7 +123,6 @@ function showOwnedGames(){
 //   }
 // }, 3000);
 
-// TODO: Fix infinite scrolling
 // Load next page via ajax
 function nextPage(){
   loading_page=true;

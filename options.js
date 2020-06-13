@@ -112,17 +112,26 @@ $('.panel-right').on('close', () => {
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
+	if (settings.steam_id.length != 17) {
+		myApp.alert(`Invalid Steam ID 64 supplied,<br/>Must be 17 characters long..`);
+		return;
+	}
 	//check if we have a steamID & check if it has been 24 hours since last update
-	if (!!force_update || settings.steam_id.length == 17 && +local_settings.owned_apps_next_update < +new Date().getTime() ){
+	if (!!force_update || +local_settings.owned_apps_next_update < +new Date().getTime() ){
+		myApp.alert(`Loading...`);
 		$.ajax({
 			dataType:'json',
-			url:`https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
+			url:`https://store.steampowered.com/dynamicstore/userdata/`,
 			success: (res) => {
-				let ownedApps = [];
-				let myApps = res.response.games;
-				$.each(myApps, (i,v) => {
-					ownedApps.push(v.appid);
-				});
+				const rgOwnedApps = res.rgOwnedApps || [];
+				const rgOwnedPackages = res.rgOwnedPackages || [];
+				const ownedApps = [...new Set([...rgOwnedPackages, ...rgOwnedApps])];
+				if (ownedApps.length <= 0) {
+					document.getElementsByClassName('modal-button')[0].click();
+					myApp.alert(`No owned games found,<br/>Try signing into steam first.<br/><br/>Attempting fallback server, Less owned games will be retrieved though.`);
+					getOwnedGamesFallback(force_update);
+					return;
+				}
 				// Set owned apps
 				local_settings.owned_apps = ownedApps;
 				// Set current time + 24 hours as next updated time
@@ -131,14 +140,41 @@ function getOwnedGames(force_update = false){
 				myApp.alert(`Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
 			},
 			error: (err) => {
-				// Don't check for another 30 minutes - Steam may be down
-				local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
-				save_options('local');
-				myApp.alert(`Something went wrong when updating your owned games list.<br/><hr/><code style="word-wrap: break-word;">${JSON.stringify(err)}</code>`);
-				console.error('Owned Games Update Error:', err);
+				document.getElementsByClassName('modal-button')[0].click();
+				myApp.alert(`Are you signed into steam?<br/>Attempting fallback server, Less owned games will be retrieved though.`);
+				getOwnedGamesFallback(force_update);
 			}
 		});
 	}
+}
+
+function getOwnedGamesFallback(force_update = false){
+	$.ajax({
+		dataType:'json',
+		url:`https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
+		success: (res) => {
+			let ownedApps = [];
+			let myApps = res.response.games;
+			$.each(myApps, (i,v) => {
+				ownedApps.push(v.appid);
+			});
+			// Set owned apps
+			local_settings.owned_apps = ownedApps;
+			// Set current time + 24 hours as next updated time
+			local_settings.owned_apps_next_update = +new Date().getTime() + (24 * 60 * 60 * 1000);
+			save_options('local');
+			document.getElementsByClassName('modal-button')[0].click();
+			myApp.alert(`<i>(Fallback Server)</i><br/>Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
+		},
+		error: (err) => {
+			// Don't check for another 30 minutes - Steam may be down
+			local_settings.owned_apps_next_update = +new Date().getTime() + (30 * 60 * 1000);
+			save_options('local');
+			document.getElementsByClassName('modal-button')[0].click();
+			myApp.alert(`Something went wrong when updating your owned games list.<br/><hr/><code style="word-wrap: break-word;">${JSON.stringify(err)}</code>`);
+			console.error('Owned Games Update Error:', err);
+		}
+	});
 }
 
 

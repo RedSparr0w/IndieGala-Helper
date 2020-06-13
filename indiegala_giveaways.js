@@ -40,8 +40,8 @@ function showOwnedGames(){
         giveaway_price = 0,
         giveaway_extra_odds = false;
     try { app_image = $('img', this)[0];                                                                                   }catch(O_o){}
-    try { app_id = Number(app_image.dataset.imgSrc.match(/\/(\d+)\/header/)[1]) || 0;                                  }catch(O_o){}
-    try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,'');                                                    }catch(O_o){}
+    try { app_id = Number(app_image.dataset.imgSrc.match(/\/(\d+)\/header/)[1]) || 0;                                      }catch(O_o){}
+    try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,'') || '';                                              }catch(O_o){}
     try { giveaway_guaranteed = !!$('.items-list-item-type-guaranteed', this).length;                                      }catch(O_o){}
     try { giveaway_entered = !$('.items-list-item-ticket-click', this).length;                                             }catch(O_o){}
     try { giveaway_level = Number(($('.items-list-item-type span', this).text().match(/\d+/) || [0])[0]);                  }catch(O_o){}
@@ -79,8 +79,6 @@ function showOwnedGames(){
     // Disable indiegala entry function on main page with `ajaxNewEntrySemaphore=false;` so it uses our function
     // $('.items-list-item-ticket-click', this).attr('onclick','joinGiveawayOrAuctionAJS=false;');
 
-    // Add button to add to blacklist
-    $('.ticket-left', this).prepend('<span class="mark-as-owned"> Add To Blacklist <i class="fa fa-times"></i></span>');
 
     // Show app image
     app_image.onload = function(){
@@ -88,6 +86,13 @@ function showOwnedGames(){
     }
     app_image.src = app_image.dataset.imgSrc;
 
+    // Add button to add to blacklist
+    $('.items-list-item-title a', this).eq(0).before(`<a class="add-to-blacklist" href="#add-to-blacklist" alt="Add to blacklist"><i class="fa fa-times" aria-hidden="true"></i></a>`);
+    $('.add-to-blacklist', this).on('click', (e) => {
+      e.preventDefault();
+      if (confirm(`Are you sure you want to blacklist this app?\n${app_id}: ${app_name}`))
+        addToBlacklist(app_id, app_name);
+    });
     // Add link to steam store page
     $('.items-list-item-title a', this).eq(0).before(`<a class="view-on-steam" href="https://store.steampowered.com/app/${app_id}" target="_BLANK" alt="View on Steam"><i class="fa fa-steam" aria-hidden="true"></i></a>`);
 
@@ -181,9 +186,6 @@ if (!!settings.infinite_scroll){
     }
   });
 }
-
-// Add apps to hidden apps list
-$(document).on('click','.mark-as-owned',(e) => {markAsOwned(e.target);/*showOwnedGames();*/});
 
 // Catch ajax calls, update coins on entry
 const updateSilver = `

@@ -67,25 +67,22 @@ $('body').append(`
 		</div>
 	</div>`);
 
+// Push to hidden apps
+function addToBlacklist(app_id = 0, app_name = ''){
+	// If name or ID too short return
+	if (app_name.length < 1 || app_id < 1){
+		return;
+	}
+	$(`[data-img-src*='/${app_id}/']`).parents('.items-list-col').remove();
+	local_settings.blacklist_apps[app_id] = app_name;
+	chrome.storage.local.set(local_settings);
+}
+
 /* TODO: Fix these functions
 
 $('#OpenIndieGalaHelper').on('click', () => {
 	$('#IGH_iframe').attr('src', '').attr('src', chrome.runtime.getURL('options.html'));
 });
-
-// Push to hidden apps
-function markAsOwned(e){
-	var el = $(e).parents('.tickets-col');
-	var app_id = el.find('.giveaway-game-id').val();
-	var app_name = el.find('img').attr('alt');
-	// if not a string OR less than 1 char long then do nothing (avoid nulls)
-	if (typeof app_id !== 'string' || app_id.length < 1){
-		return;
-	}
-	$(`input[value="${app_id}"]`).parents('.tickets-col').remove();
-	local_settings.blacklist_apps[app_id] = app_name;
-	chrome.storage.local.set(local_settings);
-}
 
 // When game key clicked, select the whole key and copy to clipboard
 $(document).on('click','input.keys , .serial-won input',function(){

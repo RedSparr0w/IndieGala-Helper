@@ -1,19 +1,3 @@
-
-// const xhr = new XMLHttpRequest();
-// xhr.onreadystatechange((data)=>{
-//     // Error
-//     $('#indiegala-helper-coins').text('error');
-//
-//     // Success
-//     if (data.status === 'ok'){
-//       $('#indiegala-helper-coins strong').text(data.silver_coins_tot);
-//     } else {
-//       $('#indiegala-helper-coins').text(data.status.replace('_', ' '));
-//     }
-// });
-// xhr.open('GET', 'https://www.indiegala.com/get_user_info');
-// xhr.send();
-
 function updateGalaSilver(amount = undefined){
   console.log(amount);
   if (amount == undefined) {
@@ -168,8 +152,6 @@ const wait_for_page = setInterval(() => {
   if($('[href^="/giveaways/card"]').length >= 1){
     clearInterval(wait_for_page);
     page_loaded = true;
-    // // Remove Indiegalas "Owned Games" overlay
-    // $('.on-steam-library-text').remove();
 
     // Add coin balance display to side of screen
     $('body').append('<div id="indiegala-helper-coins" title="IndieGala Coin Balance"><strong class="coins-amount"><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');

@@ -54,6 +54,9 @@ function get_user_level(){
 
 // Indiegala Helper Menu
 $('#main-menu-user').after(`<li class="main-menu-link"><a id="OpenIndieGalaHelper" href="#" data-toggle="modal" data-target="#indiegala-helper">IG HELPER</a></li>`);
+// $('#OpenIndieGalaHelper').on('click', () => {
+// 	chrome.runtime.sendMessage({type:'open-options-page'});
+// });
 $('body').append(`
 	<div id="indiegala-helper" class="modal fade" role="dialog">
 		<div class="modal-dialog">

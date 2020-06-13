@@ -25,8 +25,13 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
-	// Display notification relaying update info
+	// TO DELETE - old update message that cannot be uploaded yet.
 	let update_message = 'Updated to work with new giveaways page layout,\nInfinite scrolling, Silver counter, Hiding apps and Blacklist should be working again.';
+	notifyMe(update_message, `[v5.0.4] IndieGala Helper Updated`).catch(() => {
+		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
+	});
+	// Display notification relaying update info
+	let update_message = 'Updated where owned games list is retrieved from, should now work a lot better.\nMust be signed into steam for better list.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});

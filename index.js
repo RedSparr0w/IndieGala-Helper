@@ -4,7 +4,7 @@ chrome.browserAction.onClicked.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((data, sender, callback) => {
-  if (data.type === 'notification') {
+  if (data.type == 'notification') {
 		chrome.notifications.getPermissionLevel((level) => {
 			if (level == 'denied') {
 				callback(false);
@@ -15,4 +15,7 @@ chrome.runtime.onMessage.addListener((data, sender, callback) => {
 		})
 		return true;
   }
+	if (data.type == 'open-options-page') {
+		chrome.runtime.openOptionsPage();
+	}
 });

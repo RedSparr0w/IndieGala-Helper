@@ -25,7 +25,7 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
-	/* Display notification relaying update */
+	// Display notification relaying update info
 	let update_message = 'Updated to work with new giveaways page layout,\nSome functions will no longer work, but infinite scrolling and silver counter should be working again.\nHiding of some games should also be working';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
@@ -52,11 +52,9 @@ function get_user_level(){
 	});
 }
 
-/* TODO: Fix these functions
-
 // Indiegala Helper Menu
-$('#log-in-status-cont').after(`
-	<li><a id="OpenIndieGalaHelper" class="libd-group-item libd-bounce libd-group-item-icon" href="#" data-toggle="modal" data-target="#indiegala-helper"> IndieGala Helper</a></li>
+$('#main-menu-user').after(`<li class="main-menu-link"><a id="OpenIndieGalaHelper" href="#" data-toggle="modal" data-target="#indiegala-helper">IG HELPER</a></li>`);
+$('body').append(`
 	<div id="indiegala-helper" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -64,8 +62,9 @@ $('#log-in-status-cont').after(`
 				<iframe id="IGH_iframe" src="${chrome.runtime.getURL('options.html')}" style="height:75vh;width:100%;margin-bottom:-7px;" frameBorder="0"></iframe>
 			</div>
 		</div>
-	</div>
-	`);
+	</div>`);
+
+/* TODO: Fix these functions
 
 $('#OpenIndieGalaHelper').on('click', () => {
 	$('#IGH_iframe').attr('src', '').attr('src', chrome.runtime.getURL('options.html'));

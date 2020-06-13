@@ -26,7 +26,7 @@ if (localStorage.getItem('version')===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	// Display notification relaying update info
-	let update_message = 'Updated to work with new giveaways page layout,\nSome functions will no longer work, but infinite scrolling and silver counter should be working again.\nHiding of some games should also be working';
+	let update_message = 'Updated to work with new giveaways page layout,\nInfinite scrolling, Silver counter, Hiding apps and Blacklist should be working again.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});

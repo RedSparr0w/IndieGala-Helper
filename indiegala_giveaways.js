@@ -94,7 +94,7 @@ function showOwnedGames(){
   });
 
   // If less than 4 apps on page & inifiniteScroll is enabled then load next page
-  $('.page-contents-list-cont .items-list-item').not('.checked').addClass('checked').not('.item').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
+  $('.page-contents-list-cont .items-list-col').not('.checked').addClass('checked').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
 
 // TODO: Fix auto enter

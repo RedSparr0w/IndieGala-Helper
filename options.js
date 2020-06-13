@@ -121,7 +121,7 @@ function getOwnedGames(force_update = false){
 		myApp.alert(`Loading...`);
 		$.ajax({
 			dataType:'json',
-			url:`https://store.steampowered.com/dynamicstore/userdata/`,
+			url:`https://store.steampowered.com/dynamicstore/userdata/?t=${Date.now()}`,
 			success: (res) => {
 				const rgOwnedApps = res.rgOwnedApps || [];
 				const rgOwnedPackages = res.rgOwnedPackages || [];

@@ -31,7 +31,7 @@ if (localStorage.getItem('version')===null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	/* Display notification relaying update */
-	let update_message = '[BETA] Steam Key activation updated, should be more reliable';
+	let update_message = 'Updated to work with new giveaways page layout,\nSome functions will no longer work, but infinite scrolling and silver counter should be working again.\nHiding of some games should also be working';
 	notifyMe(`${update_message  }\n- v${version}`, 'IndieGala Helper Updated').catch(() => {
 		alert(`IndieGala Helper Updated\n${update_message}\n- v${version}`);
 	});

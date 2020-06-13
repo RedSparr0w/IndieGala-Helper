@@ -56,7 +56,7 @@ function showOwnedGames(){
         giveaway_price = 0,
         giveaway_extra_odds = false;
     try { app_image = $('img', this)[0];                                                                                   }catch(O_o){}
-    try { app_id = Number(app_image.dataset.imgSrc.match(/apps\/(\d+)\/header/)[1]) || 0;                                  }catch(O_o){}
+    try { app_id = Number(app_image.dataset.imgSrc.match(/\/(\d+)\/header/)[1]) || 0;                                  }catch(O_o){}
     try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,'');                                                    }catch(O_o){}
     try { giveaway_guaranteed = !!$('.items-list-item-type-guaranteed', this).length;                                      }catch(O_o){}
     try { giveaway_entered = !$('.items-list-item-ticket-click', this).length;                                             }catch(O_o){}
@@ -75,7 +75,7 @@ function showOwnedGames(){
           || !!settings.hide_above_price && giveaway_price > settings.hide_above_price // Remove if above defined price
           || !!settings.hide_above_participants && giveaway_participants > settings.hide_above_participants // Remove if above defined participants
           || !!settings.hide_soundtracks && !!(app_name.toLowerCase().indexOf('soundtrack') + 1) // Remove If Soundtrack
-          || !!settings.hide_owned_games && !!($.inArray(app_id, local_settings.owned_apps) + 1) // Remove if owned
+          || !!settings.hide_owned_games && local_settings.owned_apps.includes(app_id) // Remove if owned
     )
     ){
       $(this).remove();

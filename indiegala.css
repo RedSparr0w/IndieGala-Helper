@@ -28,9 +28,6 @@
   overflow-y: auto;
   background-color: #474747;
 }
-.giv-game-img {
-	opacity:1 !important;
-}
 .higher-level {
   -webkit-filter: blur(2px);
 	filter:blur(2px);
@@ -58,13 +55,8 @@
   -webkit-filter: grayscale(0%);
   filter: grayscale(0%);
 }
-.owned .bundle-item-cont:hover{
-  opacity: 0.8;
-}
-.owned .bundle-item-trading-cards-cont:after{
-  content:"(OWNED)";
-  float:right;
-  font-size:80%;
+.owned .bundle-page-tier-item-platforms::after {
+    content: "[OWNED]";
 }
 #indiegala-helper-pageloading {
   text-align: center;
@@ -74,6 +66,9 @@
   color: white;
 }
 /* GIVE AWAYS */
+.owned .items-list-item-type::before {
+    content: "[OWNED] - ";
+}
 .page-contents-list-cont .items-list-col {
   display:none;
 }

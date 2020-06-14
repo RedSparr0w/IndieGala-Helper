@@ -1,44 +1,53 @@
-/* TODO: Fix this
-var bundleApps = [];
+
 
 // Mark owned games and get values of cards
-function showOwnedGames(){
-	// Wait for page to load games
-	if ($('.carousel-game-item').length <= 0){
-		setTimeout(() => { showOwnedGames(); }, 1000);
-		return;
-	}
+function showOwnedApps(){
+	const bundleApps = [];
+
 	// Once games loaded to page get app ids
-	$('.carousel-game-item').each(function(){
-		let apps_total_cards_value = 0;
-		let app_id = Number($(this).attr('rel'));
+	$('.bundle-page-tier-item-col').each(function(){
+		// Check if this app has trading cards
+		// if (/no\s*trading\s*cards/i.test($('.bundle-page-tier-item-trading', this).eq(0).text())) continue;
+
+		let app_id = 0;
+		try { app_id = +$('img', this)[0].src.match(/\/(\d+)\.jpg/)[1]; }catch(O_o){ app_id = 0; }
+
+		// Couldn't determine app_id try the next one
+		if (!app_id) return;
 
 		// Mark games as owned
-		if( !!($.inArray(app_id, local_settings.owned_apps) + 1) ){
-			$(`[src$='${app_id}.jpg']`).parents('.bundle-item-container').parent().addClass('owned');
+		if(local_settings.owned_apps.includes(app_id)){
+			$(this).addClass('owned');
 		}
 
-		// Get card values
 		bundleApps.push(app_id);
-		// TODO: Find a new APi for card prices
-		$.ajax({
-			url: `https://api.enhancedsteam.com/market_data/card_prices/?appid=${app_id}`,
-			success: function(result){
-				if (typeof result !== 'object'){
-					return;
-				}
-				$.each(result, (index, value) => {
-					if (value.game.indexOf('Foil') <= 0){
-						apps_total_cards_value += Number(value.price);
-					}
-				});
+	});
 
-				// Divide the total by 2 as you get half the total cards as free drops
-				let discount = Number((apps_total_cards_value/2).toFixed(2));
-				$(`[src$='${app_id}.jpg']`).parents('.bundle-item-padding').find('span[class^=\'trading-\']').append(` ($${discount.toFixed(2)})`);
+	// Get card values
+	$.ajax({
+		url: `https://indiegala.redsparr0w.com/steamAPI/getCardPrices?apps=${bundleApps.join(',')}`,
+		success: function(result){
+			if (typeof result !== 'object'){
+				return;
 			}
-		});
+
+			bundleApps.forEach(app_id => {
+				// Divide the total by 2 as you get half the total cards as free drops
+				if (result[app_id]){
+					$(`[src*='${app_id}.jpg']`).parents('.bundle-page-tier-item-col').find('.bundle-page-tier-item-trading').append(` [$${(Math.floor(result[app_id] / 2) / 100).toFixed(2)}]`);
+				}
+			});
+		}
 	});
 }
-showOwnedGames();
-*/
+
+// Wait until indiegala loads the initial bundle page
+const wait_for_page = setInterval(() => {
+  if($('.bundle-page-tier-item-col').length >= 1){
+    clearInterval(wait_for_page);
+    page_loaded = true;
+
+    // Show owned apps
+    showOwnedApps();
+  }
+}, 500);

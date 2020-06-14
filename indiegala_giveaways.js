@@ -119,8 +119,10 @@ function nextPage(){
   var url_address = $('.page-link-cont .current').eq(0).parent().next().find('a').attr('href');
 
   // If last page or undefined url return
-  if (typeof url_address == 'undefined' || url_address == location.pathname){
-    $('#indiegala-helper-pageloading').slideUp( () => { loading_page=false; });
+  if (!url_address || url_address == location.pathname){
+    $('#indiegala-helper-pageloading').slideUp(() => {
+      loading_page=false;
+    });
     return;
   }
 
@@ -131,7 +133,7 @@ function nextPage(){
   var url = `https://www.indiegala.com${url_address}`;
   var settings = {
     processData: false,
-    success: function(data){
+    success: (data) => {
       if (!data){
         nextPage();
         return;
@@ -197,6 +199,7 @@ $(document).ajaxComplete(function(event, res, settings){
 $(document).on('click','.items-list-item-ticket-click',() => { joinGiveawayOrAuctionAJS=true; });
 `;
 
+// Add the script to the page
 const script = document.createElement('script');
 script.textContent = updateSilver;
 (document.head||document.documentElement).appendChild(script);

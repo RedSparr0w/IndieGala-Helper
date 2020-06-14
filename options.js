@@ -118,7 +118,6 @@ function getOwnedGames(force_update = false){
 	}
 	//check if we have a steamID & check if it has been 24 hours since last update
 	if (!!force_update || +local_settings.owned_apps_next_update < +new Date().getTime() ){
-		myApp.alert(`Loading...`);
 		$.ajax({
 			dataType:'json',
 			url:`https://store.steampowered.com/dynamicstore/userdata/`,
@@ -127,7 +126,6 @@ function getOwnedGames(force_update = false){
 				const rgOwnedPackages = res.rgOwnedPackages || [];
 				const ownedApps = [...new Set([...rgOwnedPackages, ...rgOwnedApps])];
 				if (ownedApps.length <= 0) {
-					document.getElementsByClassName('modal-button')[0].click();
 					myApp.alert(`No owned games found,<br/>Try signing into steam first.<br/><br/>Attempting fallback server, Less owned games will be retrieved though.`);
 					getOwnedGamesFallback(force_update);
 					return;
@@ -140,7 +138,6 @@ function getOwnedGames(force_update = false){
 				myApp.alert(`Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
 			},
 			error: (err) => {
-				document.getElementsByClassName('modal-button')[0].click();
 				myApp.alert(`Are you signed into steam?<br/>Attempting fallback server, Less owned games will be retrieved though.`);
 				getOwnedGamesFallback(force_update);
 			}

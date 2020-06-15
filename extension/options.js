@@ -83,7 +83,7 @@ if (/firefox/i.test(navigator.userAgent)){
 }
 
 // Init Framework 7 App
-let myApp = new Framework7({
+const myApp = new Framework7({
 	modalTitle: 'IndieGala Helper',
 	material: true,
 	router: false
@@ -91,8 +91,8 @@ let myApp = new Framework7({
 
 /* ===== Color / Themes ===== */
 $('.layout-theme, .theme-color').click(function(){
-	let type = $(this).hasClass('theme-color') ? 'theme' : 'layout';
-	let classList = $('body')[0].classList;
+	const type = $(this).hasClass('theme-color') ? 'theme' : 'layout';
+	const classList = $('body')[0].classList;
 	for (let i = 0; i < classList.length; i++){
 		if (classList[i].indexOf(`${type}-`) === 0) classList.remove(classList[i]);
 	}
@@ -150,8 +150,8 @@ function getOwnedGamesFallback(force_update = false){
 		dataType:'json',
 		url:`https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
 		success: (res) => {
-			let ownedApps = [];
-			let myApps = res.response.games;
+			const ownedApps = [];
+			const myApps = res.response.games;
 			$.each(myApps, (i,v) => {
 				ownedApps.push(v.appid);
 			});
@@ -188,7 +188,7 @@ function list_blacklisted_apps(){
 										</div>
 									</li>`);
 	});
-	let DLStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(local_settings.blacklist_apps,null,2))}`;
+	const DLStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(local_settings.blacklist_apps,null,2))}`;
 	$('#backup_blacklist_apps').attr('href', DLStr).attr('download', 'IGH Blacklist_Apps_Backup.json');
 }
 
@@ -224,7 +224,7 @@ $('#restore_blacklist_apps').on('change', () => {
 });
 
 function remove_blacklist_app(el){
-	let id = $(el).attr('data-id');
+	const id = $(el).attr('data-id');
 	delete local_settings.blacklist_apps[id];
 	save_options('local');
 	list_blacklisted_apps();
@@ -246,7 +246,7 @@ function save_options(type = 'sync'){
 		case 'sync':
 		default:
 			$('input, textarea', '#Tab_Options').each((i, el) => {
-				let id = $(el).attr('id');
+				const id = $(el).attr('id');
 				switch($(el).attr('type')){
 					case 'checkbox':
 						settings[id] = document.getElementById(id).checked;
@@ -274,7 +274,7 @@ function restore_options(){
 }
 
 function restore_sync_options(){
-	let themeClassList = $('body')[0].classList;
+	const themeClassList = $('body')[0].classList;
 	// Use default value (settings obj) if option not set
 	chrome.storage.sync.get(settings, (setting) => {
 		for (let i = themeClassList.length-1; i >= 0 ; i--){
@@ -284,7 +284,7 @@ function restore_sync_options(){
 		themeClassList.add(`layout-${settings.layout}`);
 		themeClassList.add(`theme-${settings.theme}`);
 		$('input, textarea', '#Tab_Options').each((i, el) => {
-			let id = $(el).attr('id');
+			const id = $(el).attr('id');
 			switch($(el).attr('type')){
 				case 'checkbox':
 					document.getElementById(id).checked = settings[id];

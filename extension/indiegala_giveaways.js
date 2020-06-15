@@ -105,7 +105,7 @@ function showOwnedApps(){
 function nextPage(){
 	loading_page=true;
 
-	var url_address = $('.page-link-cont .current').eq(0).parent().next().find('a').attr('href');
+	const url_address = $('.page-link-cont .current').eq(0).parent().next().find('a').attr('href');
 
 	// If last page or undefined url return
 	if (!url_address || url_address == location.pathname){
@@ -118,7 +118,7 @@ function nextPage(){
 	history.replaceState('data', '', url_address);
 
 	$('#indiegala-helper-pageloading').slideDown(250);
-	var settings = {
+	const settings = {
 		processData: false,
 		success: (data) => {
 			if (!data){
@@ -173,7 +173,7 @@ const wait_for_page = setInterval(() => {
 if (!!settings.infinite_scroll){
 	$(window).scroll(function(){
 		if (loading_page===false){
-			var hT = $('.pagination').eq(1).offset().top,
+			const hT = $('.pagination').eq(1).offset().top,
 				hH = $('.pagination').eq(1).outerHeight(),
 				wH = $(window).height(),
 				wS = $(this).scrollTop();

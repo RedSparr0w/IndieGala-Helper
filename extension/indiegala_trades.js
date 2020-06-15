@@ -3,9 +3,9 @@ $('.page-nav').parent().clone().insertAfter('.search-cont');
 function showOwnedGames(){
 	// Get App ID's && Names
 	$('.trade-cont img[src*=apps]').not('.checked').addClass('checked').each(function(){
-		let str = $(this).attr('src');
-		let start = (str.indexOf('apps/') > 0 ? str.indexOf('apps/') : str.indexOf('dium/'));
-		let end = (str.indexOf('/header.jpg') > 0 ? str.indexOf('/header.jpg') : str.indexOf('.jpg'));
+		const str = $(this).attr('src');
+		const start = (str.indexOf('apps/') > 0 ? str.indexOf('apps/') : str.indexOf('dium/'));
+		const end = (str.indexOf('/header.jpg') > 0 ? str.indexOf('/header.jpg') : str.indexOf('.jpg'));
 		let app_id = Number(str.substring(start+5,end));
 		// Check if app_id is valid
 		if (isNaN(app_id)){ app_id = 0; }

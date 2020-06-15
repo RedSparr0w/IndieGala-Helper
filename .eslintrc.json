@@ -34,6 +34,8 @@
         "prefer-template": "warn",
         "no-trailing-spaces": "error",
         "eol-last": "error",
-        "no-unused-vars": ["error", {"args": "none"}]
+        "no-unused-vars": ["error", {"args": "none"}],
+        "no-var": "error",
+        "prefer-const": "error"
     }
 }

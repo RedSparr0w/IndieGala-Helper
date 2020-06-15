@@ -17,8 +17,7 @@ _note: updates can take a few days to be approved on firefox_
 - displays **APPROXIMATE** discount you could get by selling the cards you get from each game
 
 ## Giveaways
-- Auto enter giveaways
-- Current GalaSilver balance always displayed up top right
+- Current IndieGala Silver balance always displayed up top right
 - Hide giveaways
   - games which are already in your steam library
   - already entered giveaways
@@ -27,8 +26,7 @@ _note: updates can take a few days to be approved on firefox_
   - above your level
   - above a certain GalaSilver cost
   - above a certain amount of participants
-- Enter giveaways directly from main giveaway page
-- Replaced ‘Read More’ with link to games steam page
+- Added link to games steam page
 - Quick entry
 - Infinite Scroll
 
@@ -37,8 +35,8 @@ _note: updates can take a few days to be approved on firefox_
   - games which are already in your steam library
   - games added to your blacklist
 - Replaced 'Read More' with link to games steam page
-- Load new pages without having to reload the entire page
 
+# Old Features, may be re-added in the future
 ## Profile
 #### Giveaways
 - Create New

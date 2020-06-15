@@ -24,10 +24,10 @@ function updateGalaSilver(amount = undefined){
 		$('.coins-amount').text(amount);
 	}
 }
-get_user_level();
+getUserLevel();
 
 // Mark owned games as owned || remove owned games from list || remove hidden apps
-function showOwnedGames(){
+function showOwnedApps(){
 	$('.page-contents-list-cont .items-list-col:not(.checked)').each(function(){
 		let app_image,
 			app_id = 0,
@@ -101,16 +101,6 @@ function showOwnedGames(){
 	$('.page-contents-list-cont .items-list-col').not('.checked').addClass('checked').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
 
-// TODO: Fix auto enter
-// Auto enter giveaways
-// setInterval(() => {
-//   if (!!page_loaded && !!settings.auto_enter_giveaways){
-//     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-//       $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
-//     }
-//   }
-// }, 3000);
-
 // Load next page via ajax
 function nextPage(){
 	loading_page=true;
@@ -128,8 +118,6 @@ function nextPage(){
 	history.replaceState('data', '', url_address);
 
 	$('#indiegala-helper-pageloading').slideDown(250);
-	var url_attr = url_address.split('/');
-	var url = `https://www.indiegala.com${url_address}`;
 	var settings = {
 		processData: false,
 		success: (data) => {
@@ -140,7 +128,7 @@ function nextPage(){
 			data = $.parseHTML(data);
 			$('.page-contents-list .items-list-row').append($('.page-contents-list .items-list-col', data));
 			$('.pagination').parent().html($('.pagination', data));
-			showOwnedGames();
+			showOwnedApps();
 		},
 		error: () => {
 			nextPage();
@@ -149,15 +137,13 @@ function nextPage(){
 	$.ajax(url_address, settings);
 }
 
-// Set loading page as true, will be set to false once "showOwnedGames" is processed
+// Set loading page as true, will be set to false once "showOwnedApps" is processed
 let loading_page = true;
-let page_loaded = false;
 
 // Wait until indiegala loads the initial giveaways
 const wait_for_page = setInterval(() => {
 	if($('[href^="/giveaways/card"]').length >= 1){
 		clearInterval(wait_for_page);
-		page_loaded = true;
 
 		// Add coin balance display to side of screen
 		$('body').append('<div id="indiegala-helper-coins" title="IndieGala Coin Balance"><strong class="coins-amount"><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
@@ -169,7 +155,17 @@ const wait_for_page = setInterval(() => {
 		// Show page numbers at top & bottom of page
 		$('.pagination').parent().parent().clone().insertAfter('.page-contents-list-menu');
 		// Show/Remove giveaways based on user settings
-		showOwnedGames();
+		showOwnedApps();
+
+		// TODO: Fix auto enter
+		// Auto enter giveaways
+		// if (!!settings.auto_enter_giveaways){
+		// 	setInterval(() => {
+		//     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+		//       $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
+		//     }
+		// 	}, 3000);
+		// }
 	}
 }, 500);
 

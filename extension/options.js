@@ -1,5 +1,5 @@
 // Set Default Settings
-var settings = {
+let settings = {
 	layout: 'dark',
 	theme: 'red',
 	steam_id: '',
@@ -22,7 +22,7 @@ var settings = {
 	current_level: 0
 };
 
-var local_settings = {
+let local_settings = {
 	blacklist_apps: {},
 	blacklist_users: [],
 	owned_apps: [],
@@ -71,7 +71,7 @@ try {
 if (/firefox/i.test(navigator.userAgent)){
 	window.oldGetComputedStyle = window.getComputedStyle;
 	window.getComputedStyle = (element, pseudoElt) => {
-		var t = window.oldGetComputedStyle(element, pseudoElt);
+		const t = window.oldGetComputedStyle(element, pseudoElt);
 		if (t === null){
 			return {
 				getPropertyValue:  () => {}
@@ -83,7 +83,7 @@ if (/firefox/i.test(navigator.userAgent)){
 }
 
 // Init Framework 7 App
-var myApp = new Framework7({
+let myApp = new Framework7({
 	modalTitle: 'IndieGala Helper',
 	material: true,
 	router: false
@@ -193,12 +193,12 @@ function list_blacklisted_apps(){
 }
 
 $('#restore_blacklist_apps').on('change', () => {
-	var files = document.getElementById('restore_blacklist_apps').files;
+	const files = document.getElementById('restore_blacklist_apps').files;
 	if (files.length <= 0){
 		return false;
 	}
 
-	var fr = new FileReader();
+	const fr = new FileReader();
 
 	fr.onload = function(e){
 		let hiddenApps;
@@ -237,7 +237,7 @@ function remove_blacklist_app(el){
 /*****************************************/
 
 // Saves options to chrome.storage.sync.
-var savedTimeout;
+let savedTimeout;
 function save_options(type = 'sync'){
 	switch(type){
 		case 'local':

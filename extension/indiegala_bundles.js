@@ -45,7 +45,6 @@ function showOwnedApps(){
 const wait_for_page = setInterval(() => {
 	if($('.bundle-page-tier-item-col').length >= 1){
 		clearInterval(wait_for_page);
-		page_loaded = true;
 
 		// Show owned apps
 		showOwnedApps();

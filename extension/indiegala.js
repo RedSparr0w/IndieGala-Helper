@@ -4,15 +4,15 @@ const version = chrome.runtime.getManifest().version;
 // Create Notifications
 function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
-	  chrome.runtime.sendMessage({
-	    type: 'notification',
-	    options: {
-	      title,
-	      message,
-	      iconUrl,
-	      type: 'basic'
-	    }
-	  }, (success) => {
+		chrome.runtime.sendMessage({
+			type: 'notification',
+			options: {
+				title,
+				message,
+				iconUrl,
+				type: 'basic'
+			}
+		}, (success) => {
 			if (success) resolve(true);
 			else reject('permission denied');
 		});
@@ -41,7 +41,7 @@ if (localStorage.getItem('version')===null){
 	});
 }
 
-function get_user_level(){
+function getUserLevel(){
 	$.ajax({
 		dataType:'json',
 		url: 'https://www.indiegala.com/get_user_info',

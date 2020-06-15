@@ -1,5 +1,5 @@
 // Set Default Settings
-var settings = {
+let settings = {
 	layout: 'dark',
 	theme: 'red',
 	steam_id: '',
@@ -22,7 +22,7 @@ var settings = {
 	current_level: 0
 };
 
-var local_settings = {
+let local_settings = {
 	blacklist_apps: {},
 	blacklist_users: [],
 	owned_apps: [],

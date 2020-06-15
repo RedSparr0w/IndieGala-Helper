@@ -1,4 +1,5 @@
 {
+    "ignorePatterns": ["extension/include/**/*.js"],
     "env": {
         "browser": true,
         "es6": true
@@ -8,7 +9,8 @@
         "chrome": false,
         "browser": false,
         "settings": true,
-        "local_settings": true
+        "local_settings": true,
+        "Framework7": true
     },
     "extends": "eslint:recommended",
     "rules": {

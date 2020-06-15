@@ -43,11 +43,11 @@ function showOwnedApps(){
 
 // Wait until indiegala loads the initial bundle page
 const wait_for_page = setInterval(() => {
-  if($('.bundle-page-tier-item-col').length >= 1){
-    clearInterval(wait_for_page);
-    page_loaded = true;
+	if($('.bundle-page-tier-item-col').length >= 1){
+		clearInterval(wait_for_page);
+		page_loaded = true;
 
-    // Show owned apps
-    showOwnedApps();
-  }
+		// Show owned apps
+		showOwnedApps();
+	}
 }, 500);

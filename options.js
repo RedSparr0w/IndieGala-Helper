@@ -112,21 +112,21 @@ $('.panel-right').on('close', () => {
 
 // Get users owned apps
 function getOwnedGames(force_update = false){
-	if (settings.steam_id.length != 17) {
-		myApp.alert(`Invalid Steam ID 64 supplied,<br/>Must be 17 characters long..`);
+	if (settings.steam_id.length != 17){
+		myApp.alert('Invalid Steam ID 64 supplied,<br/>Must be 17 characters long..');
 		return;
 	}
 	//check if we have a steamID & check if it has been 24 hours since last update
 	if (!!force_update || +local_settings.owned_apps_next_update < +new Date().getTime() ){
 		$.ajax({
 			dataType:'json',
-			url:`https://store.steampowered.com/dynamicstore/userdata/`,
+			url:'https://store.steampowered.com/dynamicstore/userdata/',
 			success: (res) => {
 				const rgOwnedApps = res.rgOwnedApps || [];
 				const rgOwnedPackages = res.rgOwnedPackages || [];
 				const ownedApps = [...new Set([...rgOwnedPackages, ...rgOwnedApps])];
-				if (ownedApps.length <= 0) {
-					myApp.alert(`No owned games found,<br/>Try signing into steam first.<br/><br/>Attempting fallback server, Less owned games will be retrieved though.`);
+				if (ownedApps.length <= 0){
+					myApp.alert('No owned games found,<br/>Try signing into steam first.<br/><br/>Attempting fallback server, Less owned games will be retrieved though.');
 					getOwnedGamesFallback(force_update);
 					return;
 				}
@@ -138,7 +138,7 @@ function getOwnedGames(force_update = false){
 				myApp.alert(`Owned Games List Updated!<br/>Games Found: ${ownedApps.length}`);
 			},
 			error: (err) => {
-				myApp.alert(`Are you signed into steam?<br/>Attempting fallback server, Less owned games will be retrieved though.`);
+				myApp.alert('Are you signed into steam?<br/>Attempting fallback server, Less owned games will be retrieved though.');
 				getOwnedGamesFallback(force_update);
 			}
 		});

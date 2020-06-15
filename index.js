@@ -4,18 +4,18 @@ chrome.browserAction.onClicked.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((data, sender, callback) => {
-  if (data.type == 'notification') {
+	if (data.type == 'notification'){
 		chrome.notifications.getPermissionLevel((level) => {
-			if (level == 'denied') {
+			if (level == 'denied'){
 				callback(false);
 			} else {
 				chrome.notifications.create('', data.options);
 				callback(true);
 			}
-		})
+		});
 		return true;
-  }
-	if (data.type == 'open-options-page') {
+	}
+	if (data.type == 'open-options-page'){
 		chrome.runtime.openOptionsPage();
 	}
 });

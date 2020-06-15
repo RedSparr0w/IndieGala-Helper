@@ -12,7 +12,7 @@ function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indieg
 	      iconUrl,
 	      type: 'basic'
 	    }
-	  }, function(success){
+	  }, (success) => {
 			if (success) resolve(true);
 			else reject('permission denied');
 		});
@@ -26,12 +26,12 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 	// TO DELETE - old update message that cannot be uploaded yet.
 	const old_update_message_1 = 'Updated to work with new giveaways page layout,\nInfinite scrolling, Silver counter, Hiding apps and Blacklist should be working again.';
-	notifyMe(old_update_message_1, `[v5.0.4] IndieGala Helper Updated`).catch(() => {
+	notifyMe(old_update_message_1, '[v5.0.4] IndieGala Helper Updated').catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${old_update_message_1}`);
 	});
 	// TO DELETE - old update message that cannot be uploaded yet.
 	const old_update_message_2 = 'Updated where owned games list is retrieved from, should now work a lot better.\nMust be signed into steam for better list.';
-	notifyMe(old_update_message_2, `[v5.0.5] IndieGala Helper Updated`).catch(() => {
+	notifyMe(old_update_message_2, '[v5.0.5] IndieGala Helper Updated').catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${old_update_message_2}`);
 	});
 	// Display notification relaying update info
@@ -62,7 +62,7 @@ function get_user_level(){
 }
 
 // Indiegala Helper Menu
-$('#main-menu-user').after(`<li class="main-menu-link"><a id="OpenIndieGalaHelper" href="#" data-toggle="modal" data-target="#indiegala-helper">IG HELPER</a></li>`);
+$('#main-menu-user').after('<li class="main-menu-link"><a id="OpenIndieGalaHelper" href="#" data-toggle="modal" data-target="#indiegala-helper">IG HELPER</a></li>');
 // $('#OpenIndieGalaHelper').on('click', () => {
 // 	chrome.runtime.sendMessage({type:'open-options-page'});
 // });

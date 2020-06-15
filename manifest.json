@@ -7,6 +7,14 @@
 		"chrome_style": true,
 		"open_in_tab": true
 	},
+  "icons": {
+    "16": "icons/icon_16.png",
+    "32": "icons/icon_32.png",
+    "48": "icons/icon_48.png",
+    "64": "icons/icon_64.png",
+    "96": "icons/icon_96.png",
+    "128": "icons/icon_128.png"
+  },
 	"content_scripts": [
 		{
 			"matches": ["https://www.indiegala.com/*"],
@@ -20,7 +28,7 @@
 			"run_at": "document_idle"
 		},
 		{
-			"matches": ["https://www.indiegala.com/profile*"],
+			"matches": ["https://www.indiegala.com/profile*","https://www.indiegala.com/library*"],
 			"js": ["indiegala_profile.js"]
 		},
 		{

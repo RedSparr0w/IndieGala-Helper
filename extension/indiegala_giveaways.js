@@ -1,3 +1,5 @@
+/* global getUserLevel, addToBlacklist */
+
 function updateGalaSilver(amount = undefined){
 	if (amount == undefined){
 		$.ajax({

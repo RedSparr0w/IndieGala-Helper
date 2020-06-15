@@ -1,5 +1,5 @@
 // Set Default Settings
-let settings = {
+let settings = { // eslint-disable-line no-redeclare
 	layout: 'dark',
 	theme: 'red',
 	steam_id: '',
@@ -22,7 +22,7 @@ let settings = {
 	current_level: 0
 };
 
-let local_settings = {
+let local_settings = { // eslint-disable-line no-redeclare
 	blacklist_apps: {},
 	blacklist_users: [],
 	owned_apps: [],

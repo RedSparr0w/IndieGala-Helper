@@ -41,7 +41,7 @@ if (localStorage.getItem('version')===null){
 	});
 }
 
-function getUserLevel(){
+function getUserLevel(){ // eslint-disable-line no-unused-vars
 	$.ajax({
 		dataType:'json',
 		url: 'https://www.indiegala.com/get_user_info',
@@ -77,7 +77,7 @@ $('body').append(`
 	</div>`);
 
 // Push to hidden apps
-function addToBlacklist(app_id = 0, app_name = ''){
+function addToBlacklist(app_id = 0, app_name = ''){ // eslint-disable-line no-unused-vars
 	// If name or ID too short return
 	if (app_name.length < 1 || app_id < 1){
 		return;

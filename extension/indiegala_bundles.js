@@ -9,7 +9,7 @@ function showOwnedApps(){
 		let app_id = 0;
 		try {
 			app_id = +el.getElementsByTagName('img')[0].src.match(/\/(\d+)\.jpg/)[1];
-		}catch(O_o){
+		}catch(ಠ_ಠ){
 			return;
 		}
 
@@ -26,10 +26,10 @@ function showOwnedApps(){
 		bundleApps.forEach(app_id => {
 			// Divide the total by 2 as you get half the total cards as free drops
 			if (result[app_id]){
-				try { document.querySelector(`[src*='${app_id}.jpg']`).closest('.bundle-page-tier-item-col').getElementsByClassName('bundle-page-tier-item-trading')[0].append(` [$${(Math.floor(result[app_id] / 2) / 100).toFixed(2)}]`); }catch(O_o){ /* DO NOTHING */ }
+				try { document.querySelector(`[src*='${app_id}.jpg']`).closest('.bundle-page-tier-item-col').getElementsByClassName('bundle-page-tier-item-trading')[0].append(` [$${(Math.floor(result[app_id] / 2) / 100).toFixed(2)}]`); }catch(ಠ_ಠ){ /* DO NOTHING */ }
 			}
 		});
-	}).catch((O_o) => { /* DO NOTHING */ });
+	}).catch((ಠ_ಠ) => { /* DO NOTHING */ });
 }
 
 // Wait until indiegala loads the initial bundle page

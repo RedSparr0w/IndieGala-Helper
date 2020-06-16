@@ -33,7 +33,7 @@
 		},
 		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
-			"exclude_matches": ["https://www.indiegala.com/giveaways/detail*"],
+			"exclude_matches": ["https://www.indiegala.com/giveaways/card*"],
 			"js": ["indiegala_giveaways.js"],
 			"run_at": "document_end"
 		},

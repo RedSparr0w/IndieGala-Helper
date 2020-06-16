@@ -195,6 +195,7 @@ div > i.fa.fa-check{
 body.dark-mode {
   background: #333;
 }
+
 body.dark-mode .main-container-fixed-bg {
     background: url(https://i.imgur.com/msLWkCE.png) 50% top fixed no-repeat;
     background-size: cover;
@@ -205,7 +206,12 @@ body.dark-mode a, body.dark-mode a:hover {
     color: whitesmoke;
 }
 
-body.dark-mode .items-list-item-title, body.dark-mode .community .main-page .items-list-item .items-list-item-data {
+body.dark-mode a.page-contents-list-submenu-current-level {
+    color: #333;
+}
+
+body.dark-mode .items-list-item-title,
+body.dark-mode .community .main-page .items-list-item .items-list-item-data {
     background: #404040 !important;
 }
 

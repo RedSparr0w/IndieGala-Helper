@@ -2,7 +2,7 @@
 const version = chrome.runtime.getManifest().version;
 
 // Create Notifications
-function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick=true){//set title and icon if not included
+function notifyMe(message, title = 'IndieGala Helper', iconUrl = 'https://www.indiegala.com/img/og_image/indiegala_icon.jpg', closeOnClick = true){//set title and icon if not included
 	return new Promise((resolve, reject) => {
 		chrome.runtime.sendMessage({
 			type: 'notification',
@@ -20,12 +20,12 @@ function notifyMe(message, title='IndieGala Helper', iconUrl='https://www.indieg
 }
 
 // If version not set, assume new user, else assume updated
-if (localStorage.getItem('version')===null){
+if (localStorage.getItem('version') === null){
 	localStorage.setItem('version', version);
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	// Display notification relaying update info
-	const update_message = 'You can now activate Steam games from bundles in your IndieGala library\nJust click the blue steam icon next to the key.';
+	const update_message = 'Giveaways now has Dark mode!\nYou can now activate Steam games from bundles in your IndieGala library.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${update_message}`);
 	});

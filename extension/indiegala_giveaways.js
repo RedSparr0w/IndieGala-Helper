@@ -1,5 +1,8 @@
 /* global getUserLevel, addToBlacklist */
 
+// Enable dark mode
+if (settings.dark_mode) document.body.classList.add('dark-mode');
+
 function updateGalaSilver(amount = undefined){
 	if (amount == undefined){
 		$.ajax({
@@ -119,7 +122,7 @@ function nextPage(){
 	history.replaceState('data', '', url_address);
 
 	$('#indiegala-helper-pageloading').slideDown(250);
-	const settings = {
+	const options = {
 		cache: false,
 		processData: false,
 		success: (data) => {
@@ -136,7 +139,7 @@ function nextPage(){
 			nextPage();
 		}
 	};
-	$.ajax(url_address, settings);
+	$.ajax(url_address, options);
 }
 
 // Set loading page as true, will be set to false once "showOwnedApps" is processed

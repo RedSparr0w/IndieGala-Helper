@@ -83,7 +83,11 @@
   top: 0px;
 }
 .items-list-item a.view-on-steam:hover {
-  color: #1b2838;
+    color: #2980b9;
+}
+
+.items-list-item a.add-to-blacklist:hover {
+    color: #c0392b;
 }
 #indiegala-helper-coins {
   position: fixed;
@@ -187,11 +191,33 @@ div > i.fa.fa-check{
   color: #2980b9
 }
 
-/* FIXES */
-#ajax-giv-list-cont {
-  position: relative !important;
+/* DARK MODE */
+body.dark-mode {
+  background: #333;
+}
+body.dark-mode .main-container-fixed-bg {
+    background: url(https://i.imgur.com/msLWkCE.png) 50% top fixed no-repeat;
+    background-size: cover;
+    color: #D9D6D6;
 }
 
-.container > div.spacer-v-15 {
-  clear: both;
+body.dark-mode a, body.dark-mode a:hover {
+    color: whitesmoke;
+}
+
+body.dark-mode .items-list-item-title, body.dark-mode .community .main-page .items-list-item .items-list-item-data {
+    background: #404040 !important;
+}
+
+body.dark-mode .community .main-page .items-list-item .items-list-item-tooth {
+    background: none;
+}
+
+body.dark-mode .main-page .items-list-item .items-list-item-data-left-bottom {
+    color: #D9D6D6;
+}
+
+body.dark-mode .pagination .page-link-cont span.current {
+    color: whitesmoke;
+    border-bottom: 2px solid whitesmoke;
 }

@@ -5,6 +5,7 @@ let settings = { // eslint-disable-line no-redeclare
 	steam_id: '',
 	show_steam_activate_window: true,
 	suppress_confirm_show_key_dialog: true,
+	dark_mode: true,
 	auto_enter_giveaways: false,
 	hide_high_level_giveaways: true,
 	hide_extra_odds: false,

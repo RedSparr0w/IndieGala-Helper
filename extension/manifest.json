@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "5.0.7",
+	"version": "5.0.8",
 	"options_ui": {
 		"page": "options.html",
 		"chrome_style": true,
@@ -25,7 +25,7 @@
 		{
 			"matches": ["https://www.indiegala.com/*"],
 			"js": ["indiegala.js"],
-			"run_at": "document_idle"
+			"run_at": "document_end"
 		},
 		{
 			"matches": ["https://www.indiegala.com/profile*","https://www.indiegala.com/library*"],
@@ -34,7 +34,8 @@
 		{
 			"matches": ["https://www.indiegala.com/giveaways*"],
 			"exclude_matches": ["https://www.indiegala.com/giveaways/detail*"],
-			"js": ["indiegala_giveaways.js"]
+			"js": ["indiegala_giveaways.js"],
+			"run_at": "document_end"
 		},
 		{
 			"matches": ["https://www.indiegala.com/bundle/*"],

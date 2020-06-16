@@ -40,15 +40,15 @@ function showOwnedApps(){
 			giveaway_participants = 0,
 			giveaway_price = 0,
 			giveaway_extra_odds = false;
-		try { app_image = $('img', this)[0];                                                                                   }catch(O_o){}
-		try { app_id = Number(app_image.dataset.imgSrc.match(/\/(\d+)\/header/)[1]) || 0;                                      }catch(O_o){}
-		try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,'') || '';                                              }catch(O_o){}
-		try { giveaway_guaranteed = !!$('.items-list-item-type-guaranteed', this).length;                                      }catch(O_o){}
-		try { giveaway_entered = !$('.items-list-item-ticket-click', this).length;                                             }catch(O_o){}
-		try { giveaway_level = Number(($('.items-list-item-type span', this).text().match(/\d+/) || [0])[0]);                  }catch(O_o){}
-		try { giveaway_participants = Number(($('.items-list-item-data-right-bottom', this).text().match(/\d+/) || [0])[0]);   }catch(O_o){}
-		try { giveaway_price = Number($('[data-price]', this)[0].dataset.price) || 0;                                          }catch(O_o){}
-		try { giveaway_extra_odds = !/single ticket/i.test($('.items-list-item-type', this).text());                           }catch(O_o){}
+		try { app_image = $('img', this)[0];                                                                                   }catch(O_o){ /* DO NOTHING */ }
+		try { app_id = Number(app_image.dataset.imgSrc.match(/\/(\d+)\/header/)[1]) || 0;                                      }catch(O_o){ /* DO NOTHING */ }
+		try { app_name = app_image.alt.replace(/\s*product\s*image\s*/,'') || '';                                              }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_guaranteed = !!$('.items-list-item-type-guaranteed', this).length;                                      }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_entered = !$('.items-list-item-ticket-click', this).length;                                             }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_level = Number(($('.items-list-item-type span', this).text().match(/\d+/) || [0])[0]);                  }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_participants = Number(($('.items-list-item-data-right-bottom', this).text().match(/\d+/) || [0])[0]);   }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_price = Number($('[data-price]', this)[0].dataset.price) || 0;                                          }catch(O_o){ /* DO NOTHING */ }
+		try { giveaway_extra_odds = !/single ticket/i.test($('.items-list-item-type', this).text());                           }catch(O_o){ /* DO NOTHING */ }
 		const do_not_remove = !!settings.always_show_guaranteed && !!giveaway_guaranteed; // Keep if guaranteed
 
 		if ( !do_not_remove && (

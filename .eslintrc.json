@@ -18,7 +18,7 @@
         "space-before-function-paren": ["error", "never"],
         "prefer-arrow-callback": "warn",
         "arrow-spacing": "error",
-        "no-console": "warn",
+        "no-console": ["error", { "allow": ["warn", "error"] }],
         "indent": [
             "error",
             "tab",

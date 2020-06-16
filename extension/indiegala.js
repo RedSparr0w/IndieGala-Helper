@@ -24,18 +24,8 @@ if (localStorage.getItem('version')===null){
 	localStorage.setItem('version', version);
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
-	// TO DELETE - old update message that cannot be uploaded yet.
-	const old_update_message_1 = 'Updated to work with new giveaways page layout,\nInfinite scrolling, Silver counter, Hiding apps and Blacklist should be working again.';
-	notifyMe(old_update_message_1, '[v5.0.4] IndieGala Helper Updated').catch(() => {
-		alert(`[v${version}] IndieGala Helper Updated\n${old_update_message_1}`);
-	});
-	// TO DELETE - old update message that cannot be uploaded yet.
-	const old_update_message_2 = 'Updated where owned games list is retrieved from, should now work a lot better.\nMust be signed into steam for better list.';
-	notifyMe(old_update_message_2, '[v5.0.5] IndieGala Helper Updated').catch(() => {
-		alert(`[v${version}] IndieGala Helper Updated\n${old_update_message_2}`);
-	});
 	// Display notification relaying update info
-	const update_message = 'Re-added support for bundles pages.\nShows owned apps, possible trading card value (USD)';
+	const update_message = 'You can now activate Steam games from bundles in your IndieGala library\nJust click the blue steam icon next to the key.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${update_message}`);
 	});

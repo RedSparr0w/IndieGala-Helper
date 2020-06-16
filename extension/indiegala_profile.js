@@ -38,7 +38,7 @@ $(document).on('click','.profile-private-page-library-key-icon.bg-gradient-blue'
 
 		// Check that the user is logged in
 		if (local_settings.steam_sessionid){
-			if (!confirm('Are you sure you wan\'t to activate this key on steam?\nMust be logged into the steam website for this feature to work.')) return;
+			if (!confirm('Are you sure you wan\'t to activate this key on steam?\nYou must be logged into the steam website for this feature to work.')) return;
 			chrome.runtime.sendMessage(data, (result) => {
 				if (!result) return window.open(`https://store.steampowered.com/account/registerkey?key=${data.product_key}`);
 				else notifyMe(result);

@@ -9,3 +9,24 @@ $('.open-new-giveaway-form').on('click', () => {
 	$('.giveaway-level-threshold option').eq(0).before(`<option value="${settings.new_giveaway_level}">Default (Level ${settings.new_giveaway_level})</option>`).parent().val(settings.new_giveaway_level);
 });
 */
+setInterval(() => {
+	$('.profile-private-page-library-key-icon.bg-gradient-grey .fa-steam').each(function(){
+		const outer_el = $(this).parent('.relative')[0];
+		$('.bg-gradient-grey', outer_el).addClass('bg-gradient-blue').removeClass('bg-gradient-grey');
+	});
+}, 500);
+
+// When game key clicked, select the whole key and copy to clipboard
+$(document).on('click','input.profile-private-page-library-key-serial',function(){
+	try{
+		// Select text, copy to clipboard
+		$(this).select();
+		document.execCommand('copy');
+		// Check if "show steam activate window" is ticked
+		if( settings.show_steam_activate_window ){
+			window.location.href = 'steam://open/activateproduct';
+		}
+	}catch(e){
+		return;
+	}
+});

@@ -89,24 +89,6 @@ function addToBlacklist(app_id = 0, app_name = ''){ // eslint-disable-line no-un
 
 /* TODO: Fix these functions
 
-$('#OpenIndieGalaHelper').on('click', () => {
-	$('#IGH_iframe').attr('src', '').attr('src', chrome.runtime.getURL('options.html'));
-});
-
-// When game key clicked, select the whole key and copy to clipboard
-$(document).on('click','input.keys , .serial-won input',function(){
-	try{
-		$(this).select();
-		document.execCommand('copy');
-		// Check if "show steam activate window" is ticked
-		if( settings.show_steam_activate_window ){
-			window.location.href = 'steam://open/activateproduct';
-		}
-	}catch(e){
-		return;
-	}
-});
-
 // Add donate key button
 setInterval(() => {
 	$('.serial-won input:not(.checked)').each(function(){

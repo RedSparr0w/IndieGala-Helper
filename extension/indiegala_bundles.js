@@ -25,6 +25,7 @@ function showOwnedApps(){
 
 	// Get card values
 	$.ajax({
+		cache: false,
 		url: `https://indiegala.redsparr0w.com/steamAPI/getCardPrices?apps=${bundleApps.join(',')}`,
 		success: function(result){
 			if (typeof result !== 'object'){

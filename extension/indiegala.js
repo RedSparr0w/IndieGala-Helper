@@ -43,6 +43,7 @@ if (localStorage.getItem('version')===null){
 
 function getUserLevel(){ // eslint-disable-line no-unused-vars
 	$.ajax({
+		cache: false,
 		dataType:'json',
 		url: 'https://www.indiegala.com/get_user_info',
 		data: {

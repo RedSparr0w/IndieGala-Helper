@@ -3,10 +3,10 @@
 function updateGalaSilver(amount = undefined){
 	if (amount == undefined){
 		$.ajax({
+			cache: false,
 			type: 'GET',
 			url: 'https://www.indiegala.com/get_user_info',
 			data: {
-				'uniq_param': new Date().getTime(),
 				'show_coins': 'True'
 			},
 			cache: false,
@@ -121,6 +121,7 @@ function nextPage(){
 
 	$('#indiegala-helper-pageloading').slideDown(250);
 	const settings = {
+		cache: false,
 		processData: false,
 		success: (data) => {
 			if (!data){

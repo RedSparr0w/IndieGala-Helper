@@ -119,8 +119,9 @@ function getOwnedGames(force_update = false){
 	//check if we have a steamID & check if it has been 24 hours since last update
 	if (!!force_update || +local_settings.owned_apps_next_update < +new Date().getTime() ){
 		$.ajax({
-			dataType:'json',
-			url:'https://store.steampowered.com/dynamicstore/userdata/',
+			cache: false,
+			dataType: 'json',
+			url: 'https://store.steampowered.com/dynamicstore/userdata/',
 			success: (res) => {
 				const rgOwnedApps = res.rgOwnedApps || [];
 				const rgOwnedPackages = res.rgOwnedPackages || [];
@@ -147,8 +148,8 @@ function getOwnedGames(force_update = false){
 
 function getOwnedGamesFallback(force_update = false){
 	$.ajax({
-		dataType:'json',
-		url:`https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
+		dataType: 'json',
+		url: `https://indiegala.redsparr0w.com/steamAPI/GetOwnedGames?steamid=${settings.steam_id}`,
 		success: (res) => {
 			const ownedApps = [];
 			const myApps = res.response.games;

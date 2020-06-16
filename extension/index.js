@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener((data, sender, callback) => {
 			fetch('https://store.steampowered.com/account/ajaxregisterkey/', {method : "POST", body: form_data}).then(res => res.json()).then(result => {
 				const response = steam_activation_response[result.purchase_result_details] || 'An unexpected error has occurred, Your product code has not been redeemed, Please wait 30 minutes before trying redeeming the code again.';
 				callback(response);
-			});
+			}).catch(()=>{callback()});
 		} catch (e) {
 			callback();
 		}

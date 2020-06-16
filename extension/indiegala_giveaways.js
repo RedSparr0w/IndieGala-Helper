@@ -9,7 +9,6 @@ function updateGalaSilver(amount = undefined){
 			data: {
 				'show_coins': 'True'
 			},
-			cache: false,
 			dataType: 'json',
 			success: function(data){
 				if (data.status === 'ok'){

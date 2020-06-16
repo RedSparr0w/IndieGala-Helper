@@ -34,7 +34,7 @@ let local_settings = { // eslint-disable-line no-redeclare
 // Get user steam sessionid
 try {
 	if (/firefox/i.test(navigator.userAgent)){
-		browser.cookies.get({url:'https://store.steampowered.com', name:'steamLogin'})
+		browser.cookies.get({url:'https://store.steampowered.com', name:'steamLoginSecure'})
 			.then(steamLogin_cookie => {
 				if (!!steamLogin_cookie){
 					browser.cookies.get({url:'https://store.steampowered.com', name:'sessionid'})
@@ -49,7 +49,7 @@ try {
 				}
 			});
 	} else {
-		chrome.cookies.get({url:'https://store.steampowered.com', name:'steamLogin'}, (steamLogin_cookie) => {
+		chrome.cookies.get({url:'https://store.steampowered.com', name:'steamLoginSecure'}, (steamLogin_cookie) => {
 			if (!!steamLogin_cookie){
 				chrome.cookies.get({url:'https://store.steampowered.com', name:'sessionid'}, (cookie) => {
 					if (!!cookie){

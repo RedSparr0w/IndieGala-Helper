@@ -1,10 +1,8 @@
-
-
 // Mark owned games and get values of cards
 function showOwnedApps(){
 	const bundleApps = [];
 
-	[...document.getElementsByClassName('bundle-page-tier-item-col')].forEach((el)=>{
+	[...document.getElementsByClassName('bundle-page-tier-item-col')].forEach((el) => {
 		// Check if this app has trading cards
 		// if (/no\s*trading\s*cards/i.test($('.bundle-page-tier-item-trading', this).eq(0).text())) continue;
 
@@ -31,7 +29,7 @@ function showOwnedApps(){
 				try { document.querySelector(`[src*='${app_id}.jpg']`).closest('.bundle-page-tier-item-col').getElementsByClassName('bundle-page-tier-item-trading')[0].append(` [$${(Math.floor(result[app_id] / 2) / 100).toFixed(2)}]`); }catch(O_o){ /* DO NOTHING */ }
 			}
 		});
-	}).catch((O_o)=>{ /* DO NOTHING */ });
+	}).catch((O_o) => { /* DO NOTHING */ });
 }
 
 // Wait until indiegala loads the initial bundle page

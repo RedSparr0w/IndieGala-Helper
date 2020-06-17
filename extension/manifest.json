@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "IndieGala Helper",
-	"version": "5.0.8",
+	"version": "5.0.9",
 	"options_ui": {
 		"page": "options.html",
 		"chrome_style": true,
@@ -39,7 +39,8 @@
 		},
 		{
 			"matches": ["https://www.indiegala.com/bundle/*"],
-			"js": ["indiegala_bundles.js"]
+			"js": ["indiegala_bundles.js"],
+			"run_at": "document_end"
 		},
 		{
 			"matches": ["https://www.indiegala.com/trades*"],

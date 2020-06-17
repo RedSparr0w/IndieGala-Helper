@@ -25,7 +25,7 @@ if (localStorage.getItem('version') === null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	// Display notification relaying update info
-	const update_message = 'Giveaways now has Dark mode!\nYou can now activate Steam games from bundles in your IndieGala library.';
+	const update_message = 'Support new giveaways page.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${update_message}`);
 	});

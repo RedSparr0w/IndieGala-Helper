@@ -102,11 +102,12 @@ function showOwnedApps(){
 	});
 
 	// If less than 4 apps on page & inifiniteScroll is enabled then load next page
-	$('.page-contents-list-cont .items-list-col').not('.checked').addClass('checked').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage() : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
+	$('.page-contents-list-cont .items-list-col').not('.checked').addClass('checked').fadeIn().length <= 4 && !!settings.infinite_scroll ? nextPage(true) : $('#indiegala-helper-pageloading').slideUp(() => {loading_page=false;});
 }
 
 // Load next page via ajax
-function nextPage(){
+function nextPage(ignore_loading = false){
+	if (loading_page && !ignore_loading) return;
 	loading_page=true;
 
 	const url_address = $('.page-link-cont .current').eq(0).parent().next().find('a').attr('href');
@@ -143,6 +144,7 @@ function nextPage(){
 			showOwnedApps();
 		},
 		error: () => {
+			loading_page=false;
 			nextPage();
 		}
 	};
@@ -154,31 +156,43 @@ let loading_page = true;
 
 // Wait until indiegala loads the initial giveaways
 const wait_for_page = setInterval(() => {
-	if($('[href^="/giveaways/card"]').length >= 1){
-		clearInterval(wait_for_page);
+	// Wait for giveaways to load
+	if($('.page-contents-list-cont .items-list-col').length <= 0) return;
 
-		// Add coin balance display to side of screen
-		$('body').append('<div id="indiegala-helper-coins" title="IndieGala Coin Balance"><strong class="coins-amount"><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
-		$('#galasilver-amount').addClass('coins-amount');
-		// Update current coin balance
-		updateGalaSilver();
-		// // Add infinite page loading spinner
-		$('.page-contents-list-cont .page-contents-list').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
-		// Show page numbers at top & bottom of page
-		$('.pagination').parent().parent().clone().insertAfter('.page-contents-list-menu');
-		// Show/Remove giveaways based on user settings
+	// Page loaded
+	clearInterval(wait_for_page);
+
+	// Add coin balance display to side of screen
+	$('body').append('<div id="indiegala-helper-coins" title="IndieGala Coin Balance"><strong class="coins-amount"><i class="fa fa-spinner fa-spin"></i></strong><span> <img src="/img/gala-silver.png"/></span></div>');
+	$('#galasilver-amount').addClass('coins-amount');
+	// Update current coin balance
+	updateGalaSilver();
+	// // Add infinite page loading spinner
+	$('.page-contents-list-cont .page-contents-list').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading"></i>');
+	// Show page numbers at top & bottom of page
+	$('.pagination').parent().parent().clone().insertAfter('.page-contents-list-menu');
+	// Show/Remove giveaways based on user settings
+	showOwnedApps();
+	// Allow infinite scroll
+	loading_page=false;
+
+	// TODO: Fix auto enter
+	// Auto enter giveaways
+	// if (!!settings.auto_enter_giveaways){
+	// 	setInterval(() => {
+	//     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
+	//       $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
+	//     }
+	// 	}, 3000);
+	// }
+
+	const checkPageReloaded = setInterval(()=>{
+		if (document.getElementById('indiegala-helper-pageloading')) return;
+		loading_page = true;
+		$('.pagination').eq(0).parent().html($('.pagination').eq(1).parent().html());
+		$('.page-contents-list-cont .page-contents-list').after('<i class="fa fa-refresh fa-5x fa-spin" id="indiegala-helper-pageloading" style="display: none;"></i>');
 		showOwnedApps();
-
-		// TODO: Fix auto enter
-		// Auto enter giveaways
-		// if (!!settings.auto_enter_giveaways){
-		// 	setInterval(() => {
-		//     if ( Number($('#indiegala-helper-coins strong').html() ) > 0 ){
-		//       $('.tickets-col .animated-coupon').length > 0 ? $('.tickets-col .animated-coupon').eq(0).click() : (!loading_page ? nextPage() : false);
-		//     }
-		// 	}, 3000);
-		// }
-	}
+	}, 250);
 }, 500);
 
 // If infinite scroll is checked then listen to scroll event and load more pages as needed
@@ -217,9 +231,3 @@ script.textContent = updateSilver;
 (document.head||document.documentElement).appendChild(script);
 script.remove();
 
-$(document).on('click', '.pagination a', ()=>{
-	setTimeout(()=>{
-		showOwnedApps();
-		$('.pagination').eq(0).parent().html($('.pagination').eq(1).parent().html());
-	}, 3000);
-})

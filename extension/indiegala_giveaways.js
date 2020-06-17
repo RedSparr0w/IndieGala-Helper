@@ -192,11 +192,16 @@ if (!!settings.infinite_scroll){
 // Catch ajax calls, update coins on entry
 const updateSilver = `
 // Update silver remaining
-$(document).ajaxComplete(function(event, res, settings){
-  if (res.responseJSON && res.responseJSON.silver_tot >= 0) $('.coins-amount').text(res.responseJSON.silver_tot);;
-});
+try {
+	$(document).ajaxComplete(function(event, res, settings){
+	  if (res.responseJSON && res.responseJSON.silver_tot >= 0) $('.coins-amount').text(res.responseJSON.silver_tot);;
+	});
+}catch(ಠ_ಠ){ /* DO NOTHING */ }
+
 // Allow entry on multiple giveaways at a time
-$(document).on('click','.items-list-item-ticket-click',() => { joinGiveawayOrAuctionAJS=true; });
+try {
+	$(document).on('click','.items-list-item-ticket-click',() => { joinGiveawayOrAuctionAJS=true; });
+}catch(ಠ_ಠ){ /* DO NOTHING */ }
 `;
 
 // Add the script to the page

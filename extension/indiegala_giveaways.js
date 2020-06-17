@@ -119,7 +119,7 @@ function nextPage(){
 		return;
 	}
 
-	history.replaceState('data', '', url_address);
+	//history.replaceState('data', '', url_address);
 
 	$('#indiegala-helper-pageloading').slideDown(250);
 	const options = {
@@ -130,8 +130,15 @@ function nextPage(){
 				nextPage();
 				return;
 			}
+			try {
+				// If IG are still sending a JSON response use this, I guess...
+				const json_data = JSON.parse(data);
+				if (json_data.html) {
+					data = json_data.html;
+				}
+			}catch(ಠ_ಠ){ /* DO NOTHING */ }
 			data = $.parseHTML(data);
-			$('.page-contents-list .items-list-row').append($('.page-contents-list .items-list-col', data));
+			$('.page-contents-list .items-list-row').append($('.items-list-row', data).html());
 			$('.pagination').parent().html($('.pagination', data));
 			showOwnedApps();
 		},
@@ -194,7 +201,7 @@ const updateSilver = `
 // Update silver remaining
 try {
 	$(document).ajaxComplete(function(event, res, settings){
-	  if (res.responseJSON && res.responseJSON.silver_tot >= 0) $('.coins-amount').text(res.responseJSON.silver_tot);;
+	  if (res.responseJSON && res.responseJSON.silver_tot >= 0) $('.coins-amount').text(res.responseJSON.silver_tot);
 	});
 }catch(ಠ_ಠ){ /* DO NOTHING */ }
 
@@ -209,3 +216,10 @@ const script = document.createElement('script');
 script.textContent = updateSilver;
 (document.head||document.documentElement).appendChild(script);
 script.remove();
+
+$(document).on('click', '.pagination a', ()=>{
+	setTimeout(()=>{
+		showOwnedApps();
+		$('.pagination').eq(0).parent().html($('.pagination').eq(1).parent().html());
+	}, 3000);
+})

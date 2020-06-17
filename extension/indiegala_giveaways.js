@@ -15,17 +15,17 @@ function updateGalaSilver(amount = undefined){
 			dataType: 'json',
 			success: function(data){
 				if (data.status === 'ok'){
-					$('.coins-amount').text(data.silver_coins_tot);
+					[...document.getElementsByClassName('coins-amount')].forEach(el => el.innerText = data.silver_coins_tot);
 				} else {
-					$('.coins-amount').text(data.status.replace('_', ' '));
+					[...document.getElementsByClassName('coins-amount')].forEach(el => el.innerText = data.status.replace('_', ' '));
 				}
 			},
 			error: function(xhr, ajaxOptions, thrownError){
-				$('.coins-amount').text('error');
+				[...document.getElementsByClassName('coins-amount')].forEach(el => el.innerText = 'error');
 			}
 		});
 	} else {
-		$('.coins-amount').text(amount);
+		[...document.getElementsByClassName('coins-amount')].forEach(el => el.innerText = amount);
 	}
 }
 getUserLevel();

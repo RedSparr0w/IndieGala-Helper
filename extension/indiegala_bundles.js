@@ -39,5 +39,8 @@ const wait_for_page = setInterval(() => {
 		clearInterval(wait_for_page);
 		// Show owned apps
 		showOwnedApps();
+		// Add donate button
+		const emailEl = document.getElementById('form-email-2') || document.getElementById('form-email');
+		if (emailEl) emailEl.parentElement.innerHTML += `<br/><a id="donate-button" class="bg-gradient-red" onclick="document.getElementById('${emailEl.id}').value = 'donate-bundle@redsparr0w.com';this.innerText = 'Thank you for your support! ♥'">Donate a bundle to IndieGala Helper?</a>`
 	}
 }, 250);

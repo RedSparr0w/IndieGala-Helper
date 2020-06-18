@@ -197,33 +197,42 @@ body.dark-mode {
 }
 
 body.dark-mode .main-container-fixed-bg {
-    background: url(https://i.imgur.com/msLWkCE.png) 50% top fixed no-repeat;
-    background-size: cover;
-    color: #D9D6D6;
+  background: url(https://i.imgur.com/msLWkCE.png) 50% top fixed no-repeat;
+  background-size: cover;
+  color: #D9D6D6;
 }
 
 body.dark-mode a, body.dark-mode a:hover {
-    color: whitesmoke;
+  color: whitesmoke;
 }
 
 body.dark-mode a.page-contents-list-submenu-current-level {
-    color: #333;
+  color: #333;
 }
 
 body.dark-mode .items-list-item-title,
 body.dark-mode .community .main-page .items-list-item .items-list-item-data {
-    background: #404040 !important;
+  background: #404040 !important;
 }
 
 body.dark-mode .community .main-page .items-list-item .items-list-item-tooth {
-    background: none;
+  background: none;
 }
 
 body.dark-mode .main-page .items-list-item .items-list-item-data-left-bottom {
-    color: #D9D6D6;
+  color: #D9D6D6;
 }
 
 body.dark-mode .pagination .page-link-cont span.current {
-    color: whitesmoke;
-    border-bottom: 2px solid whitesmoke;
+  color: whitesmoke;
+  border-bottom: 2px solid whitesmoke;
+}
+
+/* DONATE */
+#donate-button {
+  cursor: pointer;
+  padding: 8px 50px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 2px;
 }

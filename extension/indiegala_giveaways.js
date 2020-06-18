@@ -134,7 +134,7 @@ function nextPage(ignore_loading = false){
 			try {
 				// If IG are still sending a JSON response use this, I guess...
 				const json_data = JSON.parse(data);
-				if (json_data.html) {
+				if (json_data.html){
 					data = json_data.html;
 				}
 			}catch(ಠ_ಠ){ /* DO NOTHING */ }
@@ -186,7 +186,8 @@ const wait_for_page = setInterval(() => {
 	// 	}, 3000);
 	// }
 
-	const checkPageReloaded = setInterval(()=>{
+	// Check if giveaways were reloaded
+	setInterval(() => {
 		if (document.getElementById('indiegala-helper-pageloading')) return;
 		loading_page = true;
 		$('.pagination').eq(0).parent().html($('.pagination').eq(1).parent().html());

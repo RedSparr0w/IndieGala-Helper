@@ -25,7 +25,7 @@ if (localStorage.getItem('version') === null){
 } else if (localStorage.getItem('version') != version){
 	localStorage.setItem('version', version);
 	// Display notification relaying update info
-	const update_message = 'Support new giveaways page.';
+	const update_message = 'Added button to donate bundles to IndieGala Helper.';
 	notifyMe(update_message, `[v${version}] IndieGala Helper Updated`).catch(() => {
 		alert(`[v${version}] IndieGala Helper Updated\n${update_message}`);
 	});
